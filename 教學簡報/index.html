@@ -61,6 +61,15 @@ p.seclead{text-align:left;color:var(--muted);margin-bottom:26px;padding-left:18p
 .author .yt{background:#c4302b}.author .fb{background:#1877f2}.author .mail{background:#1a9d54}
 .foot{text-align:center;color:var(--muted);font-size:13px;margin-top:40px;line-height:1.9}
 .foot .warn{color:#ffb3b3}
+.dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:16px}
+.dlcard{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:18px 20px;text-decoration:none;color:var(--text);transition:.2s}
+.dlcard:hover{border-color:var(--gold);transform:translateY(-3px);background:rgba(245,166,35,.08)}
+.dlcard .di{font-size:34px;flex-shrink:0}
+.dlcard .dt b{font-size:18px}.dlcard .dt span{display:block;font-size:14px;color:var(--muted)}
+.dlcard .dgo{margin-left:auto;color:var(--gold2);font-weight:800;font-size:15px;white-space:nowrap}
+.dlcard.sim{border-left:4px solid var(--gold)}
+.dlnote{color:var(--muted);font-size:14px;margin-top:14px;padding-left:18px}
 @media(max-width:600px){.hero h1{font-size:32px}h2.sec{font-size:23px}.cta.alt{margin-left:0;margin-top:12px}}
 </style>
 </head>
@@ -176,6 +185,32 @@ p.seclead{text-align:left;color:var(--muted);margin-bottom:26px;padding-left:18p
     <div class="w"><h3>⚙️ 到處都有生成器</h3><p>複製提示詞、送出、看 AI 生成——全班疊出來的程式一致，不會各寫各的。</p></div>
     <div class="w"><h3>🏆 真的會上真機</h3><p>期末每個人的程式都會在真正的 OTTO 上表演，成果看得見、摸得到。</p></div>
   </div>
+
+  <h2 class="sec">📦 資源<span class="hl">下載區</span></h2>
+  <p class="seclead">要上真機才需要這些工具（Windows）。前 15 章只用 3D 模擬器，免安裝、免下載。</p>
+  <div class="dl">
+    <a class="dlcard sim" href="../模擬器/index.html" target="_blank">
+      <div class="di">🤖</div>
+      <div class="dt"><b>3D 模擬器</b><span>免安裝，瀏覽器直接開，CH00–14 都用它</span></div>
+      <div class="dgo">開啟 →</div>
+    </a>
+    <a class="dlcard" href="https://github.com/ChatGPT3a01/otto-ailiang-course/releases/download/tools-v9/arduino-1.8.12-windows.exe">
+      <div class="di">🖥️</div>
+      <div class="dt"><b>Arduino IDE 1.8.12</b><span>把程式上傳真機的工具 · 約 112MB · CH15</span></div>
+      <div class="dgo">下載 ↓</div>
+    </a>
+    <a class="dlcard" href="https://github.com/ChatGPT3a01/otto-ailiang-course/releases/download/tools-v9/CH341SER.zip">
+      <div class="di">🔌</div>
+      <div class="dt"><b>CH340 傳輸線驅動</b><span>解壓後執行 SETUP.EXE · CH02</span></div>
+      <div class="dgo">下載 ↓</div>
+    </a>
+    <a class="dlcard" href="https://github.com/ChatGPT3a01/otto-ailiang-course/releases/download/tools-v9/Libraries_V9.zip">
+      <div class="di">📚</div>
+      <div class="dt"><b>Otto9 函式庫</b><span>解壓放進 Arduino libraries 資料夾 · CH15</span></div>
+      <div class="dgo">下載 ↓</div>
+    </a>
+  </div>
+  <p class="dlnote">💡 全部工具也集中在 <a href="https://github.com/ChatGPT3a01/otto-ailiang-course/releases/tag/tools-v9" target="_blank" style="color:var(--gold2)">GitHub Release 工具包</a>；驅動裝法看 CH02、Arduino IDE 與函式庫看 CH15、馬達校正看 CH16。</p>
 
   <div class="author">
     <h3>👨‍🏫 曾慶良 主任（阿亮老師）</h3>
