@@ -81,6 +81,20 @@ select{background:#241f45;color:var(--text);border:1px solid var(--line);border-
   margin-right:9px;animation:blink 1s infinite}
 @keyframes blink{50%{opacity:.25}}
 @media(max-width:900px){.panel{width:52%;min-width:0}}
+/* 🎯 任務挑戰 */
+#missions{background:#14401f;color:#eafff2;border:1px solid var(--green)}
+.mcard{display:none;margin:0 0 8px;background:linear-gradient(135deg,#1e3a2e,#14261d);
+  border:1px solid var(--green);border-radius:14px;padding:13px 15px;color:#eafff2;position:relative}
+.mcard.show{display:block}
+.mcard.win{border-color:var(--gold);background:linear-gradient(135deg,#3a2f14,#2a2410);box-shadow:0 0 26px rgba(245,166,35,.4)}
+.mcard.fail{border-color:#E74C3C;background:linear-gradient(135deg,#3a1e1e,#2a1414)}
+.mcard h3{font-size:16px;margin:0 0 5px}
+.mcard .goal{font-size:13.5px;line-height:1.6}
+.mcard .goal b{color:var(--gold)}
+.mcard .tip{font-size:12px;color:#9fd9b8;margin-top:6px;line-height:1.5}
+.mcard .res{font-size:14px;font-weight:700;margin-top:8px;line-height:1.5}
+.mcard .mx{position:absolute;top:11px;right:13px;cursor:pointer;color:#9fd9b8;font-size:12px}
+.mcard .mx:hover{color:#fff}
 </style>
 </head>
 <body>
@@ -109,7 +123,15 @@ select{background:#241f45;color:var(--text);border:1px solid var(--line);border-
         <option value="avoid">05 · 超音波避障（if 判斷）</option>
         <option value="factory">06 · 原廠避障範例（自訂函式版）</option>
       </select>
+      <select id="missions" title="挑戰任務">
+        <option value="">🎯 挑戰任務…</option>
+        <option value="reach">🚶 走到終點（CH06）</option>
+        <option value="dance">🕺 創意舞蹈家（CH09）</option>
+        <option value="loop">⚡ 迴圈大師（CH11）</option>
+        <option value="avoid">🛡️ 避障不撞牆（CH13）</option>
+      </select>
     </div>
+    <div class="mcard" id="mcard"></div>
     <div class="codewrap">
       <div class="codehead">📄 <b>&nbsp;otto_robot.ino</b>&nbsp;· 這份程式碼與真實 OTTO 完全相同，可直接複製到 Arduino IDE 上傳</div>
       <textarea id="code" spellcheck="false"></textarea>
@@ -333,6 +355,7 @@ function moveForward(dist){            // 沿面向方向位移
   otto.position.x += Math.sin(heading) * dist;
   otto.position.z += Math.cos(heading) * dist;
   camTarget.x = otto.position.x; camTarget.z = otto.position.z;
+  if(window.MISSION){ window.MISSION.state.totalForward += Math.abs(dist); if(window.missionTrack) missionTrack(); }
   updateCamera();
 }
 
@@ -465,6 +488,7 @@ const distSlider = document.getElementById('distSlider');
 const distVal = document.getElementById('distVal');
 let obstacleZ = null;
 function placeObstacle(){
+  if(window.MISSION && window.MISSION.fixedObstacle) return;   // 任務固定牆：不跟著 OTTO 移動
   const want = parseInt(distSlider.value, 10);
   // 障礙物放在 OTTO 面向方向前 want cm（1 單位 = 1cm）
   obstacleZ = {x: otto.position.x + Math.sin(heading)*(want+4),
@@ -746,6 +770,7 @@ async function runOtto(fn, a){
   if(fn === 'home'){ log('🧍 Otto.home() 立正站好'); await Moves.home(); return; }
   if(fn === 'sing'){ log('🎵 唱歌：' + a[0]); await sing(a[0]); return; }
   if(fn === 'playGesture'){
+    if(window.MISSION){ window.MISSION.state.moves.add('g:'+a[0]); window.MISSION.state.moveCalls++; }
     log('🎭 表演手勢：' + a[0]);
     await (Gestures[a[0]] || (async()=>{ await sing('S_confused'); await Moves.jitter(3,400,10); }))();
     return;
@@ -753,6 +778,7 @@ async function runOtto(fn, a){
   if(fn === 'getDistance'){ flashEyes(); readDistance(); return; }
   if(fn === '_tone' || fn === 'tone'){ await beep(a[0]||1000, a[1]||120); return; }
   if(Moves[fn]){
+    if(window.MISSION){ window.MISSION.state.moves.add(fn); window.MISSION.state.moveCalls++; }
     const info = CmdInfo[fn] || [0, fn];
     const dir = a[2] !== undefined ? a[2] : (a[3] !== undefined ? a[3] : 1);
     let dirTxt = '';
@@ -805,6 +831,7 @@ btnRunEl.addEventListener('click', async () => {
     return;
   }
   running = true; stopFlag = false;
+  if(window.MISSION && window.missionRunReset) missionRunReset(rawSrc);
   setRunUI(true);
   try{
     log('🚀 開始執行！先跑 setup()（只跑一次）…', 'sys');
@@ -817,6 +844,7 @@ btnRunEl.addEventListener('click', async () => {
         n++;
         loopNEl.textContent = 'loop() 第 ' + n + ' 圈';
         await execBlock(loopB, env);
+        if(window.MISSION && window.missionJudge && missionJudge()) break;
         await sleep(50);
         if(n > 9999) break;
       }
@@ -842,6 +870,7 @@ document.getElementById('btnReset').addEventListener('click', () => {
     otto.position.set(0, 4.0, 0); heading = 0; otto.rotation.y = 0;
     setHome(); camTarget.set(0, 6, 0); camTheta = 0.5; camPhi = 1.15; camR = 34;
     updateCamera(); placeObstacle(); readDistance();
+    if(window.MISSION){ window.MISSION.state = freshState(); missionSetupWorld(); renderMissionCard('ready'); }
     log('⟲ OTTO 已歸位', 'sys');
   }, 80);
 });
@@ -1013,6 +1042,7 @@ void obstacleDetector() {
 document.getElementById('examples').addEventListener('change', e => {
   const v = e.target.value;
   if(!v) return;
+  if(window.MISSION && window.missionExit) missionExit();
   if(v.startsWith('ch:')){
     const ex = (window.OTTO_CH_EXAMPLES || {})[v.slice(3)];
     if(ex) document.getElementById('code').value = ex.code.trim() + '\n';
@@ -1023,6 +1053,177 @@ document.getElementById('examples').addEventListener('change', e => {
   log('📥 已載入範例，按「▶ 執行」跑跑看！', 'sys');
 });
 document.getElementById('code').value = Examples.walk.trim() + '\n';
+
+/* =========================================================
+ *  🎯 任務挑戰系統：闖關 + 自動判定過關（模擬器的核心價值）
+ *  每關給「會跑但過不了」的起始碼，逼學生用 Loop 工程改到過關。
+ * ========================================================= */
+(function(){
+  // 綠色終點圈（地板上）
+  const targetRing = new THREE.Mesh(
+    new THREE.RingGeometry(6.2, 8.2, 44),
+    new THREE.MeshBasicMaterial({color:0x2ECC71, side:THREE.DoubleSide, transparent:true, opacity:.85}));
+  targetRing.rotation.x = -Math.PI/2; targetRing.position.y = 0.12; targetRing.visible = false;
+  scene.add(targetRing);
+
+  const H = HEADER;
+  const S = () => ({minTargetDist:1e9, maxAway:0, distFromStart:0, minWallDist:1e9, curWallDist:1e9, maxTurn:0,
+    collided:false, totalForward:0, moves:new Set(), moveCalls:0, forUsed:false});
+  window.freshState = S;
+
+  const MISSIONS = {
+    reach:{ name:'🚶 走到終點', target:{x:0,z:22,r:8},
+      goal:'讓 OTTO 往前走，走進前方的<b>綠色終點圈</b>裡。',
+      tip:'走的步數不夠就到不了。把 Otto.walk 的步數改大試試！',
+      starter:`
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 🎯 目標：走進前方的綠色終點圈！
+  Otto.walk(3, 1000, 1);   // 只走 3 步…好像不太夠？把數字改大
+  Otto.sing(S_happy);
+  delay(400);
+}`,
+      check:s=> s.minTargetDist<=8,
+      win:'🏆 抵達終點！你成功指揮 OTTO 走到定點了！' },
+
+    dance:{ name:'🕺 創意舞蹈家',
+      goal:'編一支舞，<b>至少用到 5 種不同的動作</b>（走路、轉彎、跳躍、月球漫步、搖擺…都算）。',
+      tip:'越多種越精彩！可用：walk / turn / jump / moonwalker / crusaito / flapping / swing / updown / playGesture…',
+      starter:`
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 🕺 目標：至少 5 種不同動作！（現在只有 3 種，再多加幾種）
+  Otto.walk(2, 1000, 1);
+  Otto.turn(2, 1000, 1);
+  Otto.jump(1, 800);
+  // 這裡再加：Otto.moonwalker(3,900,22,1);  Otto.swing(4,600,20);  Otto.flapping(3,800,20,1); …
+  delay(600);
+}`,
+      check:s=> s.moves.size>=5,
+      win:s=>`🏆 太精彩了！你用了 ${s.moves.size} 種不同動作編出一支舞！` },
+
+    loop:{ name:'⚡ 迴圈大師', needFor:true,
+      goal:'用 <b>for 迴圈</b>讓 OTTO 重複動作——不能一行一行把指令貼出來！',
+      tip:'for (int i = 0; i < 8; i++) { Otto.updown(1, 1000, 20); }  一個迴圈抵八行。',
+      starter:`
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // ⚡ 目標：把下面這串「一行一行」改成 for 迴圈！
+  Otto.updown(1, 1000, 20);
+  Otto.updown(1, 1000, 20);
+  Otto.updown(1, 1000, 20);
+  delay(500);
+}`,
+      check:s=> s.forUsed && s.moveCalls>=6,
+      win:'🏆 迴圈大師！你用 for 迴圈優雅地重複動作了！' },
+
+    avoid:{ name:'🛡️ 避障不撞牆', fixedObstacle:{x:0,z:24},
+      goal:'前方有一道<b>牆</b>。讓 OTTO 往前走，用超音波偵測，快撞到時停下或轉彎——<b>絕不能撞牆</b>！',
+      tip:'float d = Otto.getDistance();  if (d < 15) { Otto.turn(3,1000,1); } else { Otto.walk(1,1000,1); }',
+      starter:`
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 🛡️ 目標：偵測前方，別撞牆！（現在只會傻傻直走 → 一定撞牆，救它！）
+  Otto.walk(1, 1000, 1);
+}`,
+      check:s=> !s.collided && s.minWallDist<=19 && s.maxTurn>0.5 && s.totalForward>=6,
+      fail:'💥 撞到牆了！要先用 Otto.getDistance() 偵測，太近就別再直走。',
+      win:'🏆 安全！OTTO 學會看路了，一次都沒撞牆！' }
+  };
+  window.MISSIONS = MISSIONS;
+
+  const codeEl = document.getElementById('code');
+  const mcard = document.getElementById('mcard');
+
+  window.missionTrack = function(){
+    const M = window.MISSION; if(!M) return; const s = M.state;
+    s.distFromStart = Math.hypot(otto.position.x, otto.position.z);
+    if(s.distFromStart > s.maxAway) s.maxAway = s.distFromStart;
+    s.maxTurn = Math.max(s.maxTurn, Math.abs(heading));
+    if(M.target){ const dt = Math.hypot(otto.position.x-M.target.x, otto.position.z-M.target.z); if(dt<s.minTargetDist) s.minTargetDist=dt; }
+    if(M.fixedObstacle){ const dw = Math.hypot(otto.position.x-M.fixedObstacle.x, otto.position.z-M.fixedObstacle.z);
+      s.curWallDist=dw; if(dw<s.minWallDist) s.minWallDist=dw; if(dw<5.5) s.collided=true; }
+  };
+
+  function placeWorld(){
+    const M = window.MISSION; if(!M) return;
+    if(M.target){ targetRing.position.set(M.target.x,0.12,M.target.z); targetRing.visible=true; }
+    else targetRing.visible=false;
+    if(M.fixedObstacle){ obstacle.visible=true; obstacle.position.set(M.fixedObstacle.x,0,M.fixedObstacle.z); obstacle.rotation.y=0; obstacleZ={x:M.fixedObstacle.x,z:M.fixedObstacle.z}; }
+    else { obstacle.visible=false; obstacleZ=null; }
+  }
+
+  window.missionSetupWorld = function(){
+    const M = window.MISSION; if(!M) return;
+    stopFlag = true;
+    otto.position.set(0,4.0,0); heading=0; otto.rotation.y=0; if(window.setHome) setHome();
+    if(window.camTarget) camTarget.set(0,6,0);
+    placeWorld();
+    if(window.updateCamera) updateCamera(); if(window.readDistance) readDistance();
+  };
+
+  window.missionRunReset = function(rawSrc){
+    const M = window.MISSION; if(!M) return;
+    otto.position.set(0,4.0,0); heading=0; otto.rotation.y=0; if(window.setHome) setHome();
+    M.state = S(); M.state.forUsed = /\bfor\s*\(/.test(rawSrc||'');
+    placeWorld();
+    if(window.updateCamera) updateCamera();
+    renderCard('running');
+  };
+
+  window.missionJudge = function(){
+    const M = window.MISSION; if(!M) return false; const s = M.state, d = M.def;
+    if(d.check(s)){ stopFlag=true; const wm=(typeof d.win==='function')?d.win(s):d.win; renderCard('win',wm); try{sing('S_superHappy');}catch(e){} log('🏆 '+wm,'sys'); return true; }
+    if(s.collided && d.fail){ stopFlag=true; renderCard('fail',d.fail); try{sing('S_surprise');}catch(e){} log('❌ '+d.fail,'err'); return true; }
+    if(d.needFor && !s.forUsed && s.moveCalls>=3){ stopFlag=true; const m='⚡ 這一關一定要用 for 迴圈，不能一行一行貼指令喔！'; renderCard('fail',m); log('❌ '+m,'err'); return true; }
+    return false;
+  };
+
+  function renderCard(status, resMsg){
+    const M = window.MISSION; if(!M){ mcard.className='mcard'; mcard.innerHTML=''; return; }
+    const d = M.def;
+    let cls = 'mcard show' + (status==='win'?' win':status==='fail'?' fail':'');
+    let res = '';
+    if(status==='win') res = `<div class="res">${resMsg}　🎉 過關！可挑戰下一關</div>`;
+    else if(status==='fail') res = `<div class="res">${resMsg}<br>改一改，再按 ▶ 執行！</div>`;
+    else if(status==='running') res = `<div class="res">🏃 執行中…看 OTTO 表現！</div>`;
+    mcard.className = cls;
+    mcard.innerHTML = `<span class="mx" onclick="missionExit()">✕ 離開任務</span>`+
+      `<h3>${d.name}</h3><div class="goal">${d.goal}</div>`+
+      `<div class="tip">💡 ${d.tip}</div>${res}`;
+  }
+  window.renderMissionCard = renderCard;
+
+  window.missionSelect = function(id){
+    const def = MISSIONS[id]; if(!def) return;
+    window.MISSION = { def, target:def.target||null, fixedObstacle:def.fixedObstacle||null, state:S() };
+    codeEl.value = (H + def.starter).trim() + '\n';
+    missionSetupWorld();
+    renderCard('ready');
+    log('🎯 任務開始：'+def.name+'　→ 改程式，按 ▶ 執行挑戰！','sys');
+  };
+
+  window.missionExit = function(){
+    window.MISSION = null; targetRing.visible=false;
+    mcard.className='mcard'; mcard.innerHTML='';
+    obstacle.visible=true; if(window.placeObstacle) placeObstacle(); if(window.readDistance) readDistance();
+  };
+
+  const msel = document.getElementById('missions');
+  if(msel) msel.addEventListener('change', e=>{ const v=e.target.value; e.target.selectedIndex=0; if(v) missionSelect(v); });
+})();
 
 /* 分隔線拖曳：左右調面板寬、上下調紀錄區高 */
 (function splitters(){
