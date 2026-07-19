@@ -100,7 +100,104 @@ void loop() {
       <li>把最終四個數字抄在筆記／貼紙貼機器人底部（例：0, -3, 5, 2）</li>
       <li>已 saveTrimsOnEEPROM → 之後上傳任何程式（含一鍵上傳）都自動套用</li>
     </ul>
-    <div class="info-box">📚 延伸：原廠也提供三支校正工具（Otto_Calibration 系列，在課程資料夾 參考資料/OTTO機器人/原廠資料/Code/），有興趣可以研究——原理跟我們做的一樣。</div>
+    <div class="info-box">📚 覺得「猜數字 → 上傳 → 再猜」有點慢？<b>下面幾頁</b>教你更直覺的<b>鍵盤即時校正</b>（按一下鍵，馬達馬上動、馬上存），還有真機最容易踩到的兩個雷怎麼救。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>更快的方法：鍵盤即時校正</h2><div class="k">按一下鍵，馬達馬上動、馬上存</div></div>
+  <div class="body">
+    <p>不用一直改數字、重新上傳。這支程式讓你打開<b>序列埠監控視窗</b>，用鍵盤一格一格微調 4 顆馬達，<b>每按一下就即時存進 EEPROM</b>，邊按邊看 OTTO 站姿變化。</p>
+    <div class="term">
+      <button class="copy" onclick="cp(this)">複製</button>
+      <pre><span class="cm">// otto_calibration.ino —— 鍵盤即時校正</span>
+#include &lt;Otto9.h&gt;
+#include &lt;EEPROM.h&gt;
+Otto9 Otto;
+int YL=0, YR=0, RL=0, RR=0;   <span class="cm">// 左腿 右腿 左腳 右腳 的微調值</span>
+
+void setup() {
+  Otto.init(2, 3, 4, 5, true, A6, 13, 8, 9);
+  Serial.begin(115200);
+  YL=EEPROM.read(0); if(YL&gt;128) YL-=256;   <span class="cm">// 讀回上次存的值</span>
+  YR=EEPROM.read(1); if(YR&gt;128) YR-=256;
+  RL=EEPROM.read(2); if(RL&gt;128) RL-=256;
+  RR=EEPROM.read(3); if(RR&gt;128) RR-=256;
+  Otto.setTrims(YL, YR, RL, RR);
+  Otto.home();
+  Serial.println("a/z=左腿  s/x=左腳  k/m=右腿  j/n=右腳  f=試走  h=立正");
+}
+
+void loop() {
+  if (Serial.available() &gt; 0) {
+    char c = Serial.read();
+    if      (c=='a') YL++;  else if (c=='z') YL--;
+    else if (c=='s') RL++;  else if (c=='x') RL--;
+    else if (c=='k') YR++;  else if (c=='m') YR--;
+    else if (c=='j') RR++;  else if (c=='n') RR--;
+    else if (c=='f') { Otto.walk(1,1000,1); return; }   <span class="cm">// 試走一步</span>
+    else if (c=='h') { Otto.home(); return; }            <span class="cm">// 回立正</span>
+    else return;
+    Otto.setTrims(YL, YR, RL, RR);
+    Otto.saveTrimsOnEEPROM();   <span class="cm">// 立刻存進永久記憶</span>
+    Otto.home();                <span class="cm">// 用新值立正，馬上看效果</span>
+  }
+}</pre></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>鍵盤校正怎麼操作</h2><div class="k">打開序列埠監控視窗，開始微調</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>把上面程式上傳到 OTTO（開發板設定跟 CH15 一樣：Nano ＋ Old Bootloader）</li>
+      <li>上傳完，點 Arduino 右上角 <b>🔍 序列埠監控視窗</b>，右下角鮑率選 <b>115200</b></li>
+      <li>對照下表打字（打完按 Enter 送出），OTTO 會即時調整：</li>
+    </ul>
+    <table class="tbl">
+      <tr><th>部位</th><th>往一邊調</th><th>往另一邊調</th></tr>
+      <tr><td>左腿</td><td><b>a</b></td><td><b>z</b></td></tr>
+      <tr><td>左腳掌</td><td><b>s</b></td><td><b>x</b></td></tr>
+      <tr><td>右腿</td><td><b>k</b></td><td><b>m</b></td></tr>
+      <tr><td>右腳掌</td><td><b>j</b></td><td><b>n</b></td></tr>
+      <tr><td colspan="3"><b>f</b> = 試走一步看正不正　｜　<b>h</b> = 回立正姿勢</td></tr>
+    </table>
+    <div class="ok-box">✅ 調到站直、腳掌貼地就完成，數值已自動存進機器人，不用另外按存檔。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>⚠️ 除錯 1：一通電就「答答答」還發燙</h2><div class="k">馬達卡住了——先歸零、再裝腳</div></div>
+  <div class="body">
+    <div class="warn-box">🔥 保命第一步：如果馬達<b>一直答答答響不停</b>、又<b>摸起來發燙</b> → <b>馬上拔電</b>！馬達卡住還硬撐，幾分鐘就會燒掉。</div>
+    <p><b>為什麼會這樣？</b>馬達被程式命令回 90°，但這隻腳是<b>趁馬達不在 90° 時鎖上</b>的，它想回中間卻被卡在牆上到不了 → 硬頂 → 又響又燙。（新組裝第一次通電最常見）</p>
+    <p><b>正確順序「先歸零、再裝腳」——像時鐘先轉到 12 點，再把指針裝正：</b></p>
+    <ul class="sl">
+      <li>拔電後摸摸看<b>哪顆馬達熱</b>、看<b>哪隻腳最歪</b></li>
+      <li><b>鬆開</b>那隻腳固定在馬達臂上的<b>螺絲</b>（讓腳能自由轉）</li>
+      <li>插電，讓校正程式把馬達歸到 90°（鬆開後沒負載，答答答會停）</li>
+      <li>趁馬達停在 90°，把腳<b>擺正</b>、再<b>鎖回螺絲</b></li>
+      <li>其他歪的腳重複做，最後用上一頁的鍵盤微調收尾</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>⚠️ 除錯 2：校正常見錯誤急救包</h2><div class="k">上傳／編譯卡關看這裡</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>編譯錯誤 <code>Otto9.h: No such file</code>？</b></p>
+      <p class="note">Arduino 找不到函式庫。①確認 Libraries_V9 裡的資料夾（Otto9、Oscillator…）有放進 <b>文件\Arduino\libraries</b>。②裝好後要<b>完全關閉 Arduino 再重開</b>（它只在啟動時掃描）。③進階：<b>檔案 → 偏好設定</b>，確認「Sketchbook 位置」指向的就是放函式庫那個資料夾（有人的「文件」被導到別的磁碟，Arduino 會找錯地方）。</p>
+      <p><b>序列埠灰灰的不能選？</b></p>
+      <p class="note">驅動沒裝（回 CH02）／線是純充電線／換一個 USB 孔。</p>
+    </div>
+    <div>
+      <p><b>上傳後馬達沒力、OTTO 一直重開？</b></p>
+      <p class="note">供電不足！光靠電腦 USB 帶不動 4 顆馬達，<b>接上電池盒</b>再校正就穩了。</p>
+      <p><b>紅字 <code>avrdude: stk500_getsync()</code>？</b></p>
+      <p class="note">處理器把 Old Bootloader ↔ 非 Old 對調再試、序列埠選對、換條線。</p>
+      <p class="note">🔁 看不懂的錯誤，老招：整段複製貼給 AI 問。</p>
+    </div>
   </div>
 </section>
 
