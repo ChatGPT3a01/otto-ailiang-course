@@ -302,7 +302,7 @@ function buildLeg(hip, ank, side){            // side: -1 左 / +1 右
 }
 buildLeg(hipL, ankL, -1);
 buildLeg(hipR, ankR, +1);
-otto.position.y = 4.0;   // 讓腳掌貼地（hip 3.2 + ankle 2.6 + 腳 ≈ 底部）
+otto.position.y = 0.5;   // 站立基準：讓腳底貼齊地板（地板在 y=0，腳底約 y=0.05）
 
 /* 障礙物（超音波用） */
 const obstacle = new THREE.Group();
@@ -421,9 +421,9 @@ const Moves = {
           if(stopFlag) return res();
           const t = (now-t0)/(T*0.5);
           bodyG.position.y = Math.max(0, Math.sin(Math.min(t,1)*Math.PI)) * 2.2;
-          otto.position.y = 4.0 + Math.max(0, Math.sin(Math.min(t,1)*Math.PI)) * 1.4;
+          otto.position.y = 0.5 + Math.max(0, Math.sin(Math.min(t,1)*Math.PI)) * 1.4;
           servo.LF = servo.RF = 0; applyServos();
-          if(t<1) requestAnimationFrame(f); else { otto.position.y = 4.0; bodyG.position.y=0; res(); }
+          if(t<1) requestAnimationFrame(f); else { otto.position.y = 0.5; bodyG.position.y=0; res(); }
         })(t0);
       });
     }
@@ -867,7 +867,7 @@ document.getElementById('btnStop').addEventListener('click', () => { stopFlag = 
 document.getElementById('btnReset').addEventListener('click', () => {
   stopFlag = true;
   setTimeout(() => {
-    otto.position.set(0, 4.0, 0); heading = 0; otto.rotation.y = 0;
+    otto.position.set(0, 0.5, 0); heading = 0; otto.rotation.y = 0;
     setHome(); camTarget.set(0, 6, 0); camTheta = 0.5; camPhi = 1.15; camR = 34;
     updateCamera(); placeObstacle(); readDistance();
     if(window.MISSION){ window.MISSION.state = freshState(); missionSetupWorld(); renderMissionCard('ready'); }
@@ -1348,7 +1348,7 @@ void loop(){
   window.missionSetupWorld = function(){
     const M = window.MISSION; if(!M) return;
     stopFlag = true;
-    otto.position.set(0,4.0,0); heading=0; otto.rotation.y=0; if(window.setHome) setHome();
+    otto.position.set(0,0.5,0); heading=0; otto.rotation.y=0; if(window.setHome) setHome();
     if(window.camTarget) camTarget.set(0,6,0);
     placeWorld();
     if(window.updateCamera) updateCamera(); if(window.readDistance) readDistance();
@@ -1356,7 +1356,7 @@ void loop(){
 
   window.missionRunReset = function(rawSrc){
     const M = window.MISSION; if(!M) return;
-    otto.position.set(0,4.0,0); heading=0; otto.rotation.y=0; if(window.setHome) setHome();
+    otto.position.set(0,0.5,0); heading=0; otto.rotation.y=0; if(window.setHome) setHome();
     M.state = S(); M.state.forUsed = /\bfor\s*\(/.test(rawSrc||'');
     placeWorld();
     if(window.updateCamera) updateCamera();
