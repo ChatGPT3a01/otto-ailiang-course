@@ -1019,6 +1019,174 @@ void obstacleDetector() {
 }
 `,
 };
+
+/* 🏭 原廠範例（原廠 V9 範例中，模擬器直譯器跑得動的動作版） */
+const FACTORY_EX = {
+allmoves: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+  Otto.sing(S_connection);
+}
+void loop(){
+  // 原廠 allmoves：把 OTTO 所有基本動作跑過一遍
+  Otto.walk(2, 1000, 1);   Otto.walk(2, 1000, -1);
+  Otto.turn(2, 1000, 1);   Otto.turn(2, 1000, -1);
+  Otto.updown(2, 1000, 20);
+  Otto.swing(2, 1000, 20);
+  Otto.moonwalker(2, 1000, 22, 1);
+  Otto.crusaito(2, 1000, 22, 1);
+  Otto.flapping(2, 1000, 20, 1);
+  Otto.tiptoeSwing(2, 1000, 20);
+  Otto.jitter(2, 1000, 12);
+  Otto.shakeLeg(1, 1000, 1);
+  Otto.jump(1, 800);
+  Otto.home();
+  delay(1000);
+}
+`,
+happydance: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+  Otto.sing(S_superHappy);
+}
+void loop(){
+  // 原廠 Happydance：一段歡樂的舞
+  for(int i = 0; i < 2; i++){
+    Otto.crusaito(2, 800, 20, 1);
+    Otto.crusaito(2, 800, 20, -1);
+  }
+  Otto.flapping(3, 700, 20, 1);
+  Otto.moonwalker(3, 900, 25, 1);
+  Otto.moonwalker(3, 900, 25, -1);
+  Otto.jump(1, 800);
+  Otto.playGesture(OttoVictory);
+  delay(1200);
+}
+`,
+run: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 原廠 run：全速快走（速度數字越小＝走越快）
+  Otto.walk(6, 550, 1);    // 快速前進
+  Otto.walk(6, 550, -1);   // 快速後退
+  Otto.sing(S_cuddly);
+  delay(600);
+}
+`,
+follow: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+  Otto.sing(S_connection);
+}
+void loop(){
+  // 原廠 follow：跟著前方物體（拉右上滑桿移動障礙物試試）
+  float d = Otto.getDistance();
+  if (d > 20) {
+    Otto.walk(1, 900, 1);         // 還遠，跟上去
+  } else if (d < 10) {
+    Otto.walk(1, 900, -1);        // 太近，退一點
+  } else {
+    Otto.playGesture(OttoHappy);  // 剛剛好，開心搖擺
+  }
+}
+`,
+};
+
+/* ✨ 創意範例（老師示範「把基本指令組成有個性的行為」） */
+const CREATIVE_EX = {
+scaredy: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 😱 膽小鬼：東西一靠近就嚇得跳起來逃跑！（拉滑桿靠近它）
+  float d = Otto.getDistance();
+  if (d < 18) {
+    Otto.sing(S_surprise);
+    Otto.jump(1, 600);
+    Otto.walk(3, 700, -1);    // 快速逃跑
+    Otto.turn(4, 800, 1);
+  } else {
+    Otto.updown(1, 1200, 10); // 沒事就原地緊張發抖
+  }
+}
+`,
+greeter: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 👋 迎賓機器人：有人靠近就熱情打招呼
+  float d = Otto.getDistance();
+  if (d < 25) {
+    Otto.playGesture(OttoWave);
+    Otto.sing(S_happy);
+    Otto.playGesture(OttoHappy);
+  } else {
+    Otto.home();              // 沒人時安靜待命
+    delay(300);
+  }
+}
+`,
+patrol: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 🚓 巡邏兵：繞著走、邊走邊警戒
+  for(int i = 0; i < 4; i++){
+    Otto.walk(3, 900, 1);
+    Otto.turn(3, 900, 1);
+    Otto.sing(S_OhOoh);       // 巡邏警戒音
+  }
+  Otto.playGesture(OttoConfused);
+  delay(800);
+}
+`,
+gymnast: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 🤸 體操選手：連續跳躍與彎腰翻身
+  Otto.jump(1, 700);
+  Otto.bend(1, 900, 1);
+  Otto.bend(1, 900, -1);
+  Otto.updown(3, 800, 25);
+  Otto.jump(1, 700);
+  Otto.playGesture(OttoVictory);
+  delay(1000);
+}
+`,
+nap: HEADER + `
+void setup(){
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+void loop(){
+  // 😴 打瞌睡：慢慢呼吸，被靠近就驚醒
+  Otto.playGesture(OttoSleeping);
+  Otto.updown(2, 1400, 8);    // 緩慢呼吸般的起伏
+  float d = Otto.getDistance();
+  if (d < 12) {
+    Otto.sing(S_surprise);    // 有人靠近，驚醒！
+    Otto.jump(1, 600);
+  }
+  delay(500);
+}
+`,
+};
+
 /* 下拉選單：展示範例 ＋ 課程各章標準程式（otto-examples.js 由編譯管線自動產生） */
 (function buildExampleMenu(){
   const sel = document.getElementById('examples');
@@ -1030,6 +1198,14 @@ void obstacleDetector() {
     factory:'06 · 原廠避障範例（自訂函式版）'};
   for(const k in demoNames){ const o = document.createElement('option'); o.value = k; o.textContent = demoNames[k]; g1.appendChild(o); }
   sel.appendChild(g1);
+  const g3 = document.createElement('optgroup'); g3.label = '🏭 原廠範例';
+  const facNames = {allmoves:'全部動作大集合（allmoves）', happydance:'開心舞（Happydance）', run:'全速快走（run）', follow:'跟隨物體（follow）'};
+  for(const k in facNames){ const o = document.createElement('option'); o.value = 'f:'+k; o.textContent = facNames[k]; g3.appendChild(o); }
+  sel.appendChild(g3);
+  const g4 = document.createElement('optgroup'); g4.label = '✨ 創意範例';
+  const crNames = {scaredy:'😱 膽小鬼（靠近就逃）', greeter:'👋 迎賓機器人', patrol:'🚓 巡邏兵', gymnast:'🤸 體操選手', nap:'😴 打瞌睡'};
+  for(const k in crNames){ const o = document.createElement('option'); o.value = 'c:'+k; o.textContent = crNames[k]; g4.appendChild(o); }
+  sel.appendChild(g4);
   const chEx = window.OTTO_CH_EXAMPLES || {};
   if(Object.keys(chEx).length){
     const g2 = document.createElement('optgroup'); g2.label = '📚 課程章節標準程式';
@@ -1046,6 +1222,10 @@ document.getElementById('examples').addEventListener('change', e => {
   if(v.startsWith('ch:')){
     const ex = (window.OTTO_CH_EXAMPLES || {})[v.slice(3)];
     if(ex) document.getElementById('code').value = ex.code.trim() + '\n';
+  } else if(v.startsWith('f:')){
+    document.getElementById('code').value = FACTORY_EX[v.slice(2)].trim() + '\n';
+  } else if(v.startsWith('c:')){
+    document.getElementById('code').value = CREATIVE_EX[v.slice(2)].trim() + '\n';
   } else {
     document.getElementById('code').value = Examples[v].trim() + '\n';
   }
