@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH02 · 工具準備</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第一篇 · Part 0 · 課前準備</div>
+  <h1>CH02 · <span class="g">工具準備</span></h1>
+  <h2>AI 助手 ＋ 3D 模擬器，兩樣就能開課</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做什麼</h2><div class="k">把工具箱裝滿</div></div>
+  <div class="body">
+    <p>好消息：這堂課前 15 章<b>只需要兩樣工具</b>，而且都不用花錢——一個 AI 助手（幫你寫程式）＋ 3D 模擬器（跑程式）。Arduino IDE 留到 CH15 上真機時才裝。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>AI 助手開好帳號、模擬器加入書籤、（自我挑戰）第一次成功叫 AI 寫東西。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>工具一：AI 助手</h2><div class="k">你的程式代寫夥伴</div></div>
+  <div class="body">
+    <p>以下擇一即可（都有免費額度，帳號用學校 Google 帳號最方便）：</p>
+    <table class="tbl">
+      <tr><th>AI 助手</th><th>網址</th><th>備註</th></tr>
+      <tr><td>Google Gemini</td><td><code>gemini.google.com</code></td><td>Google 帳號直接登入，推薦</td></tr>
+      <tr><td>ChatGPT</td><td><code>chatgpt.com</code></td><td>免費版就夠用</td></tr>
+      <tr><td>Claude</td><td><code>claude.ai</code></td><td>寫程式很強</td></tr>
+    </table>
+    <div class="info-box">💡 課程的提示詞在任何一家都能用。選一家用熟就好，不用全部都辦。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>工具二：3D 模擬器</h2><div class="k">老師發的資料夾裡就有，免安裝</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>打開老師發的課程資料夾，找到 <span class="filechip">模擬器/index.html</span></li>
+      <li>對它<b>點兩下</b>——瀏覽器打開就能用（建議 Chrome / Edge）</li>
+      <li>把網址<b>加入書籤</b>（Ctrl+D），之後每章都要用</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="../模擬器/index.html" target="_blank" rel="noopener">🤖 現在就打開模擬器試試</a>
+      <div class="gen-launch-hint">按「▶ 執行」看內建範例跑一次；按「⏹ 停止」「⟲ 歸位」試試每顆按鈕。</div></div>
+    <div class="ok-box">✅ 免網路、免安裝、免帳號——這個模擬器是單一檔案，隨身碟帶著走都能跑。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>模擬器介面導覽</h2><div class="k">五個區域，一分鐘看懂</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>區域</th><th>做什麼</th></tr>
+      <tr><td>左：程式面板</td><td>貼上（或載入範例）Arduino 程式</td></tr>
+      <tr><td>左上：▶ 執行 / ⏹ 停止 / ⟲ 歸位</td><td>跑程式、停下來、回到原點</td></tr>
+      <tr><td>左下：執行紀錄</td><td>每一行指令的中文說明——除錯的好朋友</td></tr>
+      <tr><td>右：3D 舞台</td><td>拖曳旋轉、滾輪縮放，看 OTTO 表演</td></tr>
+      <tr><td>右上：距離滑桿 / 聲音開關</td><td>移動障礙物（CH12 用）、開關蜂鳴器</td></tr>
+    </table>
+    <div class="info-box">🔁 右下角還會顯示「loop() 第 N 圈」——它會陪我們到 CH11 揭曉全部秘密。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>暖身：第一次指揮 AI</h2><div class="k">還不寫程式，先練「開口」</div></div>
+  <div class="body">
+    <p>打開你的 AI 助手，把下面這段<b>提示詞</b>複製貼上送出：</p>
+    <div class="prompt"><div class="lbl">💬 對 AI 這樣說</div><button class="copy" onclick="cp(this)">複製</button>
+      <pre>我是完全沒學過程式的高中生，這學期要用 Arduino 讓 OTTO 機器人動起來。
+請用 3 句話、比喻的方式告訴我：程式的 setup() 和 loop() 是什麼？</pre></div>
+    <p>看看 AI 怎麼回答。<b>覺得聽不懂？</b>再送出：「請講得更簡單，用小學生聽得懂的比喻。」——恭喜，你已經在做 <b>Loop 工程</b>了：不滿意 → 回饋 → 更好的答案。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>工具三：CH340 驅動</h2><div class="k">讓電腦「認得」OTTO 的傳輸線——現在就裝好</div></div>
+  <div class="body">
+    <p>這門課有「<b>🔌 一鍵上傳</b>」功能：接上傳輸線，瀏覽器按一顆按鈕就能把標準程式燒進真的 OTTO。要用它，電腦必須先裝 <b>CH340 驅動</b>（只裝一次，永久有效）。接下來四個步驟一次裝好。</p>
+    <div class="info-box">🧐 CH340 是 OTTO 傳輸線裡的晶片名字。沒裝驅動，電腦插了線也「看不見」機器人。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 4</span><h2>找到驅動安裝檔</h2><div class="k">就在課程資料夾裡</div></div>
+  <ul class="sl body">
+    <li>打開老師發的課程資料夾</li>
+    <li>進入 <span class="filechip">工具下載 → CH341SER</span></li>
+    <li>找到 <span class="filechip">SETUP.EXE</span>（圖示是一個小電腦）</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 4</span><h2>執行安裝</h2><div class="k">兩個按鈕就結束</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>對 <b>SETUP.EXE 點兩下</b></li>
+      <li>如果跳出「是否允許變更裝置」的視窗 → 按「<b>是</b>」</li>
+      <li>安裝視窗出現後，按大大的「<b>INSTALL</b>」按鈕</li>
+      <li>等幾秒，看到「<b>驅動安裝成功</b>」→ 按「確定」關閉</li>
+    </ul>
+    <div class="ok-box">✅ 預期：訊息寫「安裝成功」。就這樣，裝完了！</div>
+    <p class="note">❓ 寫「安裝失敗」？先把 OTTO 的線拔掉再裝一次；還是不行就舉手找老師。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 4</span><h2>驗證：電腦看得見 OTTO 嗎</h2><div class="k">有機器人的同學做，沒有的先跳過</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>用 USB 傳輸線接「電腦 ⇄ OTTO 頭後面的小孔」</li>
+      <li>在<b>開始按鈕上按右鍵</b> → 選「<b>裝置管理員</b>」</li>
+      <li>找到「<b>連接埠 (COM 和 LPT)</b>」點開</li>
+    </ul>
+    <div class="ok-box">✅ 預期：看到 <b>USB-SERIAL CH340 (COM3)</b> 之類的一行（COM 後面的數字每台不同，都可以）。這代表電腦認得 OTTO 了！</div>
+    <p class="note">❓ 沒看到？①換一條線（有些線只能充電不能傳資料）②換一個 USB 孔 ③重做步驟 2。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 4 / 4</span><h2>瀏覽器需求檢查</h2><div class="k">一鍵上傳對瀏覽器有一個要求</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>確認你用的是<b>電腦版 Chrome 或 Edge</b>（課程建議本來就是這兩個 ✓）</li>
+      <li>不用裝任何外掛、不用改任何設定——支援是內建的</li>
+      <li>之後上傳時瀏覽器會跳出「<b>選擇連接埠</b>」小視窗：選 CH340 那一行 → 按「連線」，就這麼簡單</li>
+    </ul>
+    <div class="warn-box">⚠️ 不支援的：手機、平板、Firefox、Safari。學校電腦如果被鎖 Chrome，用 Edge 一樣可以。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>（預告）Arduino IDE：CH15 才需要</h2><div class="k">現在不用裝，知道有它就好</div></div>
+  <div class="body">
+    <p>上傳程式有<b>雙軌</b>：</p>
+    <table class="tbl">
+      <tr><th>方式</th><th>用途</th><th>什麼時候</th></tr>
+      <tr><td>🔌 一鍵上傳（瀏覽器）</td><td>各章的<b>標準程式</b>，一顆按鈕搞定</td><td>驅動裝好就能用</td></tr>
+      <tr><td>🛠️ Arduino IDE</td><td><b>你自己改造的</b>客製程式</td><td>CH15 一步一步教</td></tr>
+    </table>
+    <div class="warn-box">⚠️ Arduino IDE 現在先不要自己亂裝——版本裝錯反而麻煩，CH15 有完整圖解（安裝檔也在課程資料夾裡）。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">工具箱檢查</div></div>
+  <ul class="goals body">
+    <li>我有一個能用的 AI 助手帳號，也會貼提示詞、送出、追問。</li>
+    <li>我能打開 3D 模擬器，執行過內建範例，也會停止和歸位。</li>
+    <li>我裝好 CH340 驅動（裝置管理員能看到 USB-SERIAL CH340）。</li>
+    <li>我知道上傳雙軌：標準程式用「一鍵上傳」、客製程式 CH15 學 Arduino IDE。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：完整的工具箱</div><p>下一章 CH03，正式學 Vibe Coding 心法——怎麼把話說清楚，讓 AI 一次到位。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH02 完成！<span class="g">工具就緒</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH03.html">→ 下一章 CH03</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH02 · 工具準備',part:'#4A90D9',next:'CH03.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

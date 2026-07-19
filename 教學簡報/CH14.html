@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH14 · 互動行為設計</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第四篇 · Part 3 · 感測與判斷</div>
+  <h1>CH14 · <span class="g">互動行為設計</span></h1>
+  <h2>全域變數、bool、自訂函式——像原廠工程師一樣寫</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">「會想」篇的畢業之作</div></div>
+  <div class="body">
+    <p>這章重寫避障程式——功能跟 CH13 差不多，但用<b>原廠 Otto_avoid_V9 的專業寫法</b>：全域變數記狀態、bool 當開關、自訂函式分工。寫完你會發現：程式變好讀、好改、好擴充。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>一支「原廠等級」的智慧避障：驚訝跳起、慢慢後退、分段轉彎——而且你看得懂原廠的每一行。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>三個新武器</h2><div class="k">寫大程式的整理術</div></div>
+  <div class="cg c3 body">
+    <div class="cc"><div class="ico">📦</div><h3>全域變數</h3><p>宣告在<b>最上面</b>（函式外），整支程式都能用。適合「大家都要看的資料」，例如距離。</p></div>
+    <div class="cc"><div class="ico">🔘</div><h3>bool 開關</h3><p>只有 <code>true</code>/<code>false</code> 兩種值。「有沒有障礙物」這種是非題就用它。</p></div>
+    <div class="cc"><div class="ico">🧰</div><h3>自訂函式</h3><p>把一件事包起來、取個名字，例如 <code>obstacleDetector()</code>。loop 保持乾淨，隨叫隨用。</p></div>
+  </div>
+  <div class="body"><div class="info-box">🏭 分工思維：loop() 當「指揮官」只看開關做決策；obstacleDetector() 當「偵察兵」專職量距離更新開關。各司其職＝專業程式。</div></div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：本章生成器有 4 個目標</h2><div class="k">程式分四段疊：全域 → setup → loop → 自訂函式</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_smart.ino）</li>
+    <li><b>疊目標 1</b>：開頭＋<b>全域變數</b>（新東西在這！）</li>
+    <li><b>疊目標 2、3</b>：setup() 與指揮官 loop()（每段都先貼參考程式）</li>
+    <li><b>疊目標 4</b>：偵察兵 obstacleDetector()</li>
+    <li><b>複製完整程式 → 模擬器執行</b></li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1-4 / 5</span><h2>生成 otto_smart.ino</h2><div class="k">目標變 4 個，節奏一樣</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>開生成器 → 目標 1（注意看：開頭多了 <code>int distance;</code> 和 <code>bool obstacleDetected</code>）</li>
+      <li>目標 2 setup → 目標 3 loop → 目標 4 自訂函式（每段都：複製 → 貼參考程式 → 送出 → 採用）</li>
+      <li>「📋 複製完整程式」＋下載</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch14" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行</h2><div class="k">觀察「呼叫自訂函式」</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>滑桿設 35 → 貼上程式 → ▶ 執行 → 俯視</li>
+      <li>執行紀錄注意這行：「<b>📞 呼叫自訂函式 obstacleDetector()</b>」——每走一步就呼叫一次偵察兵</li>
+      <li>等它走近牆：驚訝 → <b>跳起來</b> → 安撫音 → 慢慢退 3 步 → 分段左轉 3 次</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：跟 CH13 一樣會避障，但閃避動作更有戲（跳起來！），而且程式結構是原廠等級。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>逐段看懂：指揮官與偵察兵</h2><div class="k">分工後的程式多乾淨</div></div>
+  <div class="term body">
+    <button class="copy" onclick="cp(this)">複製</button>
+    <pre><span class="cm">// 指揮官：只看開關決定劇本</span>
+void loop() {
+  if (obstacleDetected) { <span class="cm">/* 閃避劇本 */</span> }
+  else {
+    Otto.walk(1, 1000, 1);
+    obstacleDetector();      <span class="cm">// 叫偵察兵去看</span>
+  }
+}
+
+<span class="cm">// 偵察兵：專職量距離、更新開關</span>
+void obstacleDetector() {
+  distance = Otto.getDistance();
+  if (distance &lt; 15) { obstacleDetected = true; }
+  else { obstacleDetected = false; }
+}</pre>
+  </div>
+  <p class="body">現在打開原廠的 Otto_avoid_V9（模擬器展示範例 06）——<b>你每一行都看得懂了</b>。恭喜，你已經跟上原廠工程師的思路。</p>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">用「分工」擴充行為</div></div>
+  <div class="body">
+    <ul style="padding-left:24px">
+      <li>⭐ 閃避劇本裡的 jump 改成 OttoConfused 手勢</li>
+      <li>⭐⭐ 加第二個自訂函式 <code>celebrate()</code>（唱歌＋勝利手勢），閃避成功後呼叫它</li>
+      <li>⭐⭐⭐ 「跟隨模式」：把邏輯反過來——<b>距離 20~40 才前進</b>（跟著前面的手掌走）、太近就退、太遠就停在原地張望。跟 AI 討論條件怎麼寫（原廠也有一支 Otto_follow_V9！）</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「請幫我加一個自訂函式 ______()，內容是 ______，並在 ______ 的時候呼叫它。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">otto_smart.ino</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>一鍵上傳頁選 <b>otto_smart.ino</b> → 連接上傳 → 拔線開機 → 地板實測</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">會想篇畢業考</div></div>
+  <ul class="goals body">
+    <li>我說得出三個武器的用途：全域變數、bool、自訂函式。</li>
+    <li>我的 otto_smart.ino 執行成功，看到「📞 呼叫自訂函式」。</li>
+    <li>我打開原廠避障範例，每一行都看得懂。</li>
+    <li>我完成至少一個迭代任務（跟隨模式加分）。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：原廠等級的程式功力</div><p>模擬器的修煉到此圓滿！下一篇進入真機——CH15 學 Arduino IDE，把「你自己改造的程式」也送進真的 OTTO。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH14 完成！<span class="g">會想篇畢業</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH15.html">→ 下一章 CH15</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH14 · 互動行為設計',part:'#8E44AD',next:'CH15.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

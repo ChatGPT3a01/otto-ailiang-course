@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTTO AI 機器人 · 3D 模擬器</title>
+<style>
+:root{
+  --bg1:#0f0c29; --bg2:#302b63; --bg3:#24243e;
+  --gold:#F5A623; --gold2:#f7d98a; --text:#f3eefb; --muted:#b9a9d6;
+  --card:rgba(255,255,255,.06); --line:rgba(255,255,255,.14);
+  --green:#27AE60; --red:#E74C3C; --blue:#4A90D9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Noto Sans TC',system-ui,'Microsoft JhengHei',sans-serif;color:var(--text);
+  background:linear-gradient(160deg,var(--bg1),var(--bg2) 55%,var(--bg3));overflow:hidden}
+header{display:flex;align-items:center;gap:14px;padding:10px 18px;border-bottom:1px solid var(--line)}
+header .logo{font-size:26px}
+header h1{font-size:19px;font-weight:900}
+header h1 .g{color:var(--gold)}
+header .sub{font-size:12.5px;color:var(--muted)}
+header .right{margin-left:auto;font-size:12.5px;color:var(--muted)}
+.main{display:flex;height:calc(100% - 55px)}
+/* ---------- 左側程式面板 ---------- */
+.panel{width:460px;min-width:380px;display:flex;flex-direction:column;border-right:1px solid var(--line);background:rgba(0,0,0,.22)}
+.toolbar{display:flex;gap:8px;align-items:center;padding:10px 12px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.btn{border:none;border-radius:10px;padding:9px 18px;font-size:15px;font-weight:900;cursor:pointer;
+  font-family:inherit;transition:transform .12s, box-shadow .12s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(1px) scale(.96);box-shadow:0 0 0 3px rgba(245,166,35,.35)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.run.running{background:linear-gradient(135deg,#27AE60,#2ECC71);color:#fff;animation:runpulse 1s ease-in-out infinite}
+@keyframes runpulse{50%{filter:brightness(1.25)}}
+.btn.run{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#2a1a4a}
+.btn.stop{background:var(--red);color:#fff}
+.btn.reset{background:rgba(255,255,255,.12);color:var(--text);border:1px solid var(--line)}
+select{background:#241f45;color:var(--text);border:1px solid var(--line);border-radius:8px;
+  padding:8px 10px;font-size:13.5px;font-family:inherit}
+.codewrap{flex:1;position:relative;display:flex;flex-direction:column;min-height:0}
+.codehead{display:flex;align-items:center;padding:7px 14px;font-size:12.5px;color:var(--muted);
+  border-bottom:1px solid var(--line)}
+.codehead b{color:var(--gold2);font-family:'Fira Code',Consolas,monospace}
+#code{flex:1;width:100%;resize:none;border:none;outline:none;background:transparent;color:#e8e3ff;
+  font-family:'Fira Code',Consolas,'Courier New',monospace;font-size:13.5px;line-height:1.65;
+  padding:12px 14px;white-space:pre;tab-size:2}
+#code::selection{background:rgba(245,166,35,.35)}
+.splitv{width:8px;cursor:col-resize;background:rgba(255,255,255,.05);flex-shrink:0;
+  border-left:1px solid var(--line);border-right:1px solid var(--line);transition:background .15s}
+.splitv:hover,.splitv.on{background:var(--gold)}
+.csplit{height:8px;cursor:row-resize;background:rgba(255,255,255,.05);flex-shrink:0;
+  border-top:1px solid var(--line);transition:background .15s}
+.csplit:hover,.csplit.on{background:var(--gold)}
+.console{height:170px;min-height:70px;display:flex;flex-direction:column}
+.console .chead{display:flex;align-items:center;gap:10px;padding:6px 14px;font-size:12.5px;color:var(--muted)}
+.console .chead .loopn{margin-left:auto;background:rgba(39,174,96,.18);border:1px solid var(--green);
+  color:#9be8bb;border-radius:12px;padding:2px 12px;font-weight:700;display:none}
+#log{flex:1;overflow-y:auto;padding:4px 14px 10px;font-size:13px;line-height:1.75;
+  font-family:'Fira Code',Consolas,monospace}
+#log .ok{color:#cfeadb}
+#log .sys{color:var(--muted)}
+#log .err{color:#ff9d9d;font-weight:700}
+#log .note{color:var(--gold2)}
+/* ---------- 右側 3D ---------- */
+.stage{flex:1;position:relative;min-width:0}
+#c3d{width:100%;height:100%;display:block;cursor:grab}
+#c3d:active{cursor:grabbing}
+.hint{position:absolute;top:12px;left:14px;font-size:12.5px;color:var(--muted);
+  background:rgba(15,12,41,.55);border:1px solid var(--line);border-radius:10px;padding:6px 12px;pointer-events:none}
+.hud{position:absolute;right:14px;top:12px;width:230px;display:flex;flex-direction:column;gap:10px}
+.hcard{background:rgba(15,12,41,.72);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.hcard h4{font-size:13.5px;color:var(--gold2);margin-bottom:6px}
+.hcard .val{font-size:22px;font-weight:900}
+.hcard .val small{font-size:12px;color:var(--muted);font-weight:400}
+.hcard input[type=range]{width:100%;accent-color:var(--gold)}
+.hcard label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px;margin-top:4px}
+.statusbar{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;
+  background:rgba(15,12,41,.78);border:1px solid var(--gold);border-radius:24px;
+  padding:9px 26px;font-size:15px;font-weight:700;display:none;white-space:nowrap}
+.statusbar .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--green);
+  margin-right:9px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.25}}
+@media(max-width:900px){.panel{width:52%;min-width:0}}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">🤖</span>
+  <div>
+    <h1>OTTO AI 機器人 · <span class="g">3D 模擬器</span></h1>
+    <div class="sub">寫好程式 → 按「執行」→ 看 OTTO 動起來｜確認 OK 再上傳到真的機器人</div>
+  </div>
+  <div class="right">曾慶良 主任（阿亮老師）· Vibe Coding 實戰課</div>
+</header>
+
+<div class="main">
+  <!-- 左：程式 -->
+  <div class="panel">
+    <div class="toolbar">
+      <button class="btn run" id="btnRun">▶ 執行</button>
+      <button class="btn stop" id="btnStop">⏹ 停止</button>
+      <button class="btn reset" id="btnReset">⟲ 歸位</button>
+      <select id="examples" title="載入範例程式">
+        <option value="">📚 載入範例程式…</option>
+        <option value="hello">01 · 第一次見面（開機打招呼）</option>
+        <option value="walk">02 · 向前走與轉彎</option>
+        <option value="dance">03 · 跳舞秀（for 迴圈）</option>
+        <option value="sing">04 · 唱歌串燒</option>
+        <option value="avoid">05 · 超音波避障（if 判斷）</option>
+        <option value="factory">06 · 原廠避障範例（自訂函式版）</option>
+      </select>
+    </div>
+    <div class="codewrap">
+      <div class="codehead">📄 <b>&nbsp;otto_robot.ino</b>&nbsp;· 這份程式碼與真實 OTTO 完全相同，可直接複製到 Arduino IDE 上傳</div>
+      <textarea id="code" spellcheck="false"></textarea>
+    </div>
+    <div class="csplit" id="splitH" title="上下拖曳＝調整紀錄區高度"></div>
+    <div class="console">
+      <div class="chead">🖥️ 執行紀錄 <span class="loopn" id="loopN">loop() 第 1 圈</span></div>
+      <div id="log"></div>
+    </div>
+  </div>
+
+  <div class="splitv" id="splitV" title="左右拖曳＝調整面板寬度"></div>
+
+  <!-- 右：3D 舞台 -->
+  <div class="stage">
+    <canvas id="c3d"></canvas>
+    <div class="hint">🖱️ 拖曳＝旋轉視角　滾輪＝縮放</div>
+    <div class="hud">
+      <div class="hcard">
+        <h4>📡 超音波距離（眼睛看到的）</h4>
+        <div class="val" id="distVal">25 <small>cm</small></div>
+        <input type="range" id="distSlider" min="4" max="60" value="25">
+        <label>拉動滑桿＝移動前方的障礙物</label>
+      </div>
+      <div class="hcard">
+        <h4>🔊 蜂鳴器</h4>
+        <label><input type="checkbox" id="sndChk" checked> 開啟聲音</label>
+      </div>
+    </div>
+    <div class="statusbar" id="statusBar"><span class="dot"></span><span id="statusTxt"></span></div>
+  </div>
+</div>
+
+<script src="assets/three.min.js"></script>
+<script src="assets/otto-examples.js"></script>
+<script>
+/* =====================================================================
+ *  OTTO 3D 模擬器（原型）
+ *  1) 3D 場景與 OTTO 模型（照真實照片：藍頭白身、超音波眼睛、4 顆伺服）
+ *  2) 動作引擎（比照 OttoDIYLib 的振盪器：offset + A·sin(ωt+φ)）
+ *  3) 迷你 Arduino C++ 直譯器（setup/loop、Otto.*、delay、if、for、變數）
+ * ===================================================================== */
+
+/* ---------- 1. 場景 ---------- */
+const canvas = document.getElementById('c3d');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x191538);
+scene.fog = new THREE.Fog(0x191538, 70, 160);
+
+const camera = new THREE.PerspectiveCamera(45, 2, 0.1, 500);
+let camTheta = 0.5, camPhi = 1.15, camR = 34;           // 球座標視角
+const camTarget = new THREE.Vector3(0, 6, 0);
+function updateCamera(){
+  camera.position.set(
+    camTarget.x + camR * Math.sin(camPhi) * Math.sin(camTheta),
+    camTarget.y + camR * Math.cos(camPhi),
+    camTarget.z + camR * Math.sin(camPhi) * Math.cos(camTheta));
+  camera.lookAt(camTarget);
+}
+updateCamera();
+
+/* 自製軌道控制：拖曳旋轉、滾輪縮放（支援觸控） */
+let dragging = false, px = 0, py = 0;
+canvas.addEventListener('pointerdown', e => {dragging = true; px = e.clientX; py = e.clientY; canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove', e => {
+  if(!dragging) return;
+  camTheta -= (e.clientX - px) * 0.006;
+  camPhi   = Math.min(1.5, Math.max(0.25, camPhi - (e.clientY - py) * 0.006));
+  px = e.clientX; py = e.clientY; updateCamera();
+});
+canvas.addEventListener('pointerup', () => dragging = false);
+canvas.addEventListener('wheel', e => {e.preventDefault();
+  camR = Math.min(90, Math.max(14, camR * (e.deltaY > 0 ? 1.08 : 0.93))); updateCamera();
+}, {passive:false});
+
+/* 燈光 */
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const key = new THREE.DirectionalLight(0xfff4e0, 0.9);
+key.position.set(18, 30, 14);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.left = key.shadow.camera.bottom = -50;
+key.shadow.camera.right = key.shadow.camera.top = 50;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0x8a7dd8, 0.45);
+rim.position.set(-14, 12, -18);
+scene.add(rim);
+
+/* 地板 + 格線 */
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(300, 300),
+  new THREE.MeshStandardMaterial({color:0x221d46, roughness:0.95}));
+floor.rotation.x = -Math.PI/2;
+floor.receiveShadow = true;
+scene.add(floor);
+const grid = new THREE.GridHelper(300, 60, 0x5a4d9e, 0x342c63);
+grid.position.y = 0.02;
+scene.add(grid);
+
+/* ---------- OTTO 模型（照參考照片） ---------- */
+const M = {
+  blue :new THREE.MeshStandardMaterial({color:0x2f6fd0, roughness:0.55}),
+  white:new THREE.MeshStandardMaterial({color:0xf2f0eb, roughness:0.6}),
+  eyeRim:new THREE.MeshStandardMaterial({color:0xb8bcc4, metalness:0.85, roughness:0.3}),
+  eyeIn:new THREE.MeshStandardMaterial({color:0x2b2f36, metalness:0.4, roughness:0.5}),
+  dark :new THREE.MeshStandardMaterial({color:0x1d1f24, roughness:0.6}),
+  servo:new THREE.MeshStandardMaterial({color:0x2255aa, roughness:0.6}),
+};
+function box(w,h,d,mat,x,y,z,parent){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
+  m.position.set(x,y,z); m.castShadow = true; m.receiveShadow = true;
+  (parent||scene).add(m); return m;
+}
+
+const otto = new THREE.Group();          // 世界位置（走路移動、轉身用）
+scene.add(otto);
+const bodyG = new THREE.Group();         // 身體（跳躍、上下用）
+otto.add(bodyG);
+
+/* 身體（白）與頭（藍） */
+box(6.6, 4.6, 5.4, M.white, 0, 5.5, 0, bodyG);
+const head = box(7.0, 3.8, 5.8, M.blue, 0, 9.7, 0, bodyG);
+/* 超音波眼睛（×2）：鋁銀色外圈 → 黑色內部；發射超音波時內部會閃紅光 */
+const eyeCores = [];
+for(const sx of [-1.55, 1.55]){
+  const rimc = new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.05, 1.0, 24), M.eyeRim);
+  rimc.rotation.x = Math.PI/2; rimc.position.set(sx, -0.1, 3.0); rimc.castShadow = true;
+  head.add(rimc);
+  const coreMat = new THREE.MeshStandardMaterial({color:0x141518, roughness:0.5,
+    emissive:0xff2200, emissiveIntensity:0});
+  const core = new THREE.Mesh(new THREE.CylinderGeometry(0.80, 0.80, 1.06, 24), coreMat);
+  core.rotation.x = Math.PI/2; core.position.set(sx, -0.1, 3.02);
+  head.add(core);
+  eyeCores.push(coreMat);
+}
+/* 發射超音波：眼睛閃紅光一下 */
+let eyeGlow = 0;
+function flashEyes(){ eyeGlow = 1; }
+function updateEyeGlow(){
+  if(eyeGlow > 0){
+    eyeGlow = Math.max(0, eyeGlow - 0.045);
+    for(const m of eyeCores) m.emissiveIntensity = eyeGlow * 1.6;
+  }
+}
+/* 頭側電源孔與開關（照片右側） */
+const jack = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.5, 16), M.dark);
+jack.rotation.z = Math.PI/2; jack.position.set(3.5, 0.2, 0.8); head.add(jack);
+box(0.5, 0.5, 0.9, M.dark, 3.5, 0.2, -0.9, head);
+
+/* 腿與腳：hip(繞Y) → 腿 → ankle(繞Z) → 腳掌 */
+const hipL = new THREE.Group(), hipR = new THREE.Group();
+hipL.position.set(-1.75, 3.2, 0); hipR.position.set(1.75, 3.2, 0);
+otto.add(hipL); otto.add(hipR);
+const ankL = new THREE.Group(), ankR = new THREE.Group();
+function buildLeg(hip, ank, side){            // side: -1 左 / +1 右
+  box(2.1, 2.6, 2.3, M.white, 0, -1.3, 0, hip);              // 腿柱
+  box(0.7, 1.3, 1.15, M.servo, side*1.25, -1.5, 0, hip);     // 腿側藍色伺服
+  ank.position.set(0, -2.6, 0);
+  hip.add(ank);
+  box(1.4, 0.9, 1.6, M.white, side*0.35, -0.15, 0, ank);     // 踝架
+  const foot = box(3.6, 0.6, 5.2, M.white, side*0.75, -0.75, 0.55, ank);  // 腳掌板
+  box(0.28, 0.1, 0.28, M.dark, side*0.75-0.9, -0.4, 1.6, ank);            // 螺絲點綴
+  box(0.28, 0.1, 0.28, M.dark, side*0.75-0.9, -0.4, -0.4, ank);
+  return foot;
+}
+buildLeg(hipL, ankL, -1);
+buildLeg(hipR, ankR, +1);
+otto.position.y = 4.0;   // 讓腳掌貼地（hip 3.2 + ankle 2.6 + 腳 ≈ 底部）
+
+/* 障礙物（超音波用） */
+const obstacle = new THREE.Group();
+const wall = box(14, 9, 1.6, new THREE.MeshStandardMaterial({color:0xF5A623, roughness:0.7}), 0, 4.5, 0, obstacle);
+box(14, 0.5, 1.6, M.dark, 0, 0.25, 0, obstacle);
+scene.add(obstacle);
+
+/* ---------- 2. 動作引擎 ---------- */
+/* 4 顆伺服角度（度）：LL=左腿(hip yaw) RL=右腿 LF=左腳(ankle roll) RF=右腳
+ * 模擬 OttoDIYLib 振盪器：angle = offset + A·sin(2π·t/T + φ)               */
+const servo = {LL:0, RL:0, LF:0, RF:0};
+const D2R = Math.PI/180;
+let heading = 0;                    // 面向角（弧度，0 = +Z）
+let simDist = 25;                   // 超音波讀值
+function applyServos(){
+  hipL.rotation.y =  servo.LL * D2R;
+  hipR.rotation.y =  servo.RL * D2R;
+  ankL.rotation.z =  servo.LF * D2R;
+  ankR.rotation.z =  servo.RF * D2R;
+}
+function setHome(){ servo.LL=servo.RL=servo.LF=servo.RF=0; bodyG.position.y=0; bodyG.rotation.set(0,0,0); applyServos(); }
+setHome();
+
+let stopFlag = false;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* 通用振盪動作。move = {A:[LL,RL,LF,RF], O:[偏移], phi:[相位/度], T, cycles, fx} */
+function oscillate(move){
+  return new Promise(resolve => {
+    const t0 = performance.now();
+    const total = move.T * move.cycles;
+    function frame(now){
+      if(stopFlag){ resolve(); return; }
+      const t = now - t0;
+      const p = Math.min(t/total, 1);
+      const w = 2*Math.PI * (t/move.T);
+      servo.LL = move.O[0] + move.A[0]*Math.sin(w + move.phi[0]*D2R);
+      servo.RL = move.O[1] + move.A[1]*Math.sin(w + move.phi[1]*D2R);
+      servo.LF = move.O[2] + move.A[2]*Math.sin(w + move.phi[2]*D2R);
+      servo.RF = move.O[3] + move.A[3]*Math.sin(w + move.phi[3]*D2R);
+      applyServos();
+      if(move.fx) move.fx(t, w, p);
+      if(t < total) requestAnimationFrame(frame);
+      else { resolve(); }
+    }
+    requestAnimationFrame(frame);
+  });
+}
+function moveForward(dist){            // 沿面向方向位移
+  otto.position.x += Math.sin(heading) * dist;
+  otto.position.z += Math.cos(heading) * dist;
+  camTarget.x = otto.position.x; camTarget.z = otto.position.z;
+  updateCamera();
+}
+
+/* 各動作定義（參數比照 OttoDIYLib：steps, T, dir…） */
+const Moves = {
+  home: async () => { setHome(); await sleep(250); },
+  walk: (steps, T, dir) => oscillate({
+    A:[28,28,18,18], O:[0,0,3,-3], phi:[0,0,dir*-90,dir*-90], T, cycles:steps,
+    fx:(t)=>{ moveForward(dir * 2.4 / (T/16.7) ); }        // 每步約 2.4 單位
+  }),
+  turn: (steps, T, dir) => oscillate({
+    A:[dir>0?32:8, dir>0?8:32, 18,18], O:[0,0,3,-3], phi:[0,0,-90,-90], T, cycles:steps,
+    fx:()=>{ heading += dir * (0.14/(T/16.7)); otto.rotation.y = heading; }
+  }),
+  updown: (steps, T, h) => oscillate({
+    A:[0,0,h,h], O:[0,0,h,-h], phi:[0,0,-90,90], T, cycles:steps,
+    fx:(t,w)=>{ bodyG.position.y = Math.max(0, Math.sin(w)) * h * 0.045; }
+  }),
+  swing: (steps, T, h) => oscillate({
+    A:[0,0,h,h], O:[0,0,h/2,-h/2], phi:[0,0,0,0], T, cycles:steps,
+    fx:(t,w)=>{ bodyG.rotation.z = Math.sin(w) * h * 0.006; }
+  }),
+  moonwalker: (steps, T, h, dir) => oscillate({
+    A:[0,0,h,h], O:[0,0,h/2+2,-h/2-2], phi:[0,0,0,-60*dir], T, cycles:steps,
+    fx:()=>{ otto.position.x += dir * 0.05; camTarget.x = otto.position.x; updateCamera(); }
+  }),
+  crusaito: (steps, T, h, dir) => oscillate({
+    A:[25,25,h,h], O:[0,0,h/2+4,-h/2-4], phi:[90,90,0,-60*dir], T, cycles:steps
+  }),
+  flapping: (steps, T, h, dir) => oscillate({
+    A:[12,12,h,h], O:[0,0,h-10,-h+10], phi:[0,180,-90*dir,90*dir], T, cycles:steps
+  }),
+  tiptoeSwing: (steps, T, h) => oscillate({
+    A:[0,0,h,h], O:[0,0,h,-h], phi:[0,0,0,0], T, cycles:steps,
+    fx:(t,w)=>{ bodyG.rotation.z = Math.sin(w) * h * 0.007; }
+  }),
+  jitter: (steps, T, h) => oscillate({
+    A:[h,h,0,0], O:[0,0,0,0], phi:[-90,90,0,0], T, cycles:steps
+  }),
+  ascendingTurn: (steps, T, h) => oscillate({
+    A:[8,8,h,h], O:[0,0,h+4,-h+4], phi:[0,0,-90,90], T, cycles:steps,
+    fx:()=>{ heading += 0.09/(T/16.7); otto.rotation.y = heading; }
+  }),
+  shakeLeg: async (steps, T, dir) => {           // dir: 1右腳 -1左腳（比照庫）
+    for(let s=0; s<steps && !stopFlag; s++){
+      await oscillate({A: dir<0?[0,0,22,0]:[0,0,0,22], O: dir<0?[0,0,14,0]:[0,0,0,-14],
+        phi:[0,0,0,0], T: T/6, cycles:5});
+      await Moves.home();
+    }
+  },
+  bend: async (steps, T, dir) => {
+    for(let s=0; s<steps && !stopFlag; s++){
+      await oscillate({A:[0,0,0,0], O: dir>0?[0,0,26,12]:[0,0,-12,-26], phi:[0,0,0,0], T:T/2, cycles:1});
+      await sleep(T/2); setHome();
+    }
+  },
+  jump: async (steps, T) => {
+    for(let s=0; s<steps && !stopFlag; s++){
+      await oscillate({A:[0,0,0,0], O:[0,0,18,-18], phi:[0,0,0,0], T:T*0.3, cycles:1}); // 蹲
+      await new Promise(res => {                                                        // 跳
+        const t0 = performance.now();
+        (function f(now){
+          if(stopFlag) return res();
+          const t = (now-t0)/(T*0.5);
+          bodyG.position.y = Math.max(0, Math.sin(Math.min(t,1)*Math.PI)) * 2.2;
+          otto.position.y = 4.0 + Math.max(0, Math.sin(Math.min(t,1)*Math.PI)) * 1.4;
+          servo.LF = servo.RF = 0; applyServos();
+          if(t<1) requestAnimationFrame(f); else { otto.position.y = 4.0; bodyG.position.y=0; res(); }
+        })(t0);
+      });
+    }
+  },
+};
+
+/* ---------- 蜂鳴器（Web Audio） ---------- */
+let AC = null;
+function beep(freq, ms){
+  return new Promise(r => {
+    if(!document.getElementById('sndChk').checked || freq<=0){ setTimeout(r, ms); return; }
+    if(!AC) AC = new (window.AudioContext||window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = 'square'; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.12, AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + ms/1000);
+    o.connect(g); g.connect(AC.destination);
+    o.start(); o.stop(AC.currentTime + ms/1000);
+    setTimeout(r, ms + 25);
+  });
+}
+const Songs = {   // [頻率, 毫秒] — 近似 OttoDIYLib 的音效
+  S_connection:[[1318,120],[1567,120],[2093,180]],
+  S_disconnection:[[2093,120],[1567,120],[1318,180]],
+  S_buttonPushed:[[1567,80],[2093,140]],
+  S_surprise:[[880,80],[1760,80],[880,80],[1760,160]],
+  S_OhOoh:[[880,120],[0,60],[698,220]],
+  S_OhOoh2:[[698,120],[0,60],[880,220]],
+  S_cuddly:[[1318,180],[1174,180],[1046,320]],
+  S_sleeping:[[523,260],[494,260],[440,420]],
+  S_happy:[[1046,100],[1318,100],[1567,100],[2093,220]],
+  S_superHappy:[[1046,80],[1318,80],[1567,80],[2093,80],[1567,80],[2093,260]],
+  S_happy_short:[[1567,90],[2093,160]],
+  S_sad:[[880,220],[698,220],[587,380]],
+  S_confused:[[1046,120],[880,120],[1046,120],[880,220]],
+  S_fart1:[[130,320]], S_fart2:[[110,420]], S_fart3:[[98,520]],
+  S_mode1:[[1046,140]], S_mode2:[[1046,120],[1318,140]], S_mode3:[[1046,110],[1318,110],[1567,140]],
+};
+async function sing(name){
+  const notes = Songs[name] || [[1200,150]];
+  for(const [f,d] of notes){ if(stopFlag) break; await beep(f,d); }
+}
+/* 手勢 = 動作 + 音效 的組合（先做常用款） */
+const Gestures = {
+  OttoHappy:   async()=>{ sing('S_happy'); await Moves.swing(4, 500, 20); },
+  OttoSuperHappy:async()=>{ sing('S_superHappy'); await Moves.tiptoeSwing(4, 400, 20); },
+  OttoSad:     async()=>{ await Moves.bend(1, 900, 1); await sing('S_sad'); await Moves.home(); },
+  OttoSleeping:async()=>{ await Moves.updown(2, 900, 15); await sing('S_sleeping'); },
+  OttoConfused:async()=>{ sing('S_confused'); await Moves.jitter(4, 400, 12); },
+  OttoLove:    async()=>{ sing('S_cuddly'); await Moves.swing(4, 450, 16); },
+  OttoAngry:   async()=>{ sing('S_OhOoh'); await Moves.jitter(6, 300, 16); },
+  OttoWave:    async()=>{ sing('S_happy_short'); await Moves.shakeLeg(1, 1200, 1); },
+  OttoVictory: async()=>{ sing('S_superHappy'); await Moves.jump(1, 800); },
+  OttoFail:    async()=>{ await Moves.bend(1, 800, -1); await sing('S_OhOoh2'); await Moves.home(); },
+  OttoFart:    async()=>{ await sing('S_fart1'); await Moves.shakeLeg(1, 900, -1); },
+  OttoMagic:   async()=>{ sing('S_connection'); await Moves.moonwalker(3, 900, 22, 1); },
+  OttoFretful: async()=>{ sing('S_OhOoh'); await Moves.flapping(3, 600, 18, 1); },
+};
+
+/* ---------- 超音波 ---------- */
+const distSlider = document.getElementById('distSlider');
+const distVal = document.getElementById('distVal');
+let obstacleZ = null;
+function placeObstacle(){
+  const want = parseInt(distSlider.value, 10);
+  // 障礙物放在 OTTO 面向方向前 want cm（1 單位 = 1cm）
+  obstacleZ = {x: otto.position.x + Math.sin(heading)*(want+4),
+               z: otto.position.z + Math.cos(heading)*(want+4)};
+  obstacle.position.set(obstacleZ.x, 0, obstacleZ.z);
+  obstacle.rotation.y = heading;
+}
+function readDistance(){
+  if(!obstacleZ) return 999;
+  const dx = obstacle.position.x - otto.position.x;
+  const dz = obstacle.position.z - otto.position.z;
+  // 只有障礙物大致在面向方向才「看得到」
+  const d = Math.hypot(dx, dz) - 4;
+  const facing = Math.cos(Math.atan2(dx, dz) - heading);
+  const val = facing > 0.5 ? Math.max(2, Math.round(d)) : 999;
+  simDist = val;
+  distVal.innerHTML = (val>=999?'∞':val) + ' <small>cm</small>';
+  return val;
+}
+distSlider.addEventListener('input', () => { placeObstacle(); readDistance(); });
+placeObstacle(); readDistance();
+
+/* ---------- 3. 迷你 Arduino 直譯器 ---------- */
+const logEl = document.getElementById('log');
+function log(msg, cls){ const d = document.createElement('div'); d.className = cls||'ok';
+  d.textContent = msg; logEl.appendChild(d); logEl.scrollTop = logEl.scrollHeight;
+  while(logEl.children.length > 300) logEl.removeChild(logEl.firstChild); }
+
+const CONSTS = {FORWARD:1, BACKWARD:-1, LEFT:1, RIGHT:-1, SMALL:5, MEDIUM:15, BIG:30,
+  true:1, false:0, HIGH:1, LOW:0, INPUT:0, OUTPUT:1, INPUT_PULLUP:2,
+  A0:14, A1:15, A2:16, A3:17, A4:18, A5:19, A6:20, A7:21};
+
+function stripCode(src){
+  return src.replace(/\/\*[\s\S]*?\*\//g, ' ')
+            .replace(/\/\/[^\n]*/g, ' ')
+            .replace(/#\s*\w+[^\n]*/g, ' ');
+}
+function readDefines(src, env){        // #define 名稱 數值 → 當常數用
+  const re = /#define\s+([A-Za-z_]\w*)\s+(-?\d+(?:\.\d+)?)/g;
+  let m;
+  while(m = re.exec(src)) env[m[1]] = parseFloat(m[2]);
+}
+/* 找出所有 void 函式（setup/loop/自訂函式），剩下的就是全域區 */
+function extractFunctions(src){
+  const fns = {};
+  let globals = '';
+  let last = 0;
+  const re = /void\s+([A-Za-z_]\w*)\s*\(\s*\)\s*\{/g;
+  let m;
+  while(m = re.exec(src)){
+    globals += src.slice(last, m.index);
+    let i = m.index + m[0].length, depth = 1, start = i;
+    while(i < src.length && depth > 0){
+      if(src[i] === '{') depth++;
+      else if(src[i] === '}') depth--;
+      i++;
+    }
+    fns[m[1]] = src.slice(start, i-1);
+    last = i;
+    re.lastIndex = i;
+  }
+  globals += src.slice(last);
+  return {fns, globals};
+}
+/* 全域變數宣告：int distance;  bool flag = false; */
+function readGlobals(globals, env){
+  for(const seg of globals.split(';')){
+    const m = /^\s*(?:int|long|float|double|bool)\s+([A-Za-z_]\w*)\s*(?:=\s*(.+))?$/.exec(seg.trim());
+    if(m){ try{ env[m[1]] = m[2] ? evalExpr(m[2], env) : 0; }catch(e){ env[m[1]] = 0; } }
+  }
+}
+
+/* 語句解析（遞迴下降；支援 if / else if / else、for、while 任意巢狀） */
+function parseBlock(s){
+  const stmts = []; let i = 0;
+  function ws(){ while(i<s.length && /\s/.test(s[i])) i++; }
+  function kw(word){ return s.startsWith(word, i) && !/\w/.test(s[i+word.length]||''); }
+  function readParen(){            // 讀取一組 ( ... )
+    ws(); if(s[i] !== '(') throw '缺少 (';
+    let depth = 0, start = ++i;
+    for(depth=1; i<s.length && depth>0; i++){
+      if(s[i]==='(') depth++; else if(s[i]===')') depth--;
+    }
+    return s.slice(start, i-1);
+  }
+  function readBlockOrStmt(){      // { 多句 } 或 單一語句（含巢狀 if/for/while）
+    ws();
+    if(s[i] === '{'){
+      let depth = 0, start = ++i;
+      for(depth=1; i<s.length && depth>0; i++){
+        if(s[i]==='{') depth++; else if(s[i]==='}') depth--;
+      }
+      return parseBlock(s.slice(start, i-1));
+    }
+    return [oneStmt()];
+  }
+  function oneStmt(){              // 解析「一個」語句，回傳 AST 節點
+    ws();
+    if(kw('if')){
+      i += 2;
+      const cond = readParen();
+      const then = readBlockOrStmt();
+      ws();
+      let els = null;
+      if(kw('else')){ i += 4; els = readBlockOrStmt(); }   // else / else if 都交給 readBlockOrStmt 遞迴
+      return {t:'if', cond, then, els};
+    }
+    if(kw('while')){
+      i += 5;
+      const cond = readParen();
+      const body = readBlockOrStmt();
+      return {t:'while', cond, body};
+    }
+    if(kw('for')){
+      i += 3;
+      const head = readParen();
+      const body = readBlockOrStmt();
+      const parts = head.split(';');
+      if(parts.length !== 3) throw 'for 括號裡要有兩個分號：for(int i=0; i<3; i++)';
+      return {t:'for', init:parts[0].trim(), cond:parts[1].trim(), inc:parts[2].trim(), body};
+    }
+    const start = i;
+    while(i<s.length && s[i] !== ';') i++;
+    const raw = s.slice(start, i).trim(); i++;
+    return raw ? {t:'stmt', raw} : null;
+  }
+  while(true){
+    ws(); if(i >= s.length) break;
+    const st = oneStmt();
+    if(st) stmts.push(st);
+  }
+  return stmts;
+}
+
+/* 運算式求值 */
+function evalExpr(str, env){
+  str = str.trim();
+  let p = 0;
+  function ws(){ while(p<str.length && /\s/.test(str[p])) p++; }
+  function factor(){
+    ws();
+    if(str[p] === '('){ p++; const v = additive(); ws(); p++; return v; }
+    if(str[p] === '-'){ p++; return -factor(); }
+    if(str[p] === '!'){ p++; return factor() ? 0 : 1; }
+    const m = /^[A-Za-z_][A-Za-z0-9_\.]*/.exec(str.slice(p));
+    if(m){
+      p += m[0].length; ws();
+      if(str[p] === '('){                        // 函式呼叫
+        let depth = 1; p++;
+        while(p<str.length && depth>0){ if(str[p]==='(')depth++; if(str[p]===')')depth--; p++; }
+        if(/getDistance/.test(m[0])){ flashEyes(); return readDistance(); }  // 眼睛閃紅光＝正在發射超音波
+        if(/digitalRead/.test(m[0])) return 1;   // 模擬：讀腳位都回 HIGH
+        if(/analogRead/.test(m[0])) return 512;
+        return 0;
+      }
+      if(m[0] in env) return env[m[0]];
+      if(m[0] in CONSTS) return CONSTS[m[0]];
+      throw '不認識的名稱：' + m[0];
+    }
+    const n = /^\d+(\.\d+)?/.exec(str.slice(p));
+    if(n){ p += n[0].length; return parseFloat(n[0]); }
+    throw '看不懂的算式：' + str;
+  }
+  function term(){ let v = factor(); ws();
+    while(str[p]==='*'||str[p]==='/'){ const op=str[p++]; const r=factor(); v = op==='*'? v*r : v/r; ws(); }
+    return v; }
+  function additive(){ let v = term(); ws();
+    while(str[p]==='+'||(str[p]==='-'&&str[p+1]!=='-')){ const op=str[p++]; const r=term(); v = op==='+'? v+r : v-r; ws(); }
+    return v; }
+  function compare(){ let v = additive(); ws();
+    const two = str.slice(p, p+2);
+    if(two==='<='){p+=2; return v <= additive() ?1:0;}
+    if(two==='>='){p+=2; return v >= additive() ?1:0;}
+    if(two==='=='){p+=2; return v === additive()?1:0;}
+    if(two==='!='){p+=2; return v !== additive()?1:0;}
+    if(str[p]==='<'){p++; return v < additive() ?1:0;}
+    if(str[p]==='>'){p++; return v > additive() ?1:0;}
+    return v; }
+  function logic(){ let v = compare(); ws();
+    while(str.slice(p,p+2)==='&&' || str.slice(p,p+2)==='||'){
+      const op = str.slice(p,p+2); p+=2; const r = compare();
+      v = op==='&&' ? (v&&r?1:0) : (v||r?1:0); ws(); }
+    return v; }
+  return logic();
+}
+
+/* Otto 指令 → 動作＋中文紀錄 */
+const CmdInfo = {
+  home:[0,'🧍 立正站好'], walk:[3,'🚶 走路'], turn:[3,'↩️ 轉彎'], bend:[3,'🙇 彎腰'],
+  shakeLeg:[3,'🦵 抖腿'], updown:[3,'🆙 上下運動'], swing:[3,'🕺 左右搖擺'],
+  moonwalker:[4,'🌙 月球漫步'], crusaito:[4,'💃 交叉舞步'], flapping:[4,'🐦 拍翅舞'],
+  tiptoeSwing:[3,'🩰 踮腳搖擺'], jitter:[3,'⚡ 顫抖'], ascendingTurn:[3,'🌀 旋轉上升'],
+  jump:[2,'🦘 跳躍'],
+};
+async function execStmt(st, env){
+  if(stopFlag) throw {stopped:true};
+  if(st.t === 'if'){
+    const v = evalExpr(st.cond, env);
+    log(`❓ if (${st.cond.trim()}) → ${v? '成立 ✔':'不成立 ✘'}`, 'note');
+    await execBlock(v ? st.then : (st.els||[]), env);
+    return;
+  }
+  if(st.t === 'while'){
+    let guard = 0;
+    while(evalExpr(st.cond, env)){
+      if(stopFlag) throw {stopped:true};
+      if(++guard > 500) throw 'while 迴圈跑太多次（超過 500 次），先停下來檢查條件';
+      await execBlock(st.body, env);
+      await sleep(10);
+    }
+    return;
+  }
+  if(st.t === 'for'){
+    if(st.init) runSimple(st.init, env);
+    let guard = 0;
+    while(!st.cond || evalExpr(st.cond, env)){
+      if(stopFlag) throw {stopped:true};
+      if(++guard > 500) throw 'for 迴圈跑太多次（超過 500 次），先停下來檢查條件';
+      await execBlock(st.body, env);
+      if(st.inc) runSimple(st.inc, env);
+    }
+    return;
+  }
+  await runSimple(st.raw, env, true);
+}
+async function runSimple(raw, env, allowCall){
+  raw = raw.trim(); if(!raw) return;
+  let m;
+  if(m = /^(?:int|long|float|double|bool)\s+([A-Za-z_]\w*)\s*=\s*(.+)$/.exec(raw)){
+    env[m[1]] = evalExpr(m[2], env);
+    log(`📦 變數 ${m[1]} = ${env[m[1]]}`, 'sys');
+    return;
+  }
+  if(m = /^([A-Za-z_]\w*)\s*=\s*(.+)$/.exec(raw)){ env[m[1]] = evalExpr(m[2], env); return; }
+  if(m = /^([A-Za-z_]\w*)\s*\+\+$/.exec(raw)){ env[m[1]] = (env[m[1]]||0) + 1; return; }
+  if(m = /^([A-Za-z_]\w*)\s*--$/.exec(raw)){ env[m[1]] = (env[m[1]]||0) - 1; return; }
+  if(!allowCall) return;
+  if(m = /^delay\s*\((.+)\)$/.exec(raw)){
+    const ms = evalExpr(m[1], env);
+    log(`⏳ 等待 ${ms} 毫秒`, 'sys');
+    const t0 = Date.now();
+    while(Date.now() - t0 < ms){ if(stopFlag) throw {stopped:true}; await sleep(30); }
+    return;
+  }
+  if(m = /^Otto\s*\.\s*([A-Za-z_]\w*)\s*\((.*)\)$/.exec(raw)){
+    const fn = m[1];
+    const args = m[2].trim() ? splitArgs(m[2]).map(a => {
+      const t = a.trim();
+      if(/^S_\w+$/.test(t) || /^Otto[A-Z]\w+$/.test(t)) return t;   // 音效/手勢名
+      if(/^".*"$/.test(t)) return t.slice(1,-1);
+      return evalExpr(t, env);
+    }) : [];
+    await runOtto(fn, args);
+    return;
+  }
+  if(/^(Serial|pinMode|digitalWrite|analogWrite|randomSeed)\b/.test(raw)) return;  // 忽略無害指令
+  if(m = /^([A-Za-z_]\w*)\s*\(\s*\)$/.exec(raw)){          // 呼叫自訂函式
+    if(userFns[m[1]] !== undefined){
+      if(!userFnAst[m[1]]) userFnAst[m[1]] = parseBlock(userFns[m[1]]);
+      log('📞 呼叫自訂函式 ' + m[1] + '()', 'sys');
+      await execBlock(userFnAst[m[1]], env);
+      return;
+    }
+  }
+  throw '看不懂這一行：' + raw;
+}
+function splitArgs(s){
+  const out = []; let depth = 0, cur = '';
+  for(const ch of s){
+    if(ch === ',' && depth === 0){ out.push(cur); cur = ''; continue; }
+    if(ch === '(') depth++; if(ch === ')') depth--;
+    cur += ch;
+  }
+  if(cur.trim()) out.push(cur);
+  return out;
+}
+async function runOtto(fn, a){
+  if(fn === 'init'){ log('🔌 Otto.init() 硬體就緒：伺服 2/3/4/5 · 超音波 8/9 · 蜂鳴器 13（同原廠 V9 接線）', 'sys'); return; }
+  if(fn === 'home'){ log('🧍 Otto.home() 立正站好'); await Moves.home(); return; }
+  if(fn === 'sing'){ log('🎵 唱歌：' + a[0]); await sing(a[0]); return; }
+  if(fn === 'playGesture'){
+    log('🎭 表演手勢：' + a[0]);
+    await (Gestures[a[0]] || (async()=>{ await sing('S_confused'); await Moves.jitter(3,400,10); }))();
+    return;
+  }
+  if(fn === 'getDistance'){ flashEyes(); readDistance(); return; }
+  if(fn === '_tone' || fn === 'tone'){ await beep(a[0]||1000, a[1]||120); return; }
+  if(Moves[fn]){
+    const info = CmdInfo[fn] || [0, fn];
+    const dir = a[2] !== undefined ? a[2] : (a[3] !== undefined ? a[3] : 1);
+    let dirTxt = '';
+    if(fn === 'walk') dirTxt = dir >= 0 ? '（向前）' : '（向後）';
+    if(fn === 'turn') dirTxt = dir >= 0 ? '（左轉）' : '（右轉）';
+    log(`${info[1]} Otto.${fn}(${a.join(', ')}) ${dirTxt}`);
+    setStatus(`${info[1]}${dirTxt}`);
+    await Moves[fn](...a);
+    return;
+  }
+  log('⚠️ 這個指令模擬器還不會：Otto.' + fn + '（真機仍可用）', 'err');
+}
+
+/* ---------- 執行流程 ---------- */
+const statusBar = document.getElementById('statusBar');
+const statusTxt = document.getElementById('statusTxt');
+const loopNEl = document.getElementById('loopN');
+function setStatus(t){ statusTxt.textContent = t; statusBar.style.display = t ? 'block' : 'none'; }
+let running = false;
+let userFns = {}, userFnAst = {};
+
+async function execBlock(stmts, env){
+  for(const st of stmts) await execStmt(st, env);
+}
+const btnRunEl = document.getElementById('btnRun');
+function setRunUI(on){
+  btnRunEl.disabled = on;
+  btnRunEl.classList.toggle('running', on);
+  btnRunEl.textContent = on ? '⏳ 執行中…（按 ⏹ 停止）' : '▶ 執行';
+}
+btnRunEl.addEventListener('click', async () => {
+  if(running) return;
+  const rawSrc = document.getElementById('code').value;
+  const src = stripCode(rawSrc);
+  logEl.innerHTML = '';
+  let setupB, loopB;
+  const env = {};
+  readDefines(rawSrc, env);
+  try{
+    const ex = extractFunctions(src);
+    userFns = ex.fns; userFnAst = {};
+    if(userFns.setup === undefined || userFns.loop === undefined)
+      throw '找不到 void setup() 或 void loop()，Arduino 程式一定要有這兩個喔！';
+    readGlobals(ex.globals, env);
+    setupB = parseBlock(userFns.setup);
+    loopB  = parseBlock(userFns.loop);
+  }catch(e){
+    log('❌ 程式讀不懂：' + e, 'err');
+    log('💡 提示：把錯誤訊息貼給 AI，請它幫你修正（這就是 Loop 工程！）', 'note');
+    return;
+  }
+  running = true; stopFlag = false;
+  setRunUI(true);
+  try{
+    log('🚀 開始執行！先跑 setup()（只跑一次）…', 'sys');
+    await execBlock(setupB, env);
+    if(loopB.length){
+      log('🔁 進入 loop()（會一直重複，按 ⏹ 停止）', 'sys');
+      loopNEl.style.display = 'inline-block';
+      let n = 0;
+      while(!stopFlag){
+        n++;
+        loopNEl.textContent = 'loop() 第 ' + n + ' 圈';
+        await execBlock(loopB, env);
+        await sleep(50);
+        if(n > 9999) break;
+      }
+    } else {
+      log('（loop() 是空的，程式跑完 setup() 就結束了）', 'sys');
+    }
+  }catch(e){
+    if(e && e.stopped){ log('⏹ 已停止', 'sys'); }
+    else {
+      log('❌ 執行出錯：' + e, 'err');
+      log('💡 提示：把錯誤訊息貼給 AI，請它幫你修正（這就是 Loop 工程！）', 'note');
+    }
+  }
+  running = false; stopFlag = false;
+  setRunUI(false);
+  setStatus(''); loopNEl.style.display = 'none';
+  log('✅ 執行結束', 'sys');
+});
+document.getElementById('btnStop').addEventListener('click', () => { stopFlag = true; });
+document.getElementById('btnReset').addEventListener('click', () => {
+  stopFlag = true;
+  setTimeout(() => {
+    otto.position.set(0, 4.0, 0); heading = 0; otto.rotation.y = 0;
+    setHome(); camTarget.set(0, 6, 0); camTheta = 0.5; camPhi = 1.15; camR = 34;
+    updateCamera(); placeObstacle(); readDistance();
+    log('⟲ OTTO 已歸位', 'sys');
+  }, 80);
+});
+
+/* ---------- 範例程式 ---------- */
+const HEADER = `#include <Otto9.h>   // 原廠 V9 函式庫
+Otto9 Otto;   // 這就是你的 OTTO！
+
+#define PIN_YL 2       // 左腿伺服 → 腳位 2
+#define PIN_YR 3       // 右腿伺服 → 腳位 3
+#define PIN_RL 4       // 左腳伺服 → 腳位 4
+#define PIN_RR 5       // 右腳伺服 → 腳位 5
+#define PIN_Trigger 8  // 超音波發射 → 腳位 8
+#define PIN_Echo 9     // 超音波接收 → 腳位 9
+#define PIN_Buzzer 13  // 蜂鳴器 → 腳位 13
+`;
+const INIT_LINE = `Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);`;
+const Examples = {
+hello: HEADER + `
+void setup() {
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();              // 立正站好
+  Otto.sing(S_connection);  // 開機音效
+  Otto.playGesture(OttoHappy);  // 開心打招呼！
+}
+
+void loop() {
+}
+`,
+walk: HEADER + `
+void setup() {
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+
+void loop() {
+  Otto.walk(4, 1000, 1);   // 向前走 4 步（速度 1000，1 = 向前）
+  Otto.turn(3, 1000, 1);   // 左轉 3 步（1 = 左轉，-1 = 右轉）
+  Otto.walk(2, 1000, -1);  // 向後退 2 步
+  Otto.sing(S_happy);      // 唱一段開心的音
+  delay(1000);             // 休息 1 秒再重來
+}
+`,
+dance: HEADER + `
+void setup() {
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+  Otto.sing(S_superHappy);
+}
+
+void loop() {
+  // 用 for 迴圈跳 3 次月球漫步（左右各一次）
+  for (int i = 0; i < 3; i++) {
+    Otto.moonwalker(3, 900, 22, 1);   // 向左滑步
+    Otto.moonwalker(3, 900, 22, -1);  // 向右滑步
+  }
+  Otto.crusaito(4, 900, 22, 1);  // 交叉舞步
+  Otto.flapping(3, 800, 20, 1);  // 拍翅舞
+  Otto.jump(1, 800);             // 跳一下！
+  Otto.playGesture(OttoVictory); // 勝利姿勢
+  delay(1500);
+}
+`,
+sing: HEADER + `
+void setup() {
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+}
+
+void loop() {
+  Otto.sing(S_connection);
+  delay(500);
+  Otto.sing(S_happy);
+  delay(500);
+  Otto.sing(S_superHappy);
+  delay(500);
+  Otto.sing(S_cuddly);
+  delay(500);
+  Otto.sing(S_sad);
+  delay(500);
+  Otto.sing(S_confused);
+  delay(1500);
+}
+`,
+avoid: HEADER + `
+void setup() {
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.home();
+  Otto.sing(S_connection);
+}
+
+void loop() {
+  float distance = Otto.getDistance();  // 用眼睛（超音波）量距離
+
+  if (distance < 15) {
+    // 前面有東西！先叫一聲、後退、再轉彎閃開
+    Otto.sing(S_surprise);
+    Otto.walk(2, 1000, -1);   // 後退 2 步
+    Otto.turn(3, 1000, 1);    // 左轉閃開
+  } else {
+    Otto.walk(1, 1000, 1);    // 沒東西，繼續向前走
+  }
+}
+`,
+factory: HEADER + `
+// ★ 這支是「原廠 Otto_avoid_V9」範例的精簡版
+//   用到：全域變數、bool、自訂函式 —— 進階寫法長這樣！
+
+int  distance;                  // 全域變數：存量到的距離
+bool obstacleDetected = false;  // 全域變數：前面有沒有東西
+
+void setup() {
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.sing(S_connection);  // 開機音效
+  Otto.home();              // 立正站好
+  delay(500);
+}
+
+void loop() {
+  if (obstacleDetected) {
+    Otto.sing(S_surprise);
+    Otto.jump(1, 500);            // 嚇一跳！
+    Otto.sing(S_cuddly);
+    for (int i = 0; i < 3; i++) {
+      Otto.walk(1, 1300, -1);     // 後退 3 步
+    }
+    delay(500);
+    for (int i = 0; i < 3; i++) {
+      Otto.turn(1, 1000, 1);      // 左轉 3 步
+      delay(500);
+    }
+  } else {
+    Otto.walk(1, 1000, 1);        // 沒東西就向前走
+    obstacleDetector();           // 呼叫自訂函式檢查距離
+  }
+}
+
+// 自訂函式：量距離，更新 obstacleDetected
+void obstacleDetector() {
+  distance = Otto.getDistance();
+  if (distance < 15) {
+    obstacleDetected = true;
+  } else {
+    obstacleDetected = false;
+  }
+}
+`,
+};
+/* 下拉選單：展示範例 ＋ 課程各章標準程式（otto-examples.js 由編譯管線自動產生） */
+(function buildExampleMenu(){
+  const sel = document.getElementById('examples');
+  const first = sel.querySelector('option');           // 「載入範例程式…」
+  sel.innerHTML = ''; sel.appendChild(first);
+  const g1 = document.createElement('optgroup'); g1.label = '🎬 展示範例';
+  const demoNames = {hello:'01 · 第一次見面（開機打招呼）', walk:'02 · 向前走與轉彎',
+    dance:'03 · 跳舞秀（for 迴圈）', sing:'04 · 唱歌串燒', avoid:'05 · 超音波避障（if 判斷）',
+    factory:'06 · 原廠避障範例（自訂函式版）'};
+  for(const k in demoNames){ const o = document.createElement('option'); o.value = k; o.textContent = demoNames[k]; g1.appendChild(o); }
+  sel.appendChild(g1);
+  const chEx = window.OTTO_CH_EXAMPLES || {};
+  if(Object.keys(chEx).length){
+    const g2 = document.createElement('optgroup'); g2.label = '📚 課程章節標準程式';
+    for(const id of Object.keys(chEx)){
+      const o = document.createElement('option'); o.value = 'ch:' + id; o.textContent = chEx[id].name; g2.appendChild(o);
+    }
+    sel.appendChild(g2);
+  }
+})();
+document.getElementById('examples').addEventListener('change', e => {
+  const v = e.target.value;
+  if(!v) return;
+  if(v.startsWith('ch:')){
+    const ex = (window.OTTO_CH_EXAMPLES || {})[v.slice(3)];
+    if(ex) document.getElementById('code').value = ex.code.trim() + '\n';
+  } else {
+    document.getElementById('code').value = Examples[v].trim() + '\n';
+  }
+  e.target.selectedIndex = 0;
+  log('📥 已載入範例，按「▶ 執行」跑跑看！', 'sys');
+});
+document.getElementById('code').value = Examples.walk.trim() + '\n';
+
+/* 分隔線拖曳：左右調面板寬、上下調紀錄區高 */
+(function splitters(){
+  const panel = document.querySelector('.panel');
+  const consoleEl = document.querySelector('.console');
+  function drag(el, onMove){
+    el.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      el.classList.add('on');
+      el.setPointerCapture(e.pointerId);
+      const move = ev => onMove(ev);
+      const up = () => { el.classList.remove('on');
+        el.removeEventListener('pointermove', move); el.removeEventListener('pointerup', up); };
+      el.addEventListener('pointermove', move);
+      el.addEventListener('pointerup', up);
+    });
+  }
+  drag(document.getElementById('splitV'), ev => {
+    const w = Math.min(window.innerWidth * 0.7, Math.max(280, ev.clientX));
+    panel.style.width = w + 'px'; panel.style.minWidth = '0';
+  });
+  drag(document.getElementById('splitH'), ev => {
+    const rect = panel.getBoundingClientRect();
+    const h = Math.min(rect.height * 0.7, Math.max(70, rect.bottom - ev.clientY));
+    consoleEl.style.height = h + 'px';
+  });
+})();
+log('👋 歡迎！按「▶ 執行」讓 OTTO 動起來，或先從上面載入範例程式。', 'sys');
+log('💡 試試 05 避障範例：執行後拉動右上角的距離滑桿，看 OTTO 怎麼反應！', 'note');
+
+/* ---------- 主迴圈 ---------- */
+function resize(){
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  if(canvas.width !== w || canvas.height !== h){
+    renderer.setSize(w, h, false);
+    camera.aspect = w/h; camera.updateProjectionMatrix();
+  }
+}
+(function animate(){
+  requestAnimationFrame(animate);
+  resize();
+  readDistance();
+  updateEyeGlow();
+  renderer.render(scene, camera);
+})();
+</script>
+</body>
+</html>

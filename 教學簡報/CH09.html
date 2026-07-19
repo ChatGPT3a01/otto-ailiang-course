@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH09 · 進階舞步</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第三篇 · Part 2 · 唱歌跳舞與 Loop 工程</div>
+  <h1>CH09 · <span class="g">進階舞步</span></h1>
+  <h2>月球漫步、交叉步、拍翅、跳躍</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">舞技大升級</div></div>
+  <div class="body">
+    <p>walk 和 turn 只是基本功。這章解鎖 OTTO 的<b>進階舞步</b>：moonwalker（月球漫步）、crusaito（交叉步）、flapping（拍翅）、updown（上下律動）、jump（跳躍）——而且多了一個新參數「<b>高度 h</b>」控制動作幅度。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>一段 20 秒的進階舞串燒，OTTO 左右滑步、律動、跳躍，帥氣收尾。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>新參數：高度 h（動作幅度）</h2><div class="k">同一個舞步，小跳 vs 大跳</div></div>
+  <div class="body">
+    <div class="term"><pre>Otto.moonwalker( <span class="cm">步數</span>, <span class="cm">速度T</span>, <span class="cm">高度h</span>, <span class="cm">方向</span> );
+Otto.moonwalker(  3,   900,   25,   1  );  <span class="cm">// 向左月球漫步</span></pre></div>
+    <table class="tbl">
+      <tr><th>舞步</th><th>寫法</th><th>效果</th></tr>
+      <tr><td>月球漫步</td><td><code>moonwalker(步, T, h, 方向)</code></td><td>橫向滑步，超帥</td></tr>
+      <tr><td>交叉步</td><td><code>crusaito(步, T, h, 方向)</code></td><td>腿部交叉扭動</td></tr>
+      <tr><td>拍翅</td><td><code>flapping(步, T, h, 方向)</code></td><td>快速拍動像小鳥</td></tr>
+      <tr><td>上下律動</td><td><code>updown(次, T, h)</code></td><td>蹲站蹲站打節拍</td></tr>
+      <tr><td>跳躍</td><td><code>jump(次, T)</code></td><td>原地跳（沒有 h）</td></tr>
+    </table>
+    <div class="info-box">📏 h 建議 10（小動作）～ 30（大動作）。太大真機可能站不穩——模擬器先試手感。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">流程同前</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_dance.ino）</li>
+    <li><b>疊目標 1</b>：骨架</li>
+    <li><b>疊目標 2</b>：loop() 進階舞串燒（先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>貼進模擬器執行</b></li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1-4 / 5</span><h2>生成 otto_dance.ino</h2><div class="k">四步連做</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>開生成器 → 目標 1 骨架（複製 → 送出 → 採用）</li>
+      <li>目標 2 舞步串燒（複製 → <b>貼參考程式</b> → 送出 → 採用）</li>
+      <li>「📋 複製完整程式」＋下載</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch09" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行</h2><div class="k">側面視角最好看</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>貼上程式 → ▶ 執行</li>
+      <li><b>拖曳視角到側面 45 度</b>——月球漫步的滑步從側面看最有味道</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：向左滑 3 步 → 向右滑 3 步 → 交叉步 → 拍翅 → 上下律動 2 次 → 跳一下＋得意音效 → 休息 1.5 秒重來。</div>
+    <p class="note">❓ 想單看某個舞步？把其他行前面加 <code>//</code>（變註解＝暫時關掉），只留想看的那行。這招叫「註解隔離法」，除錯超好用！</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔬 小實驗：h 的手感</h2><div class="k">動作幅度自己調</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>把 moonwalker 的 <code>25</code> 改成 <code>12</code> → 執行：小碎步滑行</li>
+      <li>改成 <code>30</code> → 執行：大擺幅滑行</li>
+      <li>速度 900 改 <code>600</code>：節奏變快——找出你最喜歡的組合</li>
+    </ul>
+    <div class="info-box">💡 記下你的黃金組合（例如 h=25、T=800）——CH10 編舞就用它。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">舞步實驗室</div></div>
+  <div class="body">
+    <ul style="padding-left:24px">
+      <li>⭐ 把跳躍改成<b>連跳 2 次</b></li>
+      <li>⭐⭐ 加入 <code>tiptoeSwing</code>（踮腳搖擺）和 <code>ascendingTurn</code>（旋轉上升）各 2 步——問 AI 參數怎麼填</li>
+      <li>⭐⭐⭐ 「鏡像舞」：整段舞每個有方向的舞步，方向全部反過來（1 ↔ -1），跟原版比較差異</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「請在 ______ 之後加入 ______ 舞步，參數用（___, ___, ___），給我完整程式。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">真機跳舞超療癒</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>接線 → 開一鍵上傳頁 → 選 <b>otto_dance.ino</b> → 連接上傳</li>
+      <li>拔線開電源——記得放在<b>平坦桌面</b>，月球漫步需要一點滑動空間</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>我疊出 otto_dance.ino，進階舞串燒執行成功。</li>
+    <li>我說得出「高度 h」是什麼、建議範圍 10~30。</li>
+    <li>我用「註解隔離法」單獨看過至少一個舞步。</li>
+    <li>我找到自己的黃金參數組合。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：全套舞步技能</div><p>下一章 CH10——把走位、音效、手勢、舞步全部整合，編一場<b>你的舞蹈秀</b>！</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH09 完成！<span class="g">舞技解鎖</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH10.html">→ 下一章 CH10</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH09 · 進階舞步',part:'#E67E22',next:'CH10.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

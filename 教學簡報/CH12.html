@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH12 · 超音波眼睛</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第四篇 · Part 3 · 感測與判斷</div>
+  <h1>CH12 · <span class="g">超音波眼睛</span></h1>
+  <h2>量距離、存變數、做判斷——OTTO 開始「看世界」</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">進入「會想」篇！</div></div>
+  <div class="body">
+    <p>之前的 OTTO 只會照劇本演。從這章起它有了<b>感官</b>：超音波眼睛量出前方距離，OTTO 根據「看到的」<b>自己決定</b>怎麼反應——太近就驚叫後退、有東西就警戒、淨空就輕快哼歌。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>OTTO 變成「距離報告員」：你拉模擬器的距離滑桿，它用不同的叫聲即時回報遠近。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>超音波怎麼「看」？</h2><div class="k">跟蝙蝠一樣：聽回音</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>左眼（Trigger，腳位 8）發出一聲人耳聽不到的超音波</li>
+      <li>聲波撞到前面的東西，彈回來</li>
+      <li>右眼（Echo，腳位 9）接住回音</li>
+      <li>大腦算：「回音花了多久？」→ 時間 × 音速 ÷ 2 ＝ <b>距離</b></li>
+    </ul>
+    <div class="info-box">👀 在模擬器裡，每次量距離時 OTTO 的<b>眼睛會閃紅光</b>——那就是「正在發射超音波」的瞬間！執行後盯著看。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>新概念：變數＋getDistance</h2><div class="k">量到的數字要有地方放</div></div>
+  <div class="body">
+    <div class="term"><pre>float distance = Otto.getDistance();
+<span class="cm">//  ↑類型   ↑名字      ↑量距離（回傳公分數）</span></pre></div>
+    <p><b>變數</b>就是「幫資料取名字的盒子」：<code>float distance</code> 準備一個能裝小數的盒子叫 distance，把 <code>Otto.getDistance()</code> 量到的公分數放進去。之後程式裡寫 <code>distance</code> 就是在用這個數字。</p>
+    <div class="term"><pre>if (distance &lt; 10) { <span class="cm">... 太近的反應 ...</span> }
+else if (distance &lt; 25) { <span class="cm">... 中距離的反應 ...</span> }
+else { <span class="cm">... 淨空的反應 ...</span> }</pre></div>
+    <p class="note"><code>if / else if / else</code> = 「如果…不然如果…再不然…」，三選一，只會走其中一條路。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">流程同前</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_eyes.ino）</li>
+    <li><b>疊目標 1</b>：骨架</li>
+    <li><b>疊目標 2</b>：loop() 距離報告員（先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>模擬器執行＋玩距離滑桿</b></li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1-4 / 5</span><h2>生成 otto_eyes.ino</h2><div class="k">四步連做</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>開生成器 → 目標 1 骨架（複製 → 送出 → 採用）</li>
+      <li>目標 2 距離報告員（複製 → <b>貼參考程式</b> → 送出 → 採用）</li>
+      <li>「📋 複製完整程式」＋下載</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch12" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行：玩滑桿！</h2><div class="k">這章的主角是右上角的距離滑桿</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>貼上程式 → ▶ 執行（聲音打開）</li>
+      <li>把右上角<b>「📡 超音波距離」滑桿</b>拉到 30 以上 → 聽到輕快短音</li>
+      <li>拉到 15 左右 → 變成「喔喔」警戒音</li>
+      <li>拉到 8 以下 → 驚叫＋後退一步！</li>
+      <li>同時觀察：<b>眼睛每秒閃一次紅光</b>、執行紀錄顯示「❓ if (distance &lt; 10) → 成立/不成立」</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：三段距離、三種反應，即時切換。你拉滑桿＝移動障礙物，OTTO 真的「看得到」。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">調教它的個性</div></div>
+  <div class="body">
+    <ul style="padding-left:24px">
+      <li>⭐ 把「太近」的門檻從 10 改成 <b>20</b>（變膽小）——滑桿驗證</li>
+      <li>⭐⭐ 三段反應全部換成你選的音效＋手勢（近＝OttoAngry？遠＝OttoLove？）</li>
+      <li>⭐⭐⭐ 加第四段：距離 <b>大於 50</b> 時表演 OttoSleeping（太遠了沒東西看，想睡）——問 AI 條件順序要怎麼排</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「請把距離判斷改成四段：小於20 ______、20~35 ______、35~50 ______、大於50 ______。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">拿手掌在它眼前移動</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>一鍵上傳頁選 <b>otto_eyes.ino</b> → 連接上傳 → 拔線開機</li>
+      <li>把<b>手掌</b>放在 OTTO 眼前慢慢靠近、遠離——它的叫聲會跟著變！</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+    <p class="note">真機的超音波在 2~400 公分內最準；貼太近（&lt;2cm）反而量不到。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>我說得出超音波量距離的原理（發射 → 回音 → 算時間）。</li>
+    <li>我會用變數接住 getDistance() 的值。</li>
+    <li>我看得懂 if / else if / else 三選一。</li>
+    <li>我拉滑桿驗證過三段反應，也看到眼睛閃紅光。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：會看世界的 OTTO</div><p>下一章 CH13——把「看」和「走」合體：真正的避障機器人！</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH12 完成！<span class="g">眼睛張開了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH13.html">→ 下一章 CH13</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH12 · 超音波眼睛',part:'#8E44AD',next:'CH13.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

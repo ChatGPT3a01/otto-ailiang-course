@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH10 · 自編舞蹈秀</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第三篇 · Part 2 · 唱歌跳舞與 Loop 工程</div>
+  <h1>CH10 · <span class="g">自編舞蹈秀</span></h1>
+  <h2>開場、主秀、謝幕——你是編舞家</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">整合前面所有本事</div></div>
+  <div class="body">
+    <p>走位（CH06-07）＋音效手勢（CH08）＋進階舞步（CH09）全部到齊。這章先跟著老師的<b>三幕式範本</b>做一次，然後——重頭戲——把它<b>改造成你自己的舞蹈秀</b>。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>一場屬於你的完整舞蹈秀：有開場亮相、有主秀高潮、有謝幕下台。這也是期末發表的雛形！</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>編舞的思考法：三幕式</h2><div class="k">先想劇本，再寫程式</div></div>
+  <div class="cg c3 body">
+    <div class="cc"><div class="ico">🎬</div><h3>第一幕 · 開場</h3><p>音效吸睛 → 走位亮相 → 打招呼。讓觀眾知道「表演開始了」。</p></div>
+    <div class="cc"><div class="ico">🌟</div><h3>第二幕 · 主秀</h3><p>最強舞步放這裡：滑步、交叉步、轉身。節奏由慢到快最抓人。</p></div>
+    <div class="cc"><div class="ico">🎭</div><h3>第三幕 · 謝幕</h3><p>跳躍收尾 → 勝利手勢 → 溫馨音效 → 後退下台。有始有終。</p></div>
+  </div>
+  <div class="body"><div class="info-box">✍️ 專業做法：先用<b>中文</b>把三幕劇本寫在紙上，再翻成提示詞給 AI——「先想清楚再開口」正是 Vibe Coding 的精髓。</div></div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">先做老師範本，再改造</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_myshow.ino）</li>
+    <li><b>疊目標 1</b>：骨架</li>
+    <li><b>疊目標 2</b>：三幕式舞蹈秀（先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>模擬器執行</b>，看懂三幕結構</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1-4 / 5</span><h2>生成 otto_myshow.ino</h2><div class="k">四步連做</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>開生成器 → 目標 1 骨架（複製 → 送出 → 採用）</li>
+      <li>目標 2 三幕舞蹈秀（複製 → <b>貼參考程式</b> → 送出 → 採用）</li>
+      <li>「📋 複製完整程式」＋下載</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch10" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行：看懂三幕</h2><div class="k">對照執行紀錄找出每一幕</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>貼上程式 → ▶ 執行</li>
+      <li>邊看表演，邊對照左下<b>執行紀錄</b>：哪幾行是開場？哪幾行是主秀？</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：開場音效＋前進亮相＋揮手 → 月球漫步左右＋轉身交叉步＋律動 → 跳躍＋勝利＋謝幕曲＋後退下台 → 休息 3 秒重演。</div>
+    <p class="note">程式裡的 <code>// ===== 第一幕 =====</code> 註解就是「幕的分隔線」——寫長程式先分區，是好習慣（骨架地圖的精神）。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務（本章主菜！）</h2><div class="k">改造成「你的」舞蹈秀</div></div>
+  <div class="body">
+    <p>這章的迭代任務就是<b>正式創作</b>。步驟：</p>
+    <ul class="sl">
+      <li>紙上寫你的三幕劇本（中文即可，例如「開場要神秘一點，用魔法滑步」）</li>
+      <li>把老師範本＋你的劇本一起貼給 AI：「請照我的劇本改造這支程式」</li>
+      <li>模擬器驗證 → 哪一幕不對就回饋 AI 修 → 直到滿意</li>
+      <li>下載存檔：<b>這支就是你的期末作品初稿！</b></li>
+    </ul>
+    <div class="warn-box">⚠️ 規則：三幕結構要在、總長 20~40 秒、至少用到 3 種舞步＋2 種音效＋2 種手勢。其餘自由發揮！</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">舞台首演</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>老師標準版：一鍵上傳頁選 <b>otto_myshow.ino</b> 直接燒</li>
+      <li>你的改造版：留到 CH15 學會 Arduino IDE 後親手上傳（或先請老師幫忙）</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>我跑過老師的三幕式範本，說得出三幕各在做什麼。</li>
+    <li>我寫了自己的劇本，並用 AI 改造出「我的舞蹈秀」。</li>
+    <li>我的舞蹈秀符合規則（三幕、20-40 秒、3 舞步 2 音效 2 手勢）。</li>
+    <li>檔案已下載存進作品集。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：自己編的舞蹈秀</div><p>下一章 CH11——Loop 工程專章。還記得 CH07 那 8 行重複的痛苦？for 迴圈來報仇了。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH10 完成！<span class="g">你是編舞家了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH11.html">→ 下一章 CH11</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH10 · 自編舞蹈秀',part:'#E67E22',next:'CH11.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

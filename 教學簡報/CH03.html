@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH03 · Vibe Coding 心法</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第二篇 · Part 1 · Vibe Coding 與基本動作</div>
+  <h1>CH03 · <span class="g">Vibe Coding 心法</span></h1>
+  <h2>把話說清楚，AI 就是你的工程師</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>什麼是 Vibe Coding？</h2><div class="k">從「自己打程式」到「指揮 AI 寫程式」</div></div>
+  <div class="body">
+    <p><b>Vibe Coding</b>：你負責<b>想清楚要做什麼</b>、用自然語言說給 AI 聽，AI 負責寫出程式；你再執行、觀察、回饋、修正。</p>
+    <p>你的角色不是打字員，是<b>導演</b>——導演不用會扛攝影機，但要能說清楚「這一幕要拍什麼」。</p>
+    <div class="info-box">🎬 這堂課裡：你 = 導演，AI = 攝影師，OTTO = 演員，模擬器 = 排練室，真機 = 正式舞台。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>好提示詞的三要素</h2><div class="k">身分 × 目標 × 條件</div></div>
+  <div class="cg c3 body">
+    <div class="cc"><div class="ico">🪪</div><h3>1. 身分背景</h3><p>「我是新手，用 OTTO V9 機器人（Otto9 函式庫）」——AI 知道你是誰，才知道要多白話、用哪套語法。</p></div>
+    <div class="cc"><div class="ico">🎯</div><h3>2. 目標</h3><p>「讓 OTTO 向前走 4 步再唱歌」——要做<b>什麼</b>，一句話說得出來。</p></div>
+    <div class="cc"><div class="ico">📏</div><h3>3. 條件細節</h3><p>「速度 1000、加中文註解、只給程式碼」——規格說得越清楚，成品越接近你要的。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>對比：模糊 vs 清楚</h2><div class="k">同一件事，兩種說法，天差地遠</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>❌ 模糊的說法</b></p>
+      <div class="prompt"><div class="lbl">💬 學生 A</div><pre>幫我寫機器人走路的程式</pre></div>
+      <p class="note">AI 只能猜：哪種機器人？什麼函式庫？走多遠？——猜出來的程式八成不能用。</p>
+    </div>
+    <div>
+      <p><b>✅ 清楚的說法</b></p>
+      <div class="prompt"><div class="lbl">💬 學生 B</div><pre>我用 OTTO V9 機器人（Otto9 函式庫，
+腳位：左腿2 右腿3 左腳4 右腳5）。
+請寫 loop()：向前走 4 步、速度 1000，
+然後唱 S_happy。我是新手，加中文註解。</pre></div>
+      <p class="note">身分✓ 目標✓ 條件✓ —— AI 一次到位。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>Loop 工程：第一種 Loop</h2><div class="k">跟 AI 來回迭代，把程式修到對</div></div>
+  <div class="body">
+    <p>就算提示詞寫得好，程式也常常「第一版不夠好」。工程師的做法不是重寫，是<b>迭代</b>：</p>
+    <ul class="sl">
+      <li><b>執行</b>：把 AI 給的程式貼進模擬器，按 ▶</li>
+      <li><b>觀察</b>：OTTO 做了什麼？跟你想的哪裡不一樣？</li>
+      <li><b>回饋</b>：把「差在哪」講給 AI 聽（走太慢／方向反了／少唱歌）</li>
+      <li><b>修正</b>：拿到新版本，再執行——直到滿意</li>
+    </ul>
+    <div class="ok-box">✅ 這個「執行→觀察→回饋→修正」的圈，就是 <b>Loop 工程</b>。每一章的「🔁 迭代任務」都在練它。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>回饋的技巧：說「現象」</h2><div class="k">AI 不在現場，你就是它的眼睛</div></div>
+  <div class="body">
+    <p>回饋時，把<b>你看到的現象</b>具體說出來，AI 才修得準：</p>
+    <table class="tbl">
+      <tr><th>❌ 太籠統</th><th>✅ 說現象</th></tr>
+      <tr><td>「不對，重寫」</td><td>「OTTO 走了 4 步但方向是<b>往後</b>，我要往前」</td></tr>
+      <tr><td>「怪怪的」</td><td>「轉彎只轉了一點點，我要轉 90 度，是不是步數要加？」</td></tr>
+      <tr><td>「有錯誤」</td><td>「模擬器紅字說：<b>看不懂這一行：Otto.walk(4 1000, 1)</b>」</td></tr>
+    </table>
+    <div class="info-box">💡 出現紅色錯誤訊息時：<b>整段複製貼給 AI</b>，通常一次就修好。錯誤訊息是線索，不是懲罰。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>實戰演練：導演初體驗</h2><div class="k">用剛學的三要素，真的指揮一次</div></div>
+  <div class="body">
+    <p>打開 AI 助手，照三要素自己寫一段提示詞，目標隨你選：</p>
+    <ul style="padding-left:24px">
+      <li>讓 OTTO <b>後退 2 步</b>然後唱難過的音效（提示：S_sad）</li>
+      <li>讓 OTTO <b>原地跳一下</b>再表演開心手勢（提示：OttoHappy）</li>
+    </ul>
+    <p>AI 回你的程式先<b>不用看懂全部</b>——複製、貼進模擬器、按 ▶，看結果對不對。不對？練習回饋！</p>
+    <div class="warn-box">⚠️ AI 若給出 <code>#include &lt;Otto.h&gt;</code>（少了 9），跟它說：「請用 <b>Otto9</b> 函式庫（Otto9.h，宣告 Otto9 Otto;）」——我們的機器人是 V9 版。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>課程的貼心設計：生成器</h2><div class="k">提示詞我們先幫你寫好一版</div></div>
+  <div class="body">
+    <p>從下一章開始，每章都有「<b>🧩 逐段生成器</b>」：我們把該章程式拆成小目標，每個目標附<b>建議提示詞</b>——複製、送出、看 AI 生成、採用，一段段疊出完整程式。</p>
+    <ul style="padding-left:24px">
+      <li>好處一：全班疊出來的程式<b>一致</b>，老師好幫忙、你好除錯</li>
+      <li>好處二：提示詞就是<b>範本</b>——多看多抄，慢慢就會自己寫</li>
+      <li>好處三：疊完的檔案可下載，直接進模擬器、也直接能上真機</li>
+    </ul>
+    <div class="info-box">🔁 「迭代任務」時就輪到你自由發揮——改提示詞，做出你的版本。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">心法檢查</div></div>
+  <ul class="goals body">
+    <li>我說得出提示詞三要素：身分、目標、條件。</li>
+    <li>我知道 Loop 工程四步：執行 → 觀察 → 回饋 → 修正。</li>
+    <li>我練習過用「說現象」的方式回饋 AI。</li>
+    <li>我自己寫的提示詞成功讓模擬器裡的 OTTO 動了。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：導演的基本功</div><p>下一章 CH04，用生成器蓋出 OTTO 程式的「骨架」——之後每一章都疊在它上面。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH03 完成！<span class="g">你會指揮 AI 了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH04.html">→ 下一章 CH04</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH03 · Vibe Coding 心法',part:'#27AE60',next:'CH04.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

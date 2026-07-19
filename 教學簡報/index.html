@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTTO AI 機器人 · Vibe Coding 實戰課</title>
+<style>
+:root{
+  --bg1:#0f0c29; --bg2:#302b63; --bg3:#24243e;
+  --gold:#F5A623; --gold2:#f7d98a; --text:#f3eefb; --muted:#b9a9d6;
+  --p0:#4A90D9; --p1:#27AE60; --p2:#E67E22; --p3:#8E44AD; --p4:#E74C3C;
+  --card:rgba(255,255,255,.06); --line:rgba(255,255,255,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',system-ui,'Microsoft JhengHei',sans-serif;color:var(--text);
+  background:linear-gradient(160deg,var(--bg1),var(--bg2) 55%,var(--bg3));min-height:100vh;line-height:1.7}
+.wrap{max-width:1240px;margin:0 auto;padding:40px 30px 80px}
+.hero{text-align:center;padding:50px 20px 40px}
+.hero .robot{font-size:76px;line-height:1;margin-bottom:10px}
+.hero .badge{display:inline-block;background:rgba(245,166,35,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:7px 18px;border-radius:20px;font-size:15px;font-weight:700;margin-bottom:20px}
+.hero h1{font-size:50px;font-weight:900;letter-spacing:1px;margin-bottom:16px;line-height:1.25}
+.hero h1 .hl{color:var(--gold)}
+.hero p.sub{font-size:21px;color:var(--muted);max-width:860px;margin:0 auto 12px;line-height:1.8}
+.hero p.sub b{color:var(--gold2)}
+.hero .meta{margin-top:20px;color:var(--muted);font-size:16px}
+.cta{display:inline-block;margin-top:28px;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#2a1a4a;padding:16px 40px;border-radius:14px;font-size:20px;font-weight:900;text-decoration:none;
+  box-shadow:0 8px 24px rgba(245,166,35,.3);transition:transform .2s}
+.cta:hover{transform:translateY(-3px)}
+.cta.alt{background:rgba(255,255,255,.1);color:var(--text);border:1px solid var(--line);box-shadow:none;margin-left:12px}
+h2.sec{font-size:32px;font-weight:900;margin:58px 0 6px;text-align:left;padding-left:16px;border-left:6px solid var(--gold)}
+h2.sec .hl{color:var(--gold)}
+p.seclead{text-align:left;color:var(--muted);margin-bottom:26px;padding-left:18px;font-size:17px}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.feat .f{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;transition:.2s}
+.feat .f:hover{border-color:var(--gold);transform:translateY(-3px)}
+.feat .f .ico{font-size:38px}.feat .f h3{font-size:21px;margin:10px 0 6px}.feat .f p{font-size:16px;color:var(--muted)}
+.vol{margin-top:40px}
+.vol-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+.vol-head .vn{font-size:15px;font-weight:900;color:var(--gold);background:rgba(245,166,35,.12);border:1px solid var(--gold);
+  padding:4px 14px;border-radius:20px;white-space:nowrap}
+.vol-head b{font-size:27px}
+.part{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.part .phead{display:flex;align-items:center;gap:14px;padding:16px 22px;background:rgba(255,255,255,.04)}
+.part .pnum{font-size:15px;font-weight:900;padding:7px 16px;border-radius:10px;color:#fff;flex-shrink:0;white-space:nowrap}
+.part .ptitle b{font-size:20px}.part .ptitle span{display:block;color:var(--muted);font-size:15px}
+.chs{padding:12px 18px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.ch{display:flex;align-items:center;gap:14px;padding:15px 18px;border-radius:12px;text-decoration:none;
+  color:var(--text);background:rgba(0,0,0,.18);border:1px solid var(--line);transition:.2s}
+.ch:hover{background:rgba(245,166,35,.12);border-color:var(--gold)}
+.ch .cnum{font-family:'Fira Code',monospace;font-size:15px;color:var(--gold2);font-weight:700;flex-shrink:0}
+.ch .ctxt b{font-size:17.5px}.ch .ctxt span{display:block;font-size:14px;color:var(--muted)}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.why .w{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:20px 22px}
+.why .w h3{font-size:19px;margin-bottom:8px}.why .w p{font-size:16px;color:var(--muted)}
+.author{margin-top:50px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;text-align:center}
+.author h3{font-size:22px;color:var(--gold)}
+.author .role{color:var(--muted);font-size:14px;margin:10px 0}
+.author .links a{display:inline-block;margin:6px;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:700;color:#fff}
+.author .yt{background:#c4302b}.author .fb{background:#1877f2}.author .mail{background:#1a9d54}
+.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:40px;line-height:1.9}
+.foot .warn{color:#ffb3b3}
+@media(max-width:600px){.hero h1{font-size:32px}h2.sec{font-size:23px}.cta.alt{margin-left:0;margin-top:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="robot">🤖</div>
+    <div class="badge">🎓 Vibe Coding 實戰課 · 零基礎友善 · 一學期完整課程</div>
+    <h1>指揮 AI 寫程式<br>讓 <span class="hl">OTTO 機器人</span> 動起來！</h1>
+    <p class="sub">你不用背程式語法。這堂課教你用 <b>Vibe Coding</b>——把想法說給 AI 聽，讓 AI 幫你寫出真正的 Arduino 程式；再用 <b>Loop 工程</b>——執行、觀察、回饋、修正，一圈一圈把程式調到完美。</p>
+    <p class="sub">先在 <b>3D 模擬器</b>裡讓虛擬 OTTO 走路、跳舞、唱歌、閃避障礙物；確認沒問題，再用傳輸線上傳到<b>真正的 OTTO 機器人</b>，看它在你桌上動起來！</p>
+    <div class="meta">講師：曾慶良 主任（阿亮老師）　|　硬體：OTTO DIY V9 + Arduino Nano　|　工具：AI 助手 + 3D 模擬器 + Arduino IDE</div>
+    <div>
+      <a class="cta" href="CH00.html">▶ 從第一章開始上課</a>
+      <a class="cta alt" href="../模擬器/index.html" target="_blank">🤖 打開 3D 模擬器</a>
+    </div>
+  </div>
+
+  <h2 class="sec">你會讓 OTTO <span class="hl">學會</span>什麼？</h2>
+  <p class="seclead">每一章都是一個看得見的成果——模擬器裡先跑，真機上再現：</p>
+  <div class="feat">
+    <div class="f"><div class="ico">🚶</div><h3>走路與轉彎</h3><p>前進、後退、左轉右轉，組合出自己的路線。</p></div>
+    <div class="f"><div class="ico">💃</div><h3>跳舞</h3><p>月球漫步、交叉舞步、跳躍，編出專屬舞蹈秀。</p></div>
+    <div class="f"><div class="ico">🎵</div><h3>唱歌</h3><p>蜂鳴器音效、手勢表演，還能播瑪利歐音樂。</p></div>
+    <div class="f"><div class="ico">👀</div><h3>看見障礙物</h3><p>超音波眼睛量距離，自己判斷、自己閃開。</p></div>
+    <div class="f"><div class="ico">🔁</div><h3>Loop 工程</h3><p>跟 AI 來回迭代修程式＋掌握 loop() 迴圈時序。</p></div>
+    <div class="f"><div class="ico">🔌</div><h3>上傳真機</h3><p>傳輸線一接，你的程式就在真的機器人身上跑。</p></div>
+  </div>
+
+  <h2 class="sec">課程<span class="hl">地圖</span>（一學期 · 18 章）</h2>
+  <p class="seclead">CH00–CH14 只要電腦＋模擬器就能上課；CH15 起接上真正的 OTTO。</p>
+
+  <!-- 第一篇 -->
+  <div class="vol">
+    <div class="vol-head"><span class="vn">第一篇</span><b>起步 · 認識你的機器人夥伴</b></div>
+    <div class="part">
+      <div class="phead"><div class="pnum" style="background:var(--p0)">Part 0 · 課前準備</div>
+        <div class="ptitle"><b>認識課程、認識 OTTO、裝好工具</b><span>先把地基打穩</span></div></div>
+      <div class="chs">
+        <a class="ch" href="CH00.html"><span class="cnum">CH00</span><span class="ctxt"><b>課程總覽與成品展示</b><span>你會做出什麼、怎麼學</span></span></a>
+        <a class="ch" href="CH01.html"><span class="cnum">CH01</span><span class="ctxt"><b>認識 OTTO 機器人</b><span>4 顆馬達、超音波眼睛、大腦 Nano</span></span></a>
+        <a class="ch" href="CH02.html"><span class="cnum">CH02</span><span class="ctxt"><b>工具準備</b><span>AI 助手、3D 模擬器、（真機用）Arduino IDE</span></span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第二篇 -->
+  <div class="vol">
+    <div class="vol-head"><span class="vn">第二篇</span><b>會動 · 第一次指揮機器人</b></div>
+    <div class="part">
+      <div class="phead"><div class="pnum" style="background:var(--p1)">Part 1 · Vibe Coding 與基本動作</div>
+        <div class="ptitle"><b>學會對 AI 說話，讓 OTTO 動起來</b><span>模擬器見證每一步</span></div></div>
+      <div class="chs">
+        <a class="ch" href="CH03.html"><span class="cnum">CH03</span><span class="ctxt"><b>Vibe Coding 心法</b><span>怎麼開口叫 AI 寫程式</span></span></a>
+        <a class="ch" href="CH04.html"><span class="cnum">CH04</span><span class="ctxt"><b>程式骨架地圖</b><span>.ino、setup() 與 loop() 的家</span></span></a>
+        <a class="ch" href="CH05.html"><span class="cnum">CH05</span><span class="ctxt"><b>第一個動作</b><span>立正、打招呼、開機音效</span></span></a>
+        <a class="ch" href="CH06.html"><span class="cnum">CH06</span><span class="ctxt"><b>走路！</b><span>前進後退、速度參數的秘密</span></span></a>
+        <a class="ch" href="CH07.html"><span class="cnum">CH07</span><span class="ctxt"><b>轉彎與路線設計</b><span>組合動作走出一條路</span></span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第三篇 -->
+  <div class="vol">
+    <div class="vol-head"><span class="vn">第三篇</span><b>會演 · OTTO 的舞台秀</b></div>
+    <div class="part">
+      <div class="phead"><div class="pnum" style="background:var(--p2)">Part 2 · 唱歌跳舞與 Loop 工程</div>
+        <div class="ptitle"><b>讓 OTTO 又唱又跳，還要跳得有節奏</b><span>迴圈讓表演更精彩</span></div></div>
+      <div class="chs">
+        <a class="ch" href="CH08.html"><span class="cnum">CH08</span><span class="ctxt"><b>唱歌與手勢</b><span>17 首音效、13 種手勢表演</span></span></a>
+        <a class="ch" href="CH09.html"><span class="cnum">CH09</span><span class="ctxt"><b>進階舞步</b><span>月球漫步、交叉步、跳躍</span></span></a>
+        <a class="ch" href="CH10.html"><span class="cnum">CH10</span><span class="ctxt"><b>自編舞蹈秀</b><span>把動作串成一支完整的舞</span></span></a>
+        <a class="ch" href="CH11.html"><span class="cnum">CH11</span><span class="ctxt"><b>Loop 工程專章</b><span>loop()、for、時序——迴圈的力量</span></span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第四篇 -->
+  <div class="vol">
+    <div class="vol-head"><span class="vn">第四篇</span><b>會想 · 給 OTTO 一雙眼睛</b></div>
+    <div class="part">
+      <div class="phead"><div class="pnum" style="background:var(--p3)">Part 3 · 感測與判斷</div>
+        <div class="ptitle"><b>超音波感測 + if 判斷 = 會自己做決定的機器人</b><span>從「聽指令」到「會思考」</span></div></div>
+      <div class="chs">
+        <a class="ch" href="CH12.html"><span class="cnum">CH12</span><span class="ctxt"><b>超音波眼睛</b><span>量距離、讀感測值</span></span></a>
+        <a class="ch" href="CH13.html"><span class="cnum">CH13</span><span class="ctxt"><b>避障機器人</b><span>if/else 判斷 + 原廠避障劇本</span></span></a>
+        <a class="ch" href="CH14.html"><span class="cnum">CH14</span><span class="ctxt"><b>互動行為設計</b><span>跟隨、狀態機入門、自訂函式</span></span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第五篇 -->
+  <div class="vol">
+    <div class="vol-head"><span class="vn">第五篇</span><b>真機 · 讓程式走進現實</b></div>
+    <div class="part">
+      <div class="phead"><div class="pnum" style="background:var(--p4)">Part 4 · 上傳與成果發表</div>
+        <div class="ptitle"><b>傳輸線一接，桌上的 OTTO 動起來</b><span>模擬與現實的最後一哩路</span></div></div>
+      <div class="chs">
+        <a class="ch" href="CH15.html"><span class="cnum">CH15</span><span class="ctxt"><b>上傳到真正的 OTTO</b><span>Arduino IDE、驅動、函式庫、燒錄</span></span></a>
+        <a class="ch" href="CH16.html"><span class="cnum">CH16</span><span class="ctxt"><b>校正與微調</b><span>真機站不直？trim 校正來救</span></span></a>
+        <a class="ch" href="CH17.html"><span class="cnum">CH17</span><span class="ctxt"><b>期末成果發表</b><span>自創行為 + 整合救援生成器</span></span></a>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="sec">課程<span class="hl">亮點</span></h2>
+  <div class="why">
+    <div class="w"><h3>🗣️ Vibe Coding 教學</h3><p>不背語法，重點是「怎麼開口叫 AI 幫你做」。每個步驟都附可直接複製的提示詞。</p></div>
+    <div class="w"><h3>🔁 Loop 工程雙修</h3><p>既學「跟 AI 來回迭代修程式」的工作法，也學 loop() 迴圈與時序控制的程式功。</p></div>
+    <div class="w"><h3>🤖 3D 模擬器</h3><p>可旋轉 3D OTTO，程式按下執行立刻動給你看。前 15 章不用碰硬體，人人都能練。</p></div>
+    <div class="w"><h3>📄 真實 Arduino 程式</h3><p>模擬器跑的就是原廠 Otto9 格式的 C++。模擬確認 OK，複製上傳真機零修改。</p></div>
+    <div class="w"><h3>⚙️ 到處都有生成器</h3><p>複製提示詞、送出、看 AI 生成——全班疊出來的程式一致，不會各寫各的。</p></div>
+    <div class="w"><h3>🏆 真的會上真機</h3><p>期末每個人的程式都會在真正的 OTTO 上表演，成果看得見、摸得到。</p></div>
+  </div>
+
+  <div class="author">
+    <h3>👨‍🏫 曾慶良 主任（阿亮老師）</h3>
+    <p class="role">新興科技推廣中心主任　|　教育部學科中心研究教師　|　臺北市資訊教育輔導員<br>
+      教育部人工智慧講師認證　|　百大資訊人才獎　|　親子天下創新 100 教師</p>
+    <div class="links">
+      <a class="yt" href="https://www.youtube.com/@Liang-yt02" target="_blank">▶ YouTube</a>
+      <a class="fb" href="https://www.facebook.com/groups/2754139931432955" target="_blank">f Facebook 社團</a>
+      <a class="mail" href="mailto:3a01chatgpt@gmail.com">✉ Email</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    © 2026 阿亮老師 版權所有　·　本課程與專案僅供阿亮老師課程學員學習使用<br>
+    <span class="warn">⚠️ 禁止修改、轉傳、散布或商業使用</span>
+  </div>
+
+</div>
+</body>
+</html>

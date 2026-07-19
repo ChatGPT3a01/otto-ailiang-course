@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH05 · 第一個動作</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第二篇 · Part 1 · Vibe Coding 與基本動作</div>
+  <h1>CH05 · <span class="g">第一個動作</span></h1>
+  <h2>OTTO 每 3 秒跟你打一次招呼</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">loop() 終於要開始工作了</div></div>
+  <div class="body">
+    <p>上一章 loop() 是空的。這一章我們填入第一個本事：<b>表演開心手勢 → 揮手 → 休息 3 秒 → 再來一次</b>，永遠重複——你會親眼看到 loop() 的威力。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>模擬器裡的 OTTO 每 3 秒打一次招呼，右下角「loop() 第 N 圈」不停跳——那就是 loop 在轉！</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>新指令：playGesture 與 delay</h2><div class="k">這章會用到的兩個新朋友</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>指令</th><th>意思</th><th>例子</th></tr>
+      <tr><td><code>Otto.playGesture(手勢名)</code></td><td>表演「動作＋音效」組合</td><td><code>Otto.playGesture(OttoHappy);</code></td></tr>
+      <tr><td><code>delay(毫秒)</code></td><td>暫停一下（1000 = 1 秒）</td><td><code>delay(3000);</code> 休息 3 秒</td></tr>
+    </table>
+    <p style="margin-top:10px">常用手勢名（共 13 種，先認識這幾個）：<code>OttoHappy</code> 開心、<code>OttoWave</code> 揮手、<code>OttoSuperHappy</code> 超開心、<code>OttoSad</code> 難過、<code>OttoVictory</code> 勝利、<code>OttoSleeping</code> 想睡。</p>
+    <div class="info-box">💡 手勢名都是「Otto＋心情英文」，AI 都認得，跟它說中文心情它就會換。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">跟 CH04 一樣的節奏</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_hello.ino）</li>
+    <li><b>疊目標 1</b>：開頭腳位（複製提示詞 → 送出 → 採用）</li>
+    <li><b>疊目標 2、3</b>：setup() 與 loop()（記得先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>貼進模擬器執行</b>，驗證每 3 秒打招呼</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 5</span><h2>開啟生成器</h2><div class="k">這章的檔案叫 otto_hello.ino</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>點下面按鈕開新分頁</li>
+      <li>確認標題是「🧩 逐段生成器 · <b>otto_hello.ino</b>」</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch05" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 5</span><h2>疊目標 1：開頭腳位</h2><div class="k">已經熟門熟路了</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>按「<b>複製提示詞</b>」→ 貼進對話框</li>
+      <li>按「<b>送出</b>」→ 生成完按「<b>採用</b>」</li>
+    </ul>
+    <div class="ok-box">✅ 預期：疊出 #include 與 #define 那段，進度 1/3。（跟 CH04 的開頭一模一樣——骨架的好處！）</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 5</span><h2>疊目標 2、3：setup 與 loop</h2><div class="k">第 2 段起先貼參考程式</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>目標 2：複製提示詞 → 貼對話框 → <b>把「目前疊出的檔案」貼進參考程式框</b> → 送出 → 採用</li>
+      <li>目標 3（loop 打招呼）：一樣做一次</li>
+    </ul>
+    <div class="ok-box">✅ 預期：進度 3/3，綠色完成訊息出現。loop() 裡有 OttoHappy、OttoWave、delay(3000) 三行。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 4 / 5</span><h2>複製完整程式</h2><div class="k">存進你的作品集</div></div>
+  <ul class="sl body">
+    <li>按「<b>📋 複製完整程式</b>」（建議也「⬇ 下載」存到 OTTO課程 資料夾）</li>
+    <li>關掉生成器分頁回簡報</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行</h2><div class="k">看 loop 轉起來！</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>打開 <a href="../模擬器/index.html" target="_blank">3D 模擬器</a> → 程式面板 Ctrl+A 刪掉 → 貼上</li>
+      <li>按 <b>▶ 執行</b>，先看完開機儀式</li>
+      <li>盯著右下角的<b>「loop() 第 N 圈」</b>徽章</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：OTTO 開心搖擺 → 抖腿揮手 → 停 3 秒 → 又開始……徽章 1 圈、2 圈、3 圈一直加。<b>它會永遠重複，直到你按 ⏹ 停止。</b></div>
+    <p class="note">❓ 只表演一次就停了？檢查那三行是不是貼進了 setup() 而不是 loop()——setup 只跑一次！</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>逐段看懂：loop() 在做什麼</h2><div class="k">三行程式 × 無限重複</div></div>
+  <div class="term body">
+    <button class="copy" onclick="cp(this)">複製</button>
+    <pre>void loop() {
+  Otto.playGesture(OttoHappy);  <span class="cm">// 開心搖擺（動作＋音效一起來）</span>
+  Otto.playGesture(OttoWave);   <span class="cm">// 揮手打招呼（抖抖腿）</span>
+  delay(3000);                  <span class="cm">// 休息 3 秒（3000 毫秒）</span>
+  <span class="cm">// 跑到這裡，loop() 結束……然後自動再從第一行開始！</span>
+}</pre>
+  </div>
+  <p class="body">重點只有一個：<b>loop() 的大括號 { } 裡面的事，會由上到下做完，然後回到第一行再來一遍</b>。所以 OTTO 才會「每 3 秒打一次招呼」。</p>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">改造成「你的」打招呼</div></div>
+  <div class="body">
+    <p>把完整程式貼給 AI，一步一步來：①說要改什麼 ②拿到新程式 ③貼模擬器驗證 ④不對就回饋再改。挑戰任選：</p>
+    <ul style="padding-left:24px">
+      <li>⭐ 揮手改成<b>勝利手勢</b>（提示：OttoVictory）</li>
+      <li>⭐⭐ 休息時間改成 <b>5 秒</b>（幾毫秒？自己算！）</li>
+      <li>⭐⭐⭐ 打招呼前先<b>唱一段 S_cuddly</b>（提示：Otto.sing 要加在 loop 的哪一行？）</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「這支程式會每 3 秒打招呼，請把 ______ 改成 ______，其他不要動，給我完整程式。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>常見問題</h2><div class="k">卡住先看這</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>手勢表演到一半想停？</b></p>
+      <p class="note">按 ⏹ 停止；OTTO 姿勢歪了就按 ⟲ 歸位。</p>
+      <p><b>紅字「不認識的名稱：OttoHapy」？</b></p>
+      <p class="note">拼錯了！手勢名一個字母都不能差。整段紅字貼給 AI 它會幫你抓。</p>
+    </div>
+    <div>
+      <p><b>delay(3) 怎麼幾乎沒停？</b></p>
+      <p class="note">單位是毫秒！3 秒 = 3000。</p>
+      <p><b>loop 圈數跑好快？</b></p>
+      <p class="note">正常，一圈 = 表演完＋休息完。想慢就把 delay 加大。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">把這章的標準程式燒進真的 OTTO</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>用傳輸線接「電腦 ⇄ OTTO」（CH02 已裝好 CH340 驅動）</li>
+      <li>點下面按鈕開「一鍵上傳」頁，在清單選<b>本章的程式</b></li>
+      <li>按「🔌 連接 OTTO 並上傳」→ 小視窗選 <b>USB-SERIAL CH340</b> → 按「連線」→ 看進度條跑完</li>
+      <li>拔線、開電源，真的 OTTO 開始表演！</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+    <p class="note">手邊沒有機器人？跳過這頁沒關係，模擬器的成果一樣算數；自己改造的程式要上真機則走 CH15 的 Arduino IDE。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>我疊出 otto_hello.ino，模擬器裡 OTTO 每 3 秒打一次招呼。</li>
+    <li>我看懂 loop()：大括號內由上到下，做完再來一遍。</li>
+    <li>我知道 delay 的單位是毫秒，1 秒 = 1000。</li>
+    <li>我完成至少一個 🔁 迭代任務。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：會打招呼的 OTTO</div><p>下一章 CH06——重頭戲來了：<b>走路！</b>三個參數讓你完全掌控 OTTO 的步伐。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH05 完成！<span class="g">OTTO 會打招呼了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH06.html">→ 下一章 CH06</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH05 · 第一個動作',part:'#27AE60',next:'CH06.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

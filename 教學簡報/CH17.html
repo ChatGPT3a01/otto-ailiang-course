@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH17 · 期末成果發表</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第五篇 · Part 4 · 上傳與成果發表</div>
+  <h1>CH17 · <span class="g">期末成果發表</span></h1>
+  <h2>你的 OTTO，你的作品，你的舞台</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>期末專題規格</h2><div class="k">整學期本事的總驗收</div></div>
+  <div class="body">
+    <p>設計一支「<b>有個性的 OTTO</b>」程式，在真機上發表。必須包含：</p>
+    <table class="tbl">
+      <tr><th>項目</th><th>要求</th><th>對應章節</th></tr>
+      <tr><td>🎬 開場秀</td><td>音效＋動作亮相（setup 內）</td><td>CH05、CH08、CH10</td></tr>
+      <tr><td>💃 表演元素</td><td>至少 3 種舞步或手勢</td><td>CH08、CH09</td></tr>
+      <tr><td>🔁 迴圈運用</td><td>至少一個 for（重複或漸變）</td><td>CH11</td></tr>
+      <tr><td>👀 感測互動</td><td>用超音波做至少一種反應</td><td>CH12–14</td></tr>
+      <tr><td>🎤 發表</td><td>1 分鐘介紹：我的 OTTO 是什麼個性、哪段最得意、卡關怎麼解</td><td>—</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>老師的整合範本</h2><div class="k">起點不是白紙——是骨架</div></div>
+  <div class="body">
+    <p>生成器提供一支<b>整合範本 otto_final.ino</b>：開場秀 → 智慧巡邏（避障＋每 10 步慶祝一次）→ 全套結構都在。你的任務：<b>以它為底，改造出你的版本</b>。</p>
+    <ul class="sl">
+      <li>先生成範本（4 個目標：全域 → setup 開場秀 → loop 巡邏 → 偵測函式）</li>
+      <li>模擬器跑一遍，看懂每一段</li>
+      <li>列出你要改造的 3 個地方（開場？慶祝動作？避障反應？）</li>
+      <li>跟 AI 迭代到滿意 → 模擬器驗證 → Arduino IDE 上傳真機</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch17" target="_blank" rel="noopener">🚀 開啟整合範本生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🛟 救援通道</h2><div class="k">進度落後？沒關係，這裡接你上車</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>狀況</th><th>救援方案</th></tr>
+      <tr><td>自己的程式改壞了</td><td>回生成器重新生成標準版，從乾淨的重新改</td></tr>
+      <tr><td>來不及做出客製版</td><td>一鍵上傳頁燒「otto_final.ino 標準版」，發表時介紹你理解的部分</td></tr>
+      <tr><td>真機上傳一直失敗</td><td>先用模擬器發表（投影出來一樣精彩），課後找老師處理硬體</td></tr>
+      <tr><td>模擬器 OK 真機怪怪的</td><td>檢查 CH16 校正做了沒；速度 T 提高到 1000 以上再試</td></tr>
+    </table>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 一鍵上傳（救援用標準版都在裡面）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>發表流程與評分</h2><div class="k">怎麼上台、看什麼</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li><b>介紹</b>（30 秒）：我的 OTTO 叫什麼、什麼個性</li>
+      <li><b>實演</b>（60 秒）：真機表演——開場秀 → 巡邏互動（拿手掌當障礙物）</li>
+      <li><b>心得</b>（30 秒）：最得意的一段程式＋印象最深的一次 debug</li>
+    </ul>
+    <table class="tbl">
+      <tr><th>面向</th><th>比重</th><th>看什麼</th></tr>
+      <tr><td>完成度</td><td>40%</td><td>規格四項有沒有到位、能不能跑</td></tr>
+      <tr><td>創意個性</td><td>30%</td><td>看得出「你的」設計，不只是範本</td></tr>
+      <tr><td>Loop 工程歷程</td><td>20%</td><td>說得出迭代過程：卡在哪、怎麼修好</td></tr>
+      <tr><td>表達</td><td>10%</td><td>介紹清楚、時間掌控</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>課程總回顧</h2><div class="k">看看你這學期走了多遠</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>開學的你</th><th>現在的你</th></tr>
+      <tr><td>沒寫過一行程式</td><td>能指揮 AI 寫出完整 Arduino 程式</td></tr>
+      <tr><td>不知道機器人怎麼動</td><td>懂伺服馬達、腳位、超音波原理</td></tr>
+      <tr><td>程式錯了只會慌</td><td>會看錯誤訊息、會迭代修正（Loop 工程）</td></tr>
+      <tr><td>覺得寫程式很遙遠</td><td>桌上有一隻跑著你程式的機器人</td></tr>
+    </table>
+    <div class="info-box">🚀 下一步去哪？原廠資料夾還有寶藏：LED 點陣表情、藍牙 App 遙控（Otto PLUS）、瑪利歐音樂、3D 列印換裝……程式的世界，你已經有了入場券。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收（＝期末檢核表）</h2><div class="k">上台前最後確認</div></div>
+  <ul class="goals body">
+    <li>我的程式含開場秀、3 種表演元素、for 迴圈、超音波互動。</li>
+    <li>模擬器完整跑過、真機上傳成功（或已啟用救援方案）。</li>
+    <li>1 分鐘介紹稿準備好（個性／得意處／debug 故事）。</li>
+    <li>OTTO 電量充足、校正過、放好在起點。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🏆 恭喜完課！</div><p>你完成了從零到真機的完整旅程。Vibe Coding 和 Loop 工程這兩個能力，會跟著你走進任何領域。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">🎓 全課程完結！<span class="g">為你鼓掌</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="index.html">🏠 回課程總覽</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH17 · 期末成果發表',part:'#E74C3C',next:'index.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH07 · 轉彎與路線設計</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第二篇 · Part 1 · Vibe Coding 與基本動作</div>
+  <h1>CH07 · <span class="g">轉彎與路線設計</span></h1>
+  <h2>walk ＋ turn 組合，OTTO 走出一個正方形</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">從「會走」到「會走路線」</div></div>
+  <div class="body">
+    <p>學會 <code>Otto.turn</code> 轉彎之後，把「直走」和「轉彎」像積木一樣組合，就能設計出完整路線。本章目標：<b>走出一個正方形，回到原點</b>。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>OTTO 沿正方形繞圈巡邏：直走 → 左轉 → 直走 → 左轉……走完一圈唱歌慶祝。從上往下看最清楚！</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>新指令：Otto.turn</h2><div class="k">跟 walk 長得很像，好記</div></div>
+  <div class="body">
+    <div class="term"><pre>Otto.turn( <span class="cm">步數</span>, <span class="cm">速度 T</span>, <span class="cm">方向</span> );
+Otto.turn(  3,   1000,   1  );   <span class="cm">// 原地左轉 3 步</span></pre></div>
+    <table class="tbl">
+      <tr><th>參數</th><th>意思</th><th>可以填什麼</th></tr>
+      <tr><td>① 步數</td><td>轉幾步（步數越多轉越多度）</td><td>轉 90 度 ≈ <b>3 步</b>（模擬器實測）</td></tr>
+      <tr><td>② 速度 T</td><td>一步幾毫秒</td><td>600 ~ 1400</td></tr>
+      <tr><td>③ 方向</td><td>往哪轉</td><td><b>1 = 左轉，-1 = 右轉</b></td></tr>
+    </table>
+    <div class="info-box">🧭 「轉 90 度要幾步」在真機上會因場地略有不同——這就是 CH16 校正章要處理的「模擬與現實的差距」。先記住：模擬器裡 3 步 ≈ 90 度。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>路線 = 積木組合</h2><div class="k">正方形的「配方」</div></div>
+  <div class="body">
+    <p>正方形怎麼走？<b>「直走一段 → 左轉 90 度」重複 4 次</b>。翻成 OTTO 語言：</p>
+    <div class="term"><pre><span class="cm">直走 3 步   → Otto.walk(3, 1000, 1);</span>
+<span class="cm">左轉 90 度 → Otto.turn(3, 1000, 1);</span>
+<span class="cm">……以上兩行，重複 4 次 = 正方形！</span></pre></div>
+    <p>這章我們先「土法煉鋼」把 4 個邊都寫出來（8 行）。你會覺得<b>好重複、好累</b>——記住這個感覺，CH11 的 for 迴圈就是來救你的。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">節奏一樣</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_route.ino）</li>
+    <li><b>疊目標 1</b>：骨架（開頭＋setup）</li>
+    <li><b>疊目標 2</b>：loop() 正方形路線（先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>貼進模擬器執行</b>，轉到俯視角看正方形</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 5</span><h2>開啟生成器</h2><div class="k">otto_route.ino</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>點按鈕開新分頁，確認標題「🧩 逐段生成器 · <b>otto_route.ino</b>」</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch07" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 5</span><h2>疊目標 1：骨架</h2><div class="k">熟到可以閉眼做了</div></div>
+  <ul class="sl body">
+    <li>「複製提示詞」→ 貼對話框 → 「送出」→ 「採用」</li>
+  </ul>
+  <div class="body"><div class="ok-box">✅ 預期：#include、#define、setup() 一次疊好，進度 1/2。</div></div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 5</span><h2>疊目標 2：正方形 loop()</h2><div class="k">記得參考程式</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>複製提示詞 → 貼對話框 → <b>「目前疊出的檔案」貼進參考程式框</b> → 送出 → 採用</li>
+    </ul>
+    <div class="ok-box">✅ 預期：進度 2/2。loop() 裡是「walk、turn」交替共 8 行＋唱歌＋delay。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 4 / 5</span><h2>複製完整程式</h2><div class="k">作品集 +1</div></div>
+  <ul class="sl body">
+    <li>「📋 複製完整程式」＋「⬇ 下載」</li>
+    <li>關分頁回簡報</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行：俯視看路線</h2><div class="k">這章的視角是關鍵</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li><a href="../模擬器/index.html" target="_blank">3D 模擬器</a> → 貼上程式 → <b>▶ 執行</b></li>
+      <li><b>把視角拉高</b>：按住滑鼠往下拖，讓鏡頭從上往下看（像看地圖）</li>
+      <li>盯著地板格線，數 OTTO 轉了幾個彎</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：OTTO 直走、左轉、直走、左轉……走出一個<b>方形路徑</b>，回到起點附近唱 S_superHappy，然後再繞一圈。</div>
+    <p class="note">❓ 形狀歪歪的？正常！每步有小誤差，繞幾圈會慢慢偏——真機也一樣，這就是為什麼機器人比賽都要「校正」。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>逐段看懂：重複的痛苦</h2><div class="k">8 行裡有 6 行長一樣</div></div>
+  <div class="term body">
+    <button class="copy" onclick="cp(this)">複製</button>
+    <pre>void loop() {
+  Otto.walk(3, 1000, 1);   <span class="cm">// 第 1 邊</span>
+  Otto.turn(3, 1000, 1);   <span class="cm">// 左轉</span>
+  Otto.walk(3, 1000, 1);   <span class="cm">// 第 2 邊</span>
+  Otto.turn(3, 1000, 1);   <span class="cm">// 左轉</span>
+  Otto.walk(3, 1000, 1);   <span class="cm">// 第 3 邊</span>
+  Otto.turn(3, 1000, 1);   <span class="cm">// 左轉</span>
+  Otto.walk(3, 1000, 1);   <span class="cm">// 第 4 邊</span>
+  Otto.turn(3, 1000, 1);   <span class="cm">// 左轉，回到起點方向</span>
+  Otto.sing(S_superHappy); <span class="cm">// 慶祝！</span>
+  delay(2000);
+}</pre>
+  </div>
+  <p class="body">看出來了嗎？<b>同樣兩行重複了 4 次</b>。想改邊長還得改 4 個地方，好麻煩……先忍耐，CH11 的 <code>for</code> 迴圈會讓這 8 行變 4 行。</p>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">設計你的專屬路線</div></div>
+  <div class="body">
+    <p>找 AI 迭代（記得：說需求 → 驗證 → 回饋）：</p>
+    <ul style="padding-left:24px">
+      <li>⭐ 正方形改<b>右轉</b>版（哪個參數要動？）</li>
+      <li>⭐⭐ 邊長加倍：每邊 6 步——執行後從俯視角比較大小</li>
+      <li>⭐⭐⭐ 挑戰<b>三角形</b>：三個邊、每個角要轉 120 度（提示：90 度≈3 步，那 120 度大約幾步？跟 AI 討論、實測微調——這正是 Loop 工程！）</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「轉彎角度好像不夠 / 太多，請把 turn 的步數改成 ______ 再給我完整程式。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>常見問題</h2><div class="k">卡住先看這</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>轉彎方向跟我想的相反？</b></p>
+      <p class="note">從 OTTO 自己的角度看：1 = 它的左邊。你從正面看會相反——轉到它背後看就一致了。</p>
+      <p><b>越繞越偏離原點？</b></p>
+      <p class="note">正常的累積誤差。按 ⟲ 歸位重來即可。</p>
+    </div>
+    <div>
+      <p><b>可以邊走邊唱嗎？</b></p>
+      <p class="note">不行，指令是一個做完換下一個（這叫「循序執行」）。唱歌會在走完後發生。</p>
+      <p><b>程式好長好花？</b></p>
+      <p class="note">對！這就是本章埋的伏筆——CH11 的迴圈讓它縮短一半以上。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">把這章的標準程式燒進真的 OTTO</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>用傳輸線接「電腦 ⇄ OTTO」（CH02 已裝好 CH340 驅動）</li>
+      <li>點下面按鈕開「一鍵上傳」頁，在清單選<b>本章的程式</b></li>
+      <li>按「🔌 連接 OTTO 並上傳」→ 小視窗選 <b>USB-SERIAL CH340</b> → 按「連線」→ 看進度條跑完</li>
+      <li>拔線、開電源，真的 OTTO 開始表演！</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+    <p class="note">手邊沒有機器人？跳過這頁沒關係，模擬器的成果一樣算數；自己改造的程式要上真機則走 CH15 的 Arduino IDE。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">會動篇畢業考</div></div>
+  <ul class="goals body">
+    <li>我疊出 otto_route.ino，俯視角看到 OTTO 走正方形。</li>
+    <li>我說得出 turn 三參數，知道 90 度 ≈ 3 步。</li>
+    <li>我體會到「重複程式碼很麻煩」（CH11 見！）。</li>
+    <li>我完成至少一個 🔁 迭代任務（三角形加分）。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：會走路線的 OTTO</div><p>「會動篇」完結！下一篇 OTTO 要上舞台了——CH08 先學唱歌與手勢，把表演的靈魂裝進去。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH07 完成！<span class="g">會動篇畢業</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH08.html">→ 下一章 CH08</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH07 · 轉彎與路線設計',part:'#27AE60',next:'CH08.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

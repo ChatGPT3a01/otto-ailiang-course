@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH01 · 認識 OTTO 機器人</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第一篇 · Part 0 · 課前準備</div>
+  <h1>CH01 · <span class="g">認識 OTTO 機器人</span></h1>
+  <h2>4 顆馬達、一對超音波眼睛、一顆 Nano 大腦</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做什麼</h2><div class="k">先認識夥伴，才知道怎麼指揮它</div></div>
+  <div class="body">
+    <p>寫程式指揮機器人之前，要先知道它<b>身上有什麼、每個零件叫什麼名字、接在哪支「腳位」</b>。之後對 AI 下指令時，你會一直用到這些名字。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>一張你自己看得懂的「OTTO 身體地圖」：每個零件的名字、功能、腳位編號。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>正面：眼睛和四肢</h2><div class="k">看照片認零件</div></div>
+  <div class="tc body">
+    <div class="img-box"><img src="assets/img/otto_front.jpg" alt="OTTO 正面">
+      <div class="hint">OTTO 正面：超音波眼睛＋兩腿兩腳</div></div>
+    <div>
+      <p><b>👀 超音波眼睛</b>：外圈鋁銀色、裡面黑色的兩個圓筒。它不是裝飾——一邊發出超音波、一邊接收回音，靠「回音多久回來」算出前面的東西有多遠。</p>
+      <p><b>🦵 兩條腿</b>：讓 OTTO 左右扭動的關節。</p>
+      <p><b>🦶 兩隻腳掌</b>：讓 OTTO 翹腳尖、側身踮腳的關節。</p>
+      <p class="note">走路的秘密：腿和腳「一扭一翹」配合，OTTO 就一步步往前挪。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>背面：充電孔和傳輸孔</h2><div class="k">之後上傳程式就靠它</div></div>
+  <div class="tc body">
+    <div class="img-box"><img src="assets/img/otto_back.jpg" alt="OTTO 背面">
+      <div class="hint">背面：圓形電源孔＋mini-USB 傳輸孔；腿裡藍色的就是伺服馬達</div></div>
+    <div>
+      <p><b>🔌 圓形電源孔</b>：接電池盒或變壓器，給馬達吃飽電。</p>
+      <p><b>🔗 mini-USB 傳輸孔</b>：CH15 我們就是用傳輸線接這裡，把程式從電腦「灌」進 OTTO。</p>
+      <p><b>🔵 藍色小方塊</b>：露出來的<b>伺服馬達</b>本人！每個關節裡都藏著一顆。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>伺服馬達：OTTO 的肌肉</h2><div class="k">聽得懂「轉到幾度」的聰明馬達</div></div>
+  <div class="body">
+    <p>一般馬達只會「一直轉」，<b>伺服馬達（Servo）</b>聽得懂「<b>轉到 90 度」「轉到 120 度</b>」這種指令，指哪到哪。OTTO 全身有 <b>4 顆</b>：</p>
+    <table class="tbl">
+      <tr><th>零件</th><th>程式裡的名字</th><th>腳位</th><th>負責什麼</th></tr>
+      <tr><td>左腿</td><td><code>PIN_YL</code></td><td><b>2</b></td><td>左腿左右扭</td></tr>
+      <tr><td>右腿</td><td><code>PIN_YR</code></td><td><b>3</b></td><td>右腿左右扭</td></tr>
+      <tr><td>左腳掌</td><td><code>PIN_RL</code></td><td><b>4</b></td><td>左腳翹起 / 壓下</td></tr>
+      <tr><td>右腳掌</td><td><code>PIN_RR</code></td><td><b>5</b></td><td>右腳翹起 / 壓下</td></tr>
+    </table>
+    <div class="info-box">🧠 「腳位（Pin）」就像大腦 Nano 的插座編號。程式說「腳位 2 轉 30 度」，左腿就動了。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>其他重要零件</h2><div class="k">眼睛、嘴巴、大腦的腳位</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>零件</th><th>程式裡的名字</th><th>腳位</th><th>負責什麼</th></tr>
+      <tr><td>超音波（發射）</td><td><code>PIN_Trigger</code></td><td><b>8</b></td><td>發出超音波</td></tr>
+      <tr><td>超音波（接收）</td><td><code>PIN_Echo</code></td><td><b>9</b></td><td>接收回音 → 算距離</td></tr>
+      <tr><td>蜂鳴器</td><td><code>PIN_Buzzer</code></td><td><b>13</b></td><td>唱歌、音效</td></tr>
+      <tr><td>大腦</td><td colspan="2">Arduino Nano</td><td>執行你的程式</td></tr>
+    </table>
+    <div class="ok-box">✅ 這張表＋上一張表，就是你的「OTTO 身體地圖」。之後程式開頭的 <code>#define</code> 腳位設定，寫的就是這些數字。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>大腦：Arduino Nano</h2><div class="k">一片名片大小的小電腦</div></div>
+  <div class="body">
+    <p><b>Arduino Nano</b> 是一片超迷你電腦，藏在 OTTO 身體裡。它沒有螢幕鍵盤，只做一件事：<b>不停執行你灌進去的程式</b>。</p>
+    <ul style="padding-left:24px">
+      <li>程式怎麼進去？→ 用 USB 傳輸線從電腦上傳（CH15）</li>
+      <li>斷電了程式會不見嗎？→ 不會！存在裡面，一插電就跑</li>
+      <li>可以換程式嗎？→ 可以，重新上傳就覆蓋</li>
+    </ul>
+    <div class="info-box">💡 所以 OTTO 的個性 100% 由程式決定——換一支程式，它就從「舞王」變「保全」。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>看看不同角度</h2><div class="k">立體地認識你的夥伴</div></div>
+  <div class="mockrow body">
+    <div class="img-box" style="max-width:340px"><img src="assets/img/otto_side.jpg" alt="OTTO 側面">
+      <div class="hint">側面：頭上的電源孔與開關</div></div>
+    <div class="img-box" style="max-width:340px"><img src="assets/img/otto_angle.jpg" alt="OTTO 斜側面">
+      <div class="hint">斜側面：3D 列印的外殼線條</div></div>
+  </div>
+  <div class="body"><p class="note" style="text-align:center;margin-top:8px">外殼是 3D 列印的！原廠也提供紙模型和各種造型外殼（熊貓、無敵鐵金剛…），期末可以幫你的 OTTO 換裝。</p></div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>在 3D 模擬器裡認識它</h2><div class="k">轉一圈，跟身體地圖對對看</div></div>
+  <div class="body">
+    <p>打開 <b>3D 模擬器</b>，用滑鼠把虛擬 OTTO 轉一圈，找找看：超音波眼睛、四個關節、腿側的藍色伺服馬達——跟真機照片是不是一樣？</p>
+    <div class="gen-launch"><a class="gen-launch-btn" href="../模擬器/index.html" target="_blank" rel="noopener">🤖 打開 3D 模擬器（新分頁）</a>
+      <div class="gen-launch-hint">拖曳＝旋轉視角、滾輪＝縮放。順便按一下「▶ 執行」看範例程式跑起來——下一章我們就要開始寫自己的了。</div></div>
+    <div class="info-box">👀 彩蛋：執行「05 避障範例」時盯著眼睛看——發射超音波的瞬間，眼睛會<b>閃紅光</b>！</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">身體地圖記起來了嗎</div></div>
+  <ul class="goals body">
+    <li>我說得出 OTTO 的 4 顆伺服馬達在哪、腳位各是 2 / 3 / 4 / 5。</li>
+    <li>我知道超音波眼睛（8 / 9）是量距離的，蜂鳴器（13）是唱歌的。</li>
+    <li>我知道程式存在 Arduino Nano 裡，用背後的 USB 孔上傳。</li>
+    <li>我在 3D 模擬器把 OTTO 轉了一圈，零件都對上了。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：OTTO 身體地圖</div><p>下一章 CH02，把上課要用的工具裝齊：AI 助手＋模擬器捷徑，（要上真機的）再裝 Arduino IDE。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH01 完成！<span class="g">認識你的夥伴了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH02.html">→ 下一章 CH02</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH01 · 認識 OTTO 機器人',part:'#4A90D9',next:'CH02.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH04 · 程式骨架地圖</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第二篇 · Part 1 · Vibe Coding 與基本動作</div>
+  <h1>CH04 · <span class="g">程式骨架地圖</span></h1>
+  <h2>.ino、setup() 與 loop()——OTTO 程式的家</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">第一支自己疊出來的程式</div></div>
+  <div class="body">
+    <p>我們要用生成器疊出第一支完整程式 <span class="filechip">otto_robot.ino</span>：OTTO 開機會<b>唱一段音效、立正站好</b>。很簡單，但它是之後每一章的<b>地基</b>。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>模擬器裡的 OTTO 聽你的程式「開機」：登登登 → 立正。之後每章都在這骨架上加本事。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>Arduino 程式的形狀</h2><div class="k">每支 .ino 都有這三塊</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>區塊</th><th>什麼時候跑</th><th>放什麼</th></tr>
+      <tr><td><b>開頭</b>（最上面）</td><td>還沒開始跑</td><td>載入函式庫、腳位設定（#define）</td></tr>
+      <tr><td><b>setup()</b></td><td>開機時<b>只跑一次</b></td><td>接通零件、開機儀式</td></tr>
+      <tr><td><b>loop()</b></td><td>跑完<b>再跑一遍，永遠重複</b></td><td>OTTO 平常要做的事</td></tr>
+    </table>
+    <div class="info-box">🏠 比喻：開頭＝進家門前先看地址門牌；setup()＝早上起床儀式（只做一次）；loop()＝上班的一天（每天重複）。</div>
+  </div>
+</section>
+
+<!-- VIBE:ino_ch04 -->
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">接下來一步一步做，做完 OTTO 就開機了</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li><b>開啟生成器</b>（新分頁）</li>
+      <li><b>疊出目標 1</b>：開頭與腳位設定</li>
+      <li><b>疊出目標 2、3</b>：setup() 和 loop()（第 2 段起要先貼參考程式）</li>
+      <li><b>下載／複製完整程式</b></li>
+      <li><b>貼進 3D 模擬器</b>，按 ▶ 執行，驗證結果</li>
+    </ul>
+    <div class="info-box">💡 生成的程式和老師成品一致——全班的骨架都一樣，之後互相救援才方便。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 5</span><h2>開啟生成器</h2><div class="k">在新分頁操作，簡報不用關</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>點下面的大按鈕，會開一個<b>新分頁</b></li>
+      <li>看到標題「🧩 逐段生成器 · <b>otto_robot.ino</b>」就對了</li>
+      <li>頁面上有「目標 1：開頭：函式庫與腳位設定」</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch04" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+    <p class="note">❓ 按了沒反應？瀏覽器可能擋了彈出視窗——網址列右邊找「已封鎖彈出式視窗」點允許。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 5</span><h2>疊出目標 1：開頭與腳位</h2><div class="k">複製 → 貼上 → 送出 → 採用</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>在目標 1 按「<b>複製提示詞</b>」</li>
+      <li>把提示詞<b>貼進下方對話框</b>（想加自己的話也可以）</li>
+      <li>按綠色「<b>送出</b>」→ 看 AI 一行行生成程式</li>
+      <li>生成完按「<b>採用這段程式</b>」</li>
+    </ul>
+    <div class="ok-box">✅ 預期：下方「目前疊出的檔案」出現第一段程式（#include 和一排 #define），進度變成 1/3。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 5</span><h2>疊出目標 2、3</h2><div class="k">從第 2 段開始多一個小動作</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>目標 2 一樣先按「<b>複製提示詞</b>」貼進對話框</li>
+      <li><b>多這一步</b>：把「目前疊出的檔案」的程式，貼進「<b>參考程式</b>」框（讓 AI 知道要接在誰後面）</li>
+      <li>按「<b>送出</b>」→ 生成 → 「<b>採用</b>」</li>
+      <li>目標 3（loop）照一樣的做法完成</li>
+    </ul>
+    <div class="ok-box">✅ 預期：進度 3/3，出現綠色完成訊息「這份程式和老師成品一致 ✅」。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 4 / 5</span><h2>下載／複製完整程式</h2><div class="k">拿到你的 otto_robot.ino</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>按「<b>📋 複製完整程式</b>」（或「⬇ 下載」存成檔案）</li>
+      <li>關掉生成器分頁，回到這份簡報</li>
+    </ul>
+    <div class="info-box">💾 建議在電腦開一個「OTTO課程」資料夾，每章下載的 .ino 都存進去——這就是你的作品集。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>貼進模擬器，執行！</h2><div class="k">見證你的第一支程式</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>打開 <b>3D 模擬器</b>（書籤，或 <a href="../模擬器/index.html" target="_blank">點這裡</a>）</li>
+      <li>點左邊程式面板 → <b>Ctrl+A 全選</b> → Delete 刪掉原本的範例</li>
+      <li><b>Ctrl+V 貼上</b>你剛複製的程式</li>
+      <li>按 <b>▶ 執行</b></li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：聽到「登登登」開機音效 → OTTO 立正站好 → 紀錄顯示「loop() 是空的，程式跑完 setup() 就結束了」。<b>這樣就對了！</b>loop 還空著，本來就沒動作。</div>
+    <p class="note">❓ 沒聲音？右上角「🔊 開啟聲音」要打勾；先用滑鼠點一下頁面再執行（瀏覽器規定）。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>逐段看懂：開頭</h2><div class="k">不用背，看懂重點就好</div></div>
+  <div class="term body">
+    <button class="copy" onclick="cp(this)">複製</button>
+    <pre><span class="cm">#include &lt;Otto9.h&gt;   // 載入 OTTO 的能力包（原廠 V9 函式庫）</span>
+Otto9 Otto;          <span class="cm">// 宣告一隻機器人，名字就叫 Otto</span>
+
+#define PIN_YL 2       <span class="cm">// 左腿伺服馬達 → 腳位 2</span>
+#define PIN_YR 3       <span class="cm">// 右腿伺服馬達 → 腳位 3</span>
+#define PIN_RL 4       <span class="cm">// 左腳伺服馬達 → 腳位 4</span>
+#define PIN_RR 5       <span class="cm">// 右腳伺服馬達 → 腳位 5</span>
+#define PIN_Trigger 8  <span class="cm">// 超音波發射 → 腳位 8</span>
+#define PIN_Echo 9     <span class="cm">// 超音波接收 → 腳位 9</span>
+#define PIN_Buzzer 13  <span class="cm">// 蜂鳴器 → 腳位 13</span></pre>
+  </div>
+  <p class="note body">眼熟嗎？這些數字就是 CH01 的「身體地圖」！<code>#define</code> 是幫數字取名字：之後寫 <code>PIN_YL</code> 就等於寫 2，但人看得懂。</p>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>逐段看懂：setup() 與 loop()</h2><div class="k">開機儀式＋永遠重複的心臟</div></div>
+  <div class="term body">
+    <button class="copy" onclick="cp(this)">複製</button>
+    <pre>void setup() {
+  <span class="cm">// 接通所有零件（參數順序是固定的，抄就對了）</span>
+  Otto.init(PIN_YL, PIN_YR, PIN_RL, PIN_RR, true, A6, PIN_Buzzer, PIN_Trigger, PIN_Echo);
+  Otto.sing(S_connection);  <span class="cm">// 唱開機音效：登登登！</span>
+  Otto.home();              <span class="cm">// 立正站好</span>
+}
+
+void loop() {
+  <span class="cm">// 之後每一章教的新本事都寫在這裡</span>
+}</pre>
+  </div>
+  <p class="body"><code>Otto.init(...)</code> 一行把 CH01 認識的所有零件接通；<code>Otto.sing()</code> 唱音效；<code>Otto.home()</code> 立正。<b>loop() 現在是空的</b>——這正是下一章要填的地方。</p>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">輪到你指揮：改造開機儀式</div></div>
+  <div class="body">
+    <p>把你的程式貼給 AI，用自己的話請它修改，改完貼回模擬器驗證。挑戰任選（也可以自己想）：</p>
+    <ul style="padding-left:24px">
+      <li>⭐ 開機音效換成<b>超級開心</b>（提示：S_superHappy）</li>
+      <li>⭐⭐ 開機後<b>多表演一個手勢</b>（提示：Otto.playGesture(OttoHappy)）</li>
+      <li>⭐⭐⭐ 開機唱歌<b>之前</b>先等 1 秒（提示：delay(1000)——想想要放在哪一行前面？）</li>
+    </ul>
+    <div class="info-box">💬 回饋句型參考：「這支程式開機會唱 S_connection，請幫我改成 ______，其他不要動。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>常見問題</h2><div class="k">卡住先看這</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>按執行沒反應？</b></p>
+      <p class="note">看左下紅字。「找不到 void setup()」→ 程式沒貼完整，回生成器重新複製完整程式。</p>
+      <p><b>紅字「不認識的名稱」？</b></p>
+      <p class="note">通常是 #define 那段沒貼到。開頭＋setup＋loop 三段都要在。</p>
+    </div>
+    <div>
+      <p><b>沒有聲音？</b></p>
+      <p class="note">右上角聲音打勾；先用滑鼠點一下頁面再執行（瀏覽器規定）。</p>
+      <p><b>AI 生出來的跟老師版不一樣？</b></p>
+      <p class="note">正常！AI 每次寫法可能小差異。課堂以生成器「採用」的版本為準，自由發揮留在迭代任務。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">把這章的標準程式燒進真的 OTTO</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>用傳輸線接「電腦 ⇄ OTTO」（CH02 已裝好 CH340 驅動）</li>
+      <li>點下面按鈕開「一鍵上傳」頁，在清單選<b>本章的程式</b></li>
+      <li>按「🔌 連接 OTTO 並上傳」→ 小視窗選 <b>USB-SERIAL CH340</b> → 按「連線」→ 看進度條跑完</li>
+      <li>拔線、開電源，真的 OTTO 開始表演！</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+    <p class="note">手邊沒有機器人？跳過這頁沒關係，模擬器的成果一樣算數；自己改造的程式要上真機則走 CH15 的 Arduino IDE。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">骨架蓋好了嗎</div></div>
+  <ul class="goals body">
+    <li>我用生成器疊出完整的 otto_robot.ino 並下載／複製。</li>
+    <li>模擬器執行成功：開機音效＋立正，loop 空的也知道為什麼。</li>
+    <li>我說得出三塊結構：開頭（腳位）、setup()（一次）、loop()（重複）。</li>
+    <li>我完成至少一個 🔁 迭代任務。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：OTTO 程式的地基</div><p>下一章 CH05，往 loop() 填入第一個動作——OTTO 要開始打招呼了！</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH04 完成！<span class="g">骨架蓋好了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH05.html">→ 下一章 CH05</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH04 · 程式骨架地圖',part:'#27AE60',next:'CH05.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

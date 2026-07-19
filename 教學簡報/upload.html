@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔌 一鍵上傳到 OTTO</title>
+<style>
+:root{--p:#4A90D9;--gold:#F5A623;--gold2:#f7d98a;--muted:#b9a9d6;--line:rgba(255,255,255,.14)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',system-ui,'Microsoft JhengHei',sans-serif;color:#f3eefb;
+  background:linear-gradient(160deg,#0f0c29,#302b63 55%,#24243e);min-height:100vh;line-height:1.7}
+.top{position:sticky;top:0;background:rgba(10,8,30,.95);display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);z-index:10}
+.top .t{font-weight:900;font-size:17px}
+.top a{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  border-radius:20px;padding:7px 14px;font-size:14px;font-weight:700}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+.card{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+.card h2{font-size:20px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.stepn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;
+  background:var(--gold);color:#2a1a4a;font-weight:900;font-size:16px;flex-shrink:0}
+.card p{font-size:15.5px;margin:6px 0}
+.card .mut{color:var(--muted);font-size:14px}
+select,button.big{font-family:inherit;font-size:16px;border-radius:12px;padding:12px 16px;border:1px solid var(--line)}
+select{background:#241f45;color:#f3eefb;width:100%}
+button.big{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#2a1a4a;font-weight:900;
+  border:none;cursor:pointer;font-size:18px;padding:14px 30px;transition:.15s}
+button.big:hover{transform:translateY(-2px)}
+button.big:disabled{opacity:.4;cursor:not-allowed;transform:none}
+button.ghost{background:rgba(255,255,255,.1);color:#f3eefb;border:1px solid var(--line);border-radius:10px;
+  padding:9px 16px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:700}
+.ok{background:rgba(39,174,96,.15);border:1px solid #27AE60;color:#9be8bb;border-radius:12px;padding:12px 16px;margin:10px 0;font-size:15px}
+.warn{background:rgba(231,76,60,.14);border:1px solid #E74C3C;color:#ffb3a7;border-radius:12px;padding:12px 16px;margin:10px 0;font-size:15px}
+.info{background:rgba(74,144,217,.15);border:1px solid var(--p);color:#cfe3ff;border-radius:12px;padding:12px 16px;margin:10px 0;font-size:15px}
+.bar{height:26px;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:12px 0}
+.bar .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#2ECC71);
+  display:flex;align-items:center;justify-content:center;color:#1a1a2e;font-weight:900;font-size:13px;transition:width .2s}
+#log{background:#12121e;border-radius:10px;padding:12px 14px;font-family:'Fira Code',Consolas,monospace;
+  font-size:13px;line-height:1.7;max-height:240px;overflow-y:auto;margin-top:10px}
+#log .e{color:#ff9d9d}#log .s{color:#9aa4b2}#log .g{color:#7ee787}
+.pill{display:inline-block;background:rgba(245,166,35,.15);border:1px solid var(--gold);color:var(--gold2);
+  border-radius:16px;padding:3px 12px;font-size:13px;font-weight:700;margin-left:8px}
+kbd{background:rgba(255,255,255,.12);border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:.9em}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="t">🔌 一鍵上傳到 OTTO <span class="pill">標準程式專用</span></div>
+  <a href="index.html">← 回課程首頁</a>
+</div>
+<div class="wrap">
+
+  <div id="noserial" class="warn" style="display:none">
+    ❌ 這個瀏覽器不支援直接上傳。請改用<b>電腦版 Chrome 或 Edge</b>（手機、平板、Firefox、Safari 都不行）。
+  </div>
+
+  <div class="info">💡 這個頁面能把「各章的老師標準程式」直接燒進 OTTO，全程不用開 Arduino IDE。<b>你自己改過的客製程式</b>請走 CH15 的 Arduino IDE 流程。</div>
+
+  <div class="card">
+    <h2><span class="stepn">1</span>接上傳輸線</h2>
+    <p>① 用 USB 傳輸線連接「電腦 ⇄ OTTO 頭後方的 mini-USB 孔」。</p>
+    <p>② OTTO 的電源開關<b>打開</b>（或由 USB 供電）。</p>
+    <p class="mut">⚠️ 第一次使用前，電腦要先裝過 <b>CH340 驅動</b>（CH02 有一步一步教學；裝過一次就永遠不用再裝）。</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="stepn">2</span>選擇要上傳的章節程式</h2>
+    <select id="hexSel"></select>
+    <p class="mut" style="margin-top:8px">清單裡是各章生成器的「老師標準版」，內容和你在生成器疊出來的一模一樣。</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="stepn">3</span>連接並上傳</h2>
+    <p>按下按鈕後，瀏覽器會跳出<b>選擇連接埠</b>的小視窗：</p>
+    <p style="padding-left:14px">① 選 <b>USB-SERIAL CH340（COM 幾號都可以）</b>　② 按「連線」→ 就會自動開始燒錄。</p>
+    <div style="text-align:center;margin:16px 0">
+      <button class="big" id="btnGo">🔌 連接 OTTO 並上傳</button>
+    </div>
+    <div class="bar"><div class="fill" id="fill">0%</div></div>
+    <div id="msg"></div>
+    <div id="log"><span class="s">等待開始……（提示：Arduino IDE 的序列埠監控視窗要先關掉，不然會搶線）</span></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="stepn">4</span>上傳成功後</h2>
+    <p>① 拔掉傳輸線。② 把 OTTO 放到桌面上、打開電源。③ 它就會開始跑你剛上傳的程式！</p>
+    <p class="mut">要換程式？隨時回到這頁再傳一次，新程式會覆蓋舊程式。</p>
+  </div>
+
+</div>
+
+<script src="assets/otto-hexes.js"></script>
+<script>
+/* ============ UI ============ */
+const $ = id => document.getElementById(id);
+const logEl = $('log');
+function log(t, c){ const d = document.createElement('div'); if(c) d.className = c;
+  d.textContent = t; logEl.appendChild(d); logEl.scrollTop = logEl.scrollHeight; }
+function setBar(p){ $('fill').style.width = p + '%'; $('fill').textContent = p + '%'; }
+function msg(html, cls){ $('msg').innerHTML = html ? `<div class="${cls}">${html}</div>` : ''; }
+
+if(!('serial' in navigator)) { $('noserial').style.display = 'block'; $('btnGo').disabled = true; }
+
+const sel = $('hexSel');
+const names = window.OTTO_HEX_NAMES || {};
+for(const id of Object.keys(names)) {
+  const o = document.createElement('option'); o.value = id; o.textContent = names[id];
+  sel.appendChild(o);
+}
+if(!sel.children.length){ const o = document.createElement('option'); o.textContent = '（找不到 otto-hexes.js，請確認課程資料夾完整）'; sel.appendChild(o); $('btnGo').disabled = true; }
+
+/* ============ Intel HEX 解析 ============ */
+function parseHex(text){
+  const mem = new Uint8Array(32768).fill(0xFF);
+  let max = 0, base = 0;
+  for(const line of text.split(/\r?\n/)){
+    if(!line.startsWith(':')) continue;
+    const bytes = [];
+    for(let i = 1; i < line.length - 1; i += 2) bytes.push(parseInt(line.substr(i, 2), 16));
+    const [len, ah, al, type] = bytes;
+    const addr = base + (ah << 8) + al;
+    if(type === 0){
+      for(let i = 0; i < len; i++){ mem[addr + i] = bytes[4 + i]; }
+      max = Math.max(max, addr + len);
+    } else if(type === 2){ base = ((bytes[4] << 8) + bytes[5]) * 16; }
+      else if(type === 4){ base = ((bytes[4] << 8) + bytes[5]) * 65536; }
+  }
+  return mem.slice(0, max);
+}
+
+/* ============ STK500v1 燒錄 ============ */
+class Stk {
+  constructor(port){ this.port = port; this.buf = []; }
+  async open(baud){
+    await this.port.open({baudRate: baud});
+    this.writer = this.port.writable.getWriter();
+    this.reader = this.port.readable.getReader();
+    this.pump();
+  }
+  async pump(){
+    try{
+      while(true){
+        const {value, done} = await this.reader.read();
+        if(done) break;
+        if(value) this.buf.push(...value);
+      }
+    }catch(e){}
+  }
+  async close(){
+    try{ this.reader && await this.reader.cancel(); }catch(e){}
+    try{ this.writer && this.writer.releaseLock(); }catch(e){}
+    try{ await this.port.close(); }catch(e){}
+  }
+  async write(bytes){ await this.writer.write(new Uint8Array(bytes)); }
+  async read(n, timeout){
+    const t0 = Date.now();
+    while(this.buf.length < n){
+      if(Date.now() - t0 > timeout) throw new Error('等不到回應（timeout）');
+      await new Promise(r => setTimeout(r, 10));
+    }
+    return this.buf.splice(0, n);
+  }
+  drain(){ this.buf.length = 0; }
+  async cmd(bytes, respN, timeout){
+    this.drain();
+    await this.write([...bytes, 0x20]);              // 0x20 = CRC_EOP
+    const r = await this.read(respN + 2, timeout || 800);
+    if(r[0] !== 0x14 || r[r.length - 1] !== 0x10) throw new Error('回應不正確：' + r.map(x=>x.toString(16)).join(' '));
+    return r.slice(1, -1);
+  }
+  async reset(){
+    await this.port.setSignals({dataTerminalReady:false, requestToSend:false});
+    await new Promise(r => setTimeout(r, 250));
+    await this.port.setSignals({dataTerminalReady:true, requestToSend:true});
+    await new Promise(r => setTimeout(r, 50));
+    this.drain();
+  }
+  async sync(){
+    for(let i = 0; i < 10; i++){
+      try{
+        this.drain();
+        await this.write([0x30, 0x20]);              // STK_GET_SYNC
+        const r = await this.read(2, 350);
+        if(r[0] === 0x14 && r[1] === 0x10) return true;
+      }catch(e){}
+      await new Promise(r => setTimeout(r, 60));
+    }
+    return false;
+  }
+}
+
+async function flash(){
+  const hexText = (window.OTTO_HEXES || {})[sel.value];
+  if(!hexText){ msg('找不到這一章的 hex 資料', 'warn'); return; }
+  const image = parseHex(hexText);
+  $('btnGo').disabled = true; msg(''); setBar(0);
+  log('📄 程式大小：' + image.length + ' bytes', 's');
+
+  let port;
+  try{ port = await navigator.serial.requestPort(); }
+  catch(e){ log('（沒有選擇連接埠，已取消）', 's'); $('btnGo').disabled = false; return; }
+
+  let stk = null, connected = false;
+  for(const baud of [57600, 115200]){
+    stk = new Stk(port);
+    try{
+      log('🔗 嘗試以 ' + baud + ' 連線並重置 OTTO…', 's');
+      await stk.open(baud);
+      await stk.reset();
+      if(await stk.sync()){ log('🤝 同步成功（' + baud + '）', 'g'); connected = true; break; }
+      log('… ' + baud + ' 沒有回應，換一種速度', 's');
+      await stk.close();
+    }catch(e){
+      log('⚠️ ' + e.message, 'e');
+      try{ await stk.close(); }catch(_){}
+    }
+  }
+  if(!connected){
+    msg('連不上 OTTO。請檢查：①傳輸線有插好嗎（要用「傳輸」線，不是純充電線）②CH340 驅動裝了嗎（CH02）③Arduino IDE 的序列埠監控關了嗎，然後再試一次。', 'warn');
+    $('btnGo').disabled = false; return;
+  }
+
+  try{
+    const sig = await stk.cmd([0x75], 3);            // 讀晶片簽名
+    log('🔎 晶片簽名：' + sig.map(x=>x.toString(16).padStart(2,'0')).join(' ') + '（1e 95 0f = ATmega328P ✓）', 's');
+    await stk.cmd([0x50], 0);                        // 進入燒錄模式
+    log('🚀 開始燒錄…', 'g');
+    const PAGE = 128;
+    const pages = Math.ceil(image.length / PAGE);
+    for(let p = 0; p < pages; p++){
+      const byteAddr = p * PAGE;
+      const wordAddr = byteAddr >> 1;
+      await stk.cmd([0x55, wordAddr & 0xFF, (wordAddr >> 8) & 0xFF], 0);      // 設定位址
+      const chunk = new Uint8Array(PAGE).fill(0xFF);
+      chunk.set(image.slice(byteAddr, byteAddr + PAGE));
+      await stk.cmd([0x64, 0x00, PAGE, 0x46, ...chunk], 0, 2000);             // 寫入一頁
+      setBar(Math.round(((p + 1) / pages) * 100));
+    }
+    await stk.cmd([0x51], 0);                        // 離開燒錄模式
+    await stk.close();
+    setBar(100);
+    log('🎉 上傳完成！', 'g');
+    msg('🎉 <b>上傳成功！</b>拔線、開電源，OTTO 開始表演。', 'ok');
+  }catch(e){
+    log('❌ ' + e.message, 'e');
+    msg('上傳中斷：' + e.message + '。拔掉傳輸線重插，再試一次。', 'warn');
+    try{ await stk.close(); }catch(_){}
+  }
+  $('btnGo').disabled = false;
+}
+$('btnGo').addEventListener('click', flash);
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH11 · Loop 工程專章</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第三篇 · Part 2 · 唱歌跳舞與 Loop 工程</div>
+  <h1>CH11 · <span class="g">Loop 工程專章</span></h1>
+  <h2>loop()、for 迴圈、迭代循環——三種 Loop 一次修煉</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">課程核心章，含金量最高</div></div>
+  <div class="body">
+    <p>「Loop」這個字，這學期你已遇過三次。這章把它們一次講透，並用 <b>for 迴圈</b>把 CH07 的 8 行正方形<b>縮成 4 行</b>，還能做出「越跳越快」這種以前做不到的效果。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>正方形 2.0（for 版）＋越跳越快的律動——程式更短，能力更強。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>三種 Loop，一張表看懂</h2><div class="k">名字一樣，層次不同</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>Loop</th><th>它是什麼</th><th>你在哪遇過</th></tr>
+      <tr><td>🔄 <b>loop()</b> 函式</td><td>Arduino 程式的心臟，做完再來一遍</td><td>CH04 起每一章（右下角圈數徽章）</td></tr>
+      <tr><td>🔁 <b>for</b> 迴圈</td><td>程式裡「重複 N 次」的指令，<b>本章主角</b></td><td>CH07 埋的伏筆：8 行重複好痛苦</td></tr>
+      <tr><td>🛠️ <b>迭代循環</b>（Loop 工程）</td><td>執行→觀察→回饋→修正的工作法</td><td>每章的 🔁 迭代任務</td></tr>
+    </table>
+    <div class="info-box">💡 共同精神：<b>重複，是力量</b>。機器重複做事（loop/for），人重複改進（迭代）。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>for 迴圈解剖</h2><div class="k">括號裡三段，用分號隔開</div></div>
+  <div class="body">
+    <div class="term"><pre>for (<span class="cm">int i = 0</span>; <span class="cm">i &lt; 4</span>; <span class="cm">i++</span>) {
+  <span class="cm">// 這裡面的事會重複 4 次</span>
+}</pre></div>
+    <table class="tbl">
+      <tr><th>段</th><th>寫法</th><th>意思</th></tr>
+      <tr><td>① 起點</td><td><code>int i = 0</code></td><td>準備計數器 i，從 0 開始</td></tr>
+      <tr><td>② 條件</td><td><code>i &lt; 4</code></td><td>只要 i 還小於 4，就繼續</td></tr>
+      <tr><td>③ 變化</td><td><code>i++</code></td><td>每做完一圈，i 加 1</td></tr>
+    </table>
+    <p class="note">i 的旅程：0 → 1 → 2 → 3 →（變 4，條件不成立）停。所以剛好 <b>4 次</b>。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">生成 → 執行 → 對比</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_loops.ino）</li>
+    <li><b>疊目標 1</b>：骨架</li>
+    <li><b>疊目標 2</b>：for 版正方形＋越跳越快（先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>模擬器執行</b>，跟 CH07 的 8 行版對比</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1-4 / 5</span><h2>生成 otto_loops.ino</h2><div class="k">四步連做</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>開生成器 → 目標 1 骨架（複製 → 送出 → 採用）</li>
+      <li>目標 2 迴圈雙招（複製 → <b>貼參考程式</b> → 送出 → 採用）</li>
+      <li>「📋 複製完整程式」＋下載</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch11" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行</h2><div class="k">看兩招迴圈魔法</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>貼上程式 → ▶ 執行（俯視角看正方形）</li>
+      <li>看執行紀錄：「📦 變數 i = 0、1、2、3」——i 在長大！</li>
+      <li>第二段：注意 updown 一次比一次快（1400 → 1200 → 1000 → 800）</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：正方形一樣走得完（但程式只有 4 行）；接著上下律動越來越快，最後唱歌慶祝。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>逐段看懂：用 i 改變參數</h2><div class="k">迴圈不只重複，還能「每次不一樣」</div></div>
+  <div class="term body">
+    <button class="copy" onclick="cp(this)">複製</button>
+    <pre>for (int i = 0; i &lt; 4; i++) {
+  Otto.updown(1, 1400 - i * 200, 20);
+  <span class="cm">// i=0 → 1400-0   = 1400（慢）</span>
+  <span class="cm">// i=1 → 1400-200 = 1200</span>
+  <span class="cm">// i=2 → 1400-400 = 1000</span>
+  <span class="cm">// i=3 → 1400-600 = 800（快！）</span>
+}</pre>
+  </div>
+  <p class="body">把 <code>i</code> 放進參數裡做算術，每一圈的動作就會漸變——漸快、漸慢、越走越遠……全靠這招。<b>這是純手寫 8 行做不到的。</b></p>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">迴圈魔法自由練</div></div>
+  <div class="body">
+    <ul style="padding-left:24px">
+      <li>⭐ 正方形改成<b>走 2 圈</b>（i &lt; 幾？）</li>
+      <li>⭐⭐ 把 CH10 你的舞蹈秀裡「重複的段落」用 for 改寫變短</li>
+      <li>⭐⭐⭐ 設計「<b>漸強舞</b>」：用 i 讓 moonwalker 的高度 h 從 10 一路加到 28（提示：10 + i * 6）</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「請用 for 迴圈改寫這段重複的程式，並用 i 讓 ______ 每圈遞增/遞減 ______。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">otto_loops.ino</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>接線 → 一鍵上傳頁選 <b>otto_loops.ino</b> → 連接上傳 → 拔線開機</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">Loop 三修檢定</div></div>
+  <ul class="goals body">
+    <li>我分得清三種 Loop：loop() 函式、for 迴圈、迭代循環工作法。</li>
+    <li>我看得懂 for 括號三段：起點、條件、變化。</li>
+    <li>我會用 i 做算術讓每圈參數漸變（越跳越快）。</li>
+    <li>我用 for 改短過至少一段自己的程式。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：迴圈的力量</div><p>「會演」篇完結！下一篇 OTTO 要張開眼睛了——CH12 超音波感測登場。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH11 完成！<span class="g">Loop 大師</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH12.html">→ 下一章 CH12</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH11 · Loop 工程專章',part:'#E67E22',next:'CH12.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH08 · 唱歌與手勢</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第三篇 · Part 2 · 唱歌跳舞與 Loop 工程</div>
+  <h1>CH08 · <span class="g">唱歌與手勢</span></h1>
+  <h2>17 首音效 × 13 種手勢，OTTO 的情緒小劇場</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">進入「會演」篇！</div></div>
+  <div class="body">
+    <p>OTTO 內建 <b>17 首音效</b>（sing）和 <b>13 種手勢表演</b>（playGesture）。這章把它們摸熟，並串成一場有起承轉合的<b>情緒小劇場</b>：開心 → 難過 → 困惑 → 勝利。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>OTTO 循環演出四幕情緒劇，聲音和動作都到位——這是之後自編舞蹈秀的素材庫。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>音效清單：Otto.sing(名字)</h2><div class="k">17 首，名字都是 S_ 開頭</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>心情/用途</th><th>音效名</th></tr>
+      <tr><td>開機 / 關機</td><td><code>S_connection</code>、<code>S_disconnection</code></td></tr>
+      <tr><td>開心系</td><td><code>S_happy</code>、<code>S_happy_short</code>、<code>S_superHappy</code>、<code>S_cuddly</code></td></tr>
+      <tr><td>負面系</td><td><code>S_sad</code>、<code>S_confused</code>、<code>S_OhOoh</code>、<code>S_OhOoh2</code></td></tr>
+      <tr><td>反應系</td><td><code>S_surprise</code>、<code>S_buttonPushed</code>、<code>S_sleeping</code></td></tr>
+      <tr><td>模式音</td><td><code>S_mode1</code>、<code>S_mode2</code>、<code>S_mode3</code></td></tr>
+      <tr><td>搞笑系</td><td><code>S_fart1</code>、<code>S_fart2</code>、<code>S_fart3</code>（放屁三連發 😆）</td></tr>
+    </table>
+    <div class="info-box">🎧 想全部聽一遍？模擬器載入「🎬 展示範例 → 04 唱歌串燒」按執行。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>手勢清單：Otto.playGesture(名字)</h2><div class="k">13 種「動作＋音效」套餐</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>手勢名</th><th>表演內容</th><th>手勢名</th><th>表演內容</th></tr>
+      <tr><td><code>OttoHappy</code></td><td>開心搖擺</td><td><code>OttoSad</code></td><td>垂頭喪氣</td></tr>
+      <tr><td><code>OttoSuperHappy</code></td><td>超嗨踮腳</td><td><code>OttoSleeping</code></td><td>打瞌睡</td></tr>
+      <tr><td><code>OttoVictory</code></td><td>勝利跳躍</td><td><code>OttoFail</code></td><td>失落倒地感</td></tr>
+      <tr><td><code>OttoWave</code></td><td>抖腿揮手</td><td><code>OttoConfused</code></td><td>東張西望</td></tr>
+      <tr><td><code>OttoLove</code></td><td>愛心搖擺</td><td><code>OttoAngry</code></td><td>氣噗噗顫抖</td></tr>
+      <tr><td><code>OttoMagic</code></td><td>魔法滑步</td><td><code>OttoFretful</code></td><td>煩躁拍翅</td></tr>
+      <tr><td><code>OttoFart</code></td><td>放屁抖腿 😂</td><td></td><td></td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">老節奏，新內容</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_show.ino）</li>
+    <li><b>疊目標 1</b>：骨架</li>
+    <li><b>疊目標 2</b>：loop() 情緒小劇場（先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>貼進模擬器執行</b></li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1-4 / 5</span><h2>生成 otto_show.ino</h2><div class="k">流程你已經熟了，四步連做</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>開生成器（下面按鈕）</li>
+      <li>目標 1（骨架）：複製提示詞 → 送出 → 採用</li>
+      <li>目標 2（情緒劇場）：複製提示詞 → <b>貼參考程式</b> → 送出 → 採用</li>
+      <li>「📋 複製完整程式」＋下載存檔</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch08" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行</h2><div class="k">聲音記得開！</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li><a href="../模擬器/index.html" target="_blank">3D 模擬器</a> → 右上角「🔊 開啟聲音」<b>務必打勾</b></li>
+      <li>貼上程式 → ▶ 執行</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：開心（音效＋搖擺）→ 難過（音效＋垂頭）→ 困惑（音效＋張望）→ 勝利跳躍 → 休息 2 秒重演。四幕的「聲音」和「動作」要對得上。</div>
+    <p class="note">❓ 動作跟音效怎麼是輪流不是同時？sing 和 playGesture 是兩個指令，會照順序做（playGesture 本身已內建配音，所以有些幕聽起來像同時）。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">編你自己的情緒劇</div></div>
+  <div class="body">
+    <p>拿完整程式找 AI 改（驗證 → 回饋 → 再改）：</p>
+    <ul style="padding-left:24px">
+      <li>⭐ 把第三幕（困惑）換成<b>生氣</b>（S_OhOoh ＋ OttoAngry）</li>
+      <li>⭐⭐ 加一幕<b>搞笑放屁</b>（S_fart2 ＋ OttoFart）——放在哪一幕之後你決定</li>
+      <li>⭐⭐⭐ 自由創作：用「音效清單＋手勢清單」設計一段 <b>30 秒個人劇</b>，至少 5 幕，演給同學看</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「我的劇本順序是：______，請照這個順序改 loop()，每幕之間加 delay(500)。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">把這章的標準程式燒進真的 OTTO</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>用傳輸線接「電腦 ⇄ OTTO」（CH02 已裝好 CH340 驅動）</li>
+      <li>開「一鍵上傳」頁 → 清單選 <b>otto_show.ino</b></li>
+      <li>「🔌 連接 OTTO 並上傳」→ 選 USB-SERIAL CH340 → 連線 → 進度條跑完</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+    <p class="note">真機的蜂鳴器聲音和模擬器不完全一樣——實體更清脆！</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>我疊出 otto_show.ino，四幕情緒劇在模擬器演出成功。</li>
+    <li>我至少認得 6 首音效和 6 種手勢的名字。</li>
+    <li>我設計過自己的情緒劇（迭代任務）。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：OTTO 的表演素材庫</div><p>下一章 CH09 學進階舞步——月球漫步登場！</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH08 完成！<span class="g">情緒劇場開演</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH09.html">→ 下一章 CH09</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH08 · 唱歌與手勢',part:'#E67E22',next:'CH09.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

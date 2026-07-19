@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH06 · 走路！</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第二篇 · Part 1 · Vibe Coding 與基本動作</div>
+  <h1>CH06 · <span class="g">走路！</span></h1>
+  <h2>三個參數，完全掌控 OTTO 的步伐</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">機器人課的招牌時刻</div></div>
+  <div class="body">
+    <p>這章 OTTO 要學會<b>向前走、向後退</b>，而且你能控制它<b>走幾步、走多快</b>。從此它不再只是原地表演——整個 3D 舞台都是它的。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>OTTO 不停巡邏：向前 4 步 → 後退 2 步 → 唱歌 → 休息 → 再來。而且每個數字你都改得動。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>新指令：Otto.walk 的三個參數</h2><div class="k">括號裡三個數字，各管一件事</div></div>
+  <div class="body">
+    <div class="term"><pre>Otto.walk( <span class="cm">步數</span>, <span class="cm">速度 T</span>, <span class="cm">方向</span> );
+Otto.walk(  4,   1000,   1  );   <span class="cm">// 向前走 4 步</span></pre></div>
+    <table class="tbl">
+      <tr><th>參數</th><th>意思</th><th>可以填什麼</th></tr>
+      <tr><td>① 步數</td><td>走幾步</td><td>1、2、4、10……你決定</td></tr>
+      <tr><td>② 速度 T</td><td>一步花幾毫秒</td><td><b>600（快）～ 1400（慢）</b>，數字越大越慢</td></tr>
+      <tr><td>③ 方向</td><td>往哪走</td><td><b>1 = 向前，-1 = 向後</b></td></tr>
+    </table>
+    <div class="info-box">🤔 「速度數字越大越慢」很反直覺？因為 T 是「一步花的時間」——時間越長，當然走越慢。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">一樣的節奏，越做越快</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_walk.ino）</li>
+    <li><b>疊目標 1</b>：開頭＋setup（這章合併成一段，一次生成）</li>
+    <li><b>疊目標 2</b>：loop() 走路（先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>貼進模擬器執行</b>，看 OTTO 巡邏</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 5</span><h2>開啟生成器</h2><div class="k">otto_walk.ino</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>點按鈕開新分頁，確認標題「🧩 逐段生成器 · <b>otto_walk.ino</b>」</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch06" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 5</span><h2>疊目標 1：骨架一次到位</h2><div class="k">開頭＋setup 合併生成</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>按「<b>複製提示詞</b>」→ 貼進對話框 → 「<b>送出</b>」</li>
+      <li>生成完按「<b>採用</b>」</li>
+    </ul>
+    <div class="ok-box">✅ 預期：一次疊出 #include、#define 和 setup()——骨架你已經很熟，之後都這樣一段搞定。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 5</span><h2>疊目標 2：loop() 走路</h2><div class="k">記得貼參考程式</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>複製提示詞 → 貼對話框</li>
+      <li><b>「目前疊出的檔案」貼進參考程式框</b></li>
+      <li>「送出」→ 生成 → 「採用」</li>
+    </ul>
+    <div class="ok-box">✅ 預期：進度 2/2 完成。loop() 裡有 walk(4,1000,1)、walk(2,1000,-1)、sing、delay 四行。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 4 / 5</span><h2>複製完整程式</h2><div class="k">作品集 +1</div></div>
+  <ul class="sl body">
+    <li>「<b>📋 複製完整程式</b>」＋「⬇ 下載」存檔</li>
+    <li>關分頁回簡報</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行</h2><div class="k">OTTO 出發！</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li><a href="../模擬器/index.html" target="_blank">3D 模擬器</a> → Ctrl+A 刪掉 → 貼上 → <b>▶ 執行</b></li>
+      <li>用滑鼠<b>拖曳旋轉視角</b>，從側面看它走路的樣子</li>
+      <li>看左下執行紀錄：「🚶 走路 Otto.walk(4, 1000, 1)（向前）」一行行對應</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：向前 4 步 → 後退 2 步 → 唱開心音效 → 停 1 秒 → 重複。OTTO 會慢慢往前挪（前進比後退多 2 步）。</div>
+    <p class="note">❓ 走到快出畫面？按 <b>⟲ 歸位</b> 拉回原點，鏡頭也會跟回來。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>逐段看懂：loop() 裡的巡邏</h2><div class="k">每個數字都有意義</div></div>
+  <div class="term body">
+    <button class="copy" onclick="cp(this)">複製</button>
+    <pre>void loop() {
+  Otto.walk(4, 1000, 1);   <span class="cm">// 向前走 4 步（每步 1000 毫秒）</span>
+  Otto.walk(2, 1000, -1);  <span class="cm">// 向後退 2 步（-1 就是倒退）</span>
+  Otto.sing(S_happy);      <span class="cm">// 唱一段開心的音</span>
+  delay(1000);             <span class="cm">// 休息 1 秒再重來</span>
+}</pre>
+  </div>
+  <p class="body">試著在心裡「跑」一遍這段程式，預測 OTTO 的動作順序——<b>先預測、再執行、對答案</b>，這是看懂程式最快的方法。</p>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔬 小實驗：速度的手感</h2><div class="k">直接在模擬器改數字，不用回生成器</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>在模擬器程式面板，把第一行的 <code>1000</code> 改成 <code>600</code></li>
+      <li>按 ▶ 執行——是不是變快了？</li>
+      <li>再改成 <code>1400</code> 執行——慢動作！</li>
+    </ul>
+    <div class="info-box">💡 直接改數字再執行，是最快的實驗法；大改動（加動作、改邏輯）再回去找 AI。兩招搭配就是高效率的 Loop 工程。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">設計你的巡邏路線</div></div>
+  <div class="body">
+    <p>拿著程式找 AI 迭代（①說需求 ②拿新程式 ③模擬器驗證 ④回饋修正）：</p>
+    <ul style="padding-left:24px">
+      <li>⭐ 改成<b>向前 6 步、不後退</b></li>
+      <li>⭐⭐ 走路<b>又快又遠</b>：前進 8 步、速度 700，唱 S_superHappy</li>
+      <li>⭐⭐⭐ <b>來回等距巡邏</b>：前進 4 步、後退 4 步——執行後觀察：OTTO 是不是在原地來回？為什麼？</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「現在 OTTO 前進 4 步後退 2 步，我想改成 ______，請給我完整程式。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>常見問題</h2><div class="k">卡住先看這</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>OTTO 越走越遠不見了？</b></p>
+      <p class="note">⟲ 歸位。想讓它在附近活動，前進後退步數設一樣。</p>
+      <p><b>紅字「看不懂這一行」？</b></p>
+      <p class="note">八成是括號裡忘了逗號、或分號不見了。整段紅字貼給 AI。</p>
+    </div>
+    <div>
+      <p><b>速度 300 可以嗎？</b></p>
+      <p class="note">模擬器跑得動，但<b>真機馬達會抖到站不穩</b>——600~1400 是真機安全範圍，養成好習慣。</p>
+      <p><b>想走「斜的」？</b></p>
+      <p class="note">walk 只會直線。轉方向要用 turn——下一章登場！</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">把這章的標準程式燒進真的 OTTO</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>用傳輸線接「電腦 ⇄ OTTO」（CH02 已裝好 CH340 驅動）</li>
+      <li>點下面按鈕開「一鍵上傳」頁，在清單選<b>本章的程式</b></li>
+      <li>按「🔌 連接 OTTO 並上傳」→ 小視窗選 <b>USB-SERIAL CH340</b> → 按「連線」→ 看進度條跑完</li>
+      <li>拔線、開電源，真的 OTTO 開始表演！</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+    <p class="note">手邊沒有機器人？跳過這頁沒關係，模擬器的成果一樣算數；自己改造的程式要上真機則走 CH15 的 Arduino IDE。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>我疊出 otto_walk.ino，OTTO 在模擬器裡巡邏。</li>
+    <li>我說得出 walk 三個參數：步數、速度 T（600~1400、越大越慢）、方向（1 / -1）。</li>
+    <li>我做過速度實驗：600 快、1400 慢。</li>
+    <li>我完成至少一個 🔁 迭代任務。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：會走路的 OTTO</div><p>下一章 CH07 學轉彎，然後把走路＋轉彎組合成<b>完整路線</b>——OTTO 要走出一個正方形！</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH06 完成！<span class="g">OTTO 會走路了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH07.html">→ 下一章 CH07</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH06 · 走路！',part:'#27AE60',next:'CH07.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

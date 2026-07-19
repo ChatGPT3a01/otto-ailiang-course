@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH13 · 避障機器人</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第四篇 · Part 3 · 感測與判斷</div>
+  <h1>CH13 · <span class="g">避障機器人</span></h1>
+  <h2>看到障礙物，自己閃開——機器人課的經典時刻</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">感測 × 動作 ＝ 智慧</div></div>
+  <div class="body">
+    <p>CH12 會看、CH06 會走——合體！這章 OTTO 學會<b>自主避障</b>：前方淨空就前進；太近就驚叫、後退、轉彎閃開，然後繼續走。<b>不需要任何人操控。</b></p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>放一面牆在 OTTO 前面（拉滑桿），看它走近 → 發現 → 閃避 → 換方向繼續走。全自動。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>避障的邏輯設計</h2><div class="k">關鍵：一次只走一步</div></div>
+  <div class="body">
+    <div class="term"><pre><span class="cm">每一圈 loop：</span>
+量距離
+如果 距離 &lt; 15：驚叫 → 後退 2 步 → 左轉 3 步
+不然：<b>向前走 1 步</b></pre></div>
+    <p>為什麼「只走 1 步」不是 5 步？因為 loop 馬上又會轉一圈、<b>重新量距離</b>——走一步看一次，反應才快。如果一次走 5 步，走到一半撞牆了它也停不下來。</p>
+    <div class="info-box">🧠 這叫「<b>感測 → 決策 → 行動</b>」循環，掃地機器人、自駕車都是同一套原理——只是感測器更多、決策更複雜。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🧩 動手做：五個步驟總覽</h2><div class="k">流程同前</div></div>
+  <ul class="sl body">
+    <li><b>開啟生成器</b>（otto_avoid.ino）</li>
+    <li><b>疊目標 1</b>：骨架</li>
+    <li><b>疊目標 2</b>：loop() 避障邏輯（先貼參考程式）</li>
+    <li><b>複製完整程式</b></li>
+    <li><b>模擬器執行：看它自己閃牆</b></li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1-4 / 5</span><h2>生成 otto_avoid.ino</h2><div class="k">四步連做</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>開生成器 → 目標 1 骨架（複製 → 送出 → 採用）</li>
+      <li>目標 2 避障邏輯（複製 → <b>貼參考程式</b> → 送出 → 採用）</li>
+      <li>「📋 複製完整程式」＋下載</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="gen.html?id=ino_ch13" target="_blank" rel="noopener">🚀 開啟生成器（新分頁）</a></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>模擬器執行：自動閃牆秀</h2><div class="k">俯視角＋滑桿設好牆</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>先把距離滑桿拉到 <b>35</b>（把金色牆放在前方 35 公分）</li>
+      <li>貼上程式 → ▶ 執行 → 拉高視角俯視</li>
+      <li>看：OTTO 一步步走近牆 → 右上角距離數字一直變小 → 小於 15 的瞬間——驚叫！後退！左轉！→ 朝新方向繼續走</li>
+    </ul>
+    <div class="ok-box">✅ 預期結果：全程你都沒碰它，它自己「發現 → 閃避 → 續行」。執行紀錄能看到每一步的 if 判斷。</div>
+    <p class="note">❓ 它一直朝空地走沒遇到牆？拉滑桿在它的新面向再放一面牆。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>對照原廠：你已經是工程師等級</h2><div class="k">原廠範例 Otto_avoid_V9 長什麼樣？</div></div>
+  <div class="body">
+    <p>OTTO 原廠也有一支避障範例。打開模擬器的「🎬 展示範例 → <b>06 原廠避障範例</b>」執行看看——邏輯跟你寫的<b>一模一樣</b>，只是它多用了「全域變數、bool、自訂函式」把程式整理得更漂亮。</p>
+    <div class="info-box">🏆 這三個進階武器，下一章 CH14 就教。學完你就能看懂原廠工程師的每一行程式。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔁 迭代任務</h2><div class="k">調教避障個性</div></div>
+  <div class="body">
+    <ul style="padding-left:24px">
+      <li>⭐ 安全距離 15 改 <b>25</b>（遠遠就閃，膽小型）vs 改 <b>8</b>（貼臉才閃，大膽型）——各跑一次比較</li>
+      <li>⭐⭐ 閃避改成<b>右轉</b>，並在閃避後表演 OttoConfused（「嚇我一跳」）</li>
+      <li>⭐⭐⭐ 「聰明轉向」：連續閃避 3 次還有牆就<b>掉頭</b>（轉 6 步）——需要一個計數變數，跟 AI 討論怎麼做</li>
+    </ul>
+    <div class="info-box">💬 回饋句型：「現在遇牆會左轉，我想改成 ______，遇牆時多 ______，請給完整程式。」</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔌 有真機在手？一鍵上傳！</h2><div class="k">真實世界的避障最好玩</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>一鍵上傳頁選 <b>otto_avoid.ino</b> → 連接上傳 → 拔線開機</li>
+      <li>放地板上，拿書本、鉛筆盒在它前面擋路——看它一次次閃開</li>
+    </ul>
+    <div class="gen-launch"><a class="gen-launch-btn" href="upload.html" target="_blank" rel="noopener">🔌 開啟一鍵上傳頁（新分頁）</a></div>
+    <p class="note">找一塊淨空的地板，避免桌面邊緣——OTTO 看得到前面的牆，看不到腳下的懸崖！</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>我的 OTTO 在模擬器全自動避障成功。</li>
+    <li>我說得出「為什麼一次只走 1 步」。</li>
+    <li>我說得出「感測 → 決策 → 行動」循環。</li>
+    <li>我調過安全距離，體會參數對「個性」的影響。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：全自動避障機器人</div><p>下一章 CH14 學原廠工程師的三個武器：全域變數、bool、自訂函式。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH13 完成！<span class="g">它會自己閃了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH14.html">→ 下一章 CH14</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH13 · 避障機器人',part:'#8E44AD',next:'CH14.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

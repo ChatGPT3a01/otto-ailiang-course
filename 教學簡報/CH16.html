@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH16 · 校正與微調</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第五篇 · Part 4 · 上傳與成果發表</div>
+  <h1>CH16 · <span class="g">校正與微調</span></h1>
+  <h2>真機站不直？trim 校正解決「模擬與現實的差距」</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做什麼</h2><div class="k">工程師的必修課：對付現實</div></div>
+  <div class="body">
+    <p>模擬器裡 OTTO 永遠站得直挺挺——現實不會。伺服馬達組裝時卡榫差一格、齒輪有微小誤差，真機常常<b>歪頭、外八、走路偏一邊</b>。這不是你程式寫錯，是硬體個體差異，解法叫 <b>trim 校正</b>。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>你的 OTTO 找到專屬的 4 個校正值，站得直、走得正，而且校正值<b>永久存進機器人</b>。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>trim 是什麼？</h2><div class="k">給每顆馬達一個「補償角度」</div></div>
+  <div class="body">
+    <p>trim（微調值）＝告訴每顆馬達：「你的 0 度其實要多轉幾度才是真的正」。四顆馬達各一個值，通常在 <b>-15 ～ +15</b> 之間：</p>
+    <div class="term"><pre>Otto.setTrims(<span class="cm">左腿</span>, <span class="cm">右腿</span>, <span class="cm">左腳</span>, <span class="cm">右腳</span>);
+Otto.setTrims(  0,   -3,    5,    2 );   <span class="cm">// 每台機器人的數字都不同！</span>
+Otto.saveTrimsOnEEPROM();   <span class="cm">// 存進機器人的永久記憶，斷電不會忘</span></pre></div>
+    <div class="info-box">🧠 EEPROM 是 Nano 上的小小永久記憶體。校正值存進去以後，<b>之後上傳任何程式都自動生效</b>，一勞永逸。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 5</span><h2>先觀察：哪裡歪？</h2><div class="k">上傳「立正程式」看真相</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>用一鍵上傳頁傳 <b>otto_robot.ino</b>（CH04 骨架：開機立正就停）</li>
+      <li>OTTO 站好後，從<b>正面</b>和<b>側面</b>各看一次</li>
+      <li>記下來：頭歪左還歪右？哪隻腳掌沒貼地？腿有沒有外八？</li>
+    </ul>
+    <div class="ok-box">✅ 產出：一張「歪斜清單」，例如「右腳尖翹起、雙腿微外八」。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 5</span><h2>建立校正程式</h2><div class="k">在 Arduino IDE 貼這支小程式</div></div>
+  <div class="body">
+    <div class="term">
+      <button class="copy" onclick="cp(this)">複製</button>
+      <pre><span class="cm">// otto_trim.ino —— 校正專用小程式</span>
+#include &lt;Otto9.h&gt;
+Otto9 Otto;
+
+void setup() {
+  Otto.init(2, 3, 4, 5, true, A6, 13, 8, 9);
+  <span class="cm">// ↓↓ 只改這一行的四個數字（左腿, 右腿, 左腳, 右腳）↓↓</span>
+  Otto.setTrims(0, 0, 0, 0);
+  Otto.saveTrimsOnEEPROM();   <span class="cm">// 存進永久記憶</span>
+  Otto.home();                <span class="cm">// 用新校正值立正，馬上看效果</span>
+}
+
+void loop() {
+}</pre></div>
+    <p class="note">開 Arduino IDE（CH15 學的）→ 新檔案 → 貼上 → 存檔叫 otto_trim。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 5</span><h2>猜一個值，上傳看看</h2><div class="k">校正就是「真機版的迭代循環」</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>照你的歪斜清單改數字。方向口訣：<b>腳掌翹起來 → 那隻腳的值往下調（或反向）；腿外八 → 腿的值往內調</b>。先從 ±5 猜起</li>
+      <li>按上傳 → OTTO 用新值立正</li>
+      <li>看結果：更直了？繼續微調；反而更歪？往反方向調</li>
+    </ul>
+    <div class="info-box">🔁 有沒有很熟悉？<b>執行 → 觀察 → 修正 → 再執行</b>——Loop 工程用在硬體上，一模一樣。每台 OTTO 的答案都不同，這是「你的機器人專屬密碼」。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 4 / 5</span><h2>走路驗證</h2><div class="k">站得直還要走得正</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>站直後，上傳 <b>otto_walk.ino</b>（一鍵上傳即可）</li>
+      <li>放地板走 10 步：有沒有明顯偏左/偏右？</li>
+      <li>偏的話回步驟 3 再微調腿的 trim（±2 慢慢調）</li>
+    </ul>
+    <div class="ok-box">✅ 預期：直線 10 步偏移不超過半個手掌。滿分不必強求——真實機器人有點個性很正常。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 5</span><h2>記錄你的專屬值</h2><div class="k">寫下來，以後都用得到</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>把最終四個數字抄在筆記／貼紙貼機器人底部（例：0, -3, 5, 2）</li>
+      <li>已 saveTrimsOnEEPROM → 之後上傳任何程式（含一鍵上傳）都自動套用</li>
+    </ul>
+    <div class="info-box">📚 延伸：原廠也提供三支校正工具（Otto_Calibration 系列，在課程資料夾 參考資料/OTTO機器人/原廠資料/Code/），有興趣可以研究——原理跟我們做的一樣。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>我說得出為什麼真機會歪（組裝誤差），以及 trim 是什麼。</li>
+    <li>我用「迭代法」找到我的 OTTO 專屬校正值並存入 EEPROM。</li>
+    <li>我的 OTTO 站得直、走 10 步不明顯偏移。</li>
+    <li>校正值已記錄下來。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：一隻調校完美的 OTTO</div><p>萬事俱備！下一章 CH17——期末成果發表，讓你的 OTTO 站上舞台。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH16 完成！<span class="g">站得直挺挺</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH17.html">→ 下一章 CH17</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH16 · 校正與微調',part:'#E74C3C',next:'CH17.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

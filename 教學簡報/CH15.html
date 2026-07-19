@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH15 · 上傳到真正的 OTTO</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第五篇 · Part 4 · 上傳與成果發表</div>
+  <h1>CH15 · <span class="g">上傳到真正的 OTTO</span></h1>
+  <h2>Arduino IDE：讓「你改造的程式」也能上真機</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這一章要做出什麼</h2><div class="k">解鎖完全自由</div></div>
+  <div class="body">
+    <p>「一鍵上傳」只能傳老師的標準程式。這章學 <b>Arduino IDE</b>——真正的上傳工具，從此<b>任何程式</b>（包括你 CH10 的舞蹈秀、迭代任務的改造版）都能親手送進真的 OTTO。</p>
+    <div class="milestone"><div class="mh">🎁 本章小成品</div><p>你自己改造的程式，在真正的 OTTO 身上跑起來。這是這門課最有成就感的一刻。</p></div>
+    <div class="info-box">📋 事前檢查：CH02 的 CH340 驅動裝了嗎？（裝置管理員看得到 USB-SERIAL CH340）沒裝先回 CH02。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 7</span><h2>安裝 Arduino IDE</h2><div class="k">安裝檔在課程資料夾，不用上網載</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>打開課程資料夾 <span class="filechip">工具下載</span>，找到 <span class="filechip">arduino-1.8.12-windows.exe</span>，點兩下</li>
+      <li>「是否允許變更」→ <b>是</b></li>
+      <li>「License Agreement」→ <b>I Agree</b></li>
+      <li>元件選擇不用改 → <b>Next</b> → 安裝位置不用改 → <b>Install</b></li>
+      <li>跑完出現 Completed → <b>Close</b>；過程若跳出「要不要安裝裝置軟體」→ 都按<b>安裝</b></li>
+    </ul>
+    <div class="ok-box">✅ 預期：桌面出現水藍色「Arduino」圖示。</div>
+    <p class="note">❓ 為什麼用 1.8.12 不用最新版？這是原廠指定版本，和 OTTO 函式庫最合、問題最少。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 7</span><h2>安裝 Otto9 函式庫</h2><div class="k">把「能力包」放進指定資料夾</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>到 <span class="filechip">工具下載</span> 找 <span class="filechip">Libraries_V9.zip</span> → 按右鍵 → <b>全部解壓縮</b></li>
+      <li>解壓後打開，會看到 <b>Libraries</b> 資料夾，裡面有 Otto9、Oscillator、US… 一堆資料夾</li>
+      <li>全選這些資料夾（Ctrl+A）→ 複製（Ctrl+C）</li>
+      <li>打開 <span class="filechip">文件（Documents）→ Arduino → libraries</span> → 貼上（Ctrl+V）</li>
+    </ul>
+    <div class="ok-box">✅ 預期：libraries 資料夾裡出現 Otto9 等十來個資料夾。</div>
+    <p class="note">❓ 找不到「文件\Arduino\libraries」？先開一次 Arduino IDE 再關掉，它會自動建好。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 7</span><h2>放入你的程式</h2><div class="k">從模擬器到 IDE</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>打開 Arduino IDE（水藍圖示）</li>
+      <li>把畫面裡的預設程式 <b>全選刪掉</b>（Ctrl+A → Delete）</li>
+      <li>貼上你要上傳的程式（模擬器驗證過的那份，Ctrl+V）</li>
+      <li>存檔 Ctrl+S → 取個名字（例如 my_show）→ 儲存</li>
+    </ul>
+    <div class="info-box">💡 黃金原則：<b>先模擬、後上傳</b>——只上傳「模擬器跑過沒問題」的程式，真機一次就成功。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 4 / 7</span><h2>選開發板</h2><div class="k">告訴 IDE：我的機器人是 Nano</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>上方選單 <b>工具（Tools）→ 開發板 → Arduino AVR Boards → Arduino Nano</b></li>
+      <li><b>工具 → 處理器 → ATmega328P (Old Bootloader)</b>　← 我們的套件用這個！</li>
+    </ul>
+    <div class="ok-box">✅ 預期：視窗右下角顯示「Arduino Nano, ATmega328P (Old Bootloader)」。</div>
+    <p class="note">❓ 之後上傳若一直失敗，回這裡把處理器換成「ATmega328P」（不帶 Old）再試——兩種晶片版本都存在。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 7</span><h2>接線、選序列埠</h2><div class="k">跟一鍵上傳一樣的線</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>USB 傳輸線接「電腦 ⇄ OTTO 頭後方」</li>
+      <li><b>工具 → 序列埠 → COM3（或其他數字）</b>——就是裝置管理員看到的那個 CH340</li>
+    </ul>
+    <div class="ok-box">✅ 預期：序列埠選單有 COM 可選、被打勾。</div>
+    <p class="note">❓ 序列埠灰灰的不能選？線沒插好、或驅動沒裝（回 CH02）、或線是純充電線。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 6 / 7</span><h2>上傳！</h2><div class="k">按下那顆 → 箭頭</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>按工具列的 <b>→（右箭頭）上傳按鈕</b></li>
+      <li>下方黑色區域開始跑字：先「編譯中…」再「上傳中…」（OTTO 板上的燈會狂閃＝正在寫入）</li>
+      <li>等到出現「<b>上傳完成</b>」</li>
+    </ul>
+    <div class="ok-box">✅ 預期：狀態列顯示「上傳完成」，OTTO 可能當場就開始動！</div>
+    <div class="warn-box">⚠️ 上傳時 OTTO 手腳可能亂揮——正常。拿在手上或放空曠處，別讓它掉桌。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 7 / 7</span><h2>驗收與換程式</h2><div class="k">從此你自由了</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>拔線 → 開 OTTO 電源 → 看它跑你的程式</li>
+      <li>想改？回模擬器迭代 → 改好貼回 IDE → 再按上傳（會覆蓋舊的）</li>
+    </ul>
+    <div class="milestone"><div class="mh">🏆 里程碑達成</div><p>你已打通全流程：<b>AI 生成 → 模擬驗證 → 迭代修正 → 真機上傳</b>。這就是完整的 Vibe Coding × Loop 工程。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>常見問題（上傳失敗急救包）</h2><div class="k">90% 的問題在這裡解決</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>avrdude: stk500_getsync() 錯誤？</b></p>
+      <p class="note">最常見！①處理器換成另一種（Old ↔ 非 Old）②序列埠選對了嗎 ③換 USB 孔、換線。</p>
+      <p><b>編譯錯誤 Otto9.h: No such file？</b></p>
+      <p class="note">函式庫沒裝好，回步驟 2 重做，確認資料夾直接放在 libraries 下。</p>
+    </div>
+    <div>
+      <p><b>上傳完成但 OTTO 不動？</b></p>
+      <p class="note">電源開了嗎？電池有電嗎？程式的動作是不是都在 loop() 裡？</p>
+      <p><b>錯誤訊息看不懂？</b></p>
+      <p class="note">老招：整段複製貼給 AI——「Arduino 上傳出現這個錯誤，怎麼辦？」</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>Arduino IDE 裝好、Otto9 函式庫放進 libraries。</li>
+    <li>開發板 Nano＋處理器 Old Bootloader＋序列埠都會設。</li>
+    <li>我親手上傳成功至少一支程式（自己的改造版更好！）。</li>
+    <li>我知道失敗急救包的前三招。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：完全上傳自由</div><p>下一章 CH16——真機站不直、走不正？校正微調來解決「模擬與現實的差距」。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH15 完成！<span class="g">真機自由了</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH16.html">→ 下一章 CH16</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH15 · 上傳到真正的 OTTO',part:'#E74C3C',next:'CH16.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>

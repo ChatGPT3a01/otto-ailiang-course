@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH00 · 課程總覽與成品展示</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">第一篇 · Part 0 · 課前準備</div>
+  <h1>CH00 · <span class="g">課程總覽與成品展示</span></h1>
+  <h2>指揮 AI 寫程式，讓 OTTO 機器人動起來！</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>先看成品：學期末的你做得到</h2><div class="k">這不是遙遠的夢，是這學期的終點</div></div>
+  <div class="body">
+    <p>學期末，你桌上會站著一隻<b>真正的 OTTO 機器人</b>，跑著<b>你自己（指揮 AI）寫的程式</b>：</p>
+    <ul style="padding-left:24px">
+      <li>🚶 會走路、轉彎，走出你設計的路線</li>
+      <li>💃 會跳月球漫步、交叉舞步，表演你編的舞蹈秀</li>
+      <li>🎵 會唱歌、做手勢，還會播音樂</li>
+      <li>👀 會用超音波眼睛看路——遇到障礙物自己閃開</li>
+    </ul>
+    <div class="milestone"><div class="mh">🏆 期末成果發表</div><p>每個人的 OTTO 上台表演自創行為。你的程式，跑在真的機器人身上。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>認識主角：OTTO 機器人</h2><div class="k">全世界最有名的開源 DIY 機器人之一</div></div>
+  <div class="body">
+    <div class="img-box"><img src="assets/img/otto_front.jpg" alt="OTTO 機器人正面照">
+      <div class="hint">這就是我們的 OTTO：藍色的頭、超音波眼睛、白色身體、四顆會動的關節</div></div>
+    <p style="margin-top:14px">它有 <b>4 顆伺服馬達</b>（兩條腿＋兩隻腳掌）、一對<b>超音波眼睛</b>（會量距離）、一個<b>蜂鳴器嘴巴</b>（會唱歌），大腦是一片 <b>Arduino Nano</b>。CH01 會帶你認識每個零件。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這堂課的兩大心法</h2><div class="k">比程式語法更重要的能力</div></div>
+  <div class="cg body">
+    <div class="cc"><div class="ico">🗣️</div><h3>Vibe Coding</h3><p>你不用背語法。把想做的事<b>說清楚給 AI 聽</b>，AI 幫你寫出程式。課程每一步都附「提示詞」讓你照著說、慢慢學會自己說。</p></div>
+    <div class="cc"><div class="ico">🔁</div><h3>Loop 工程</h3><p>程式很少一次就對。<b>執行 → 觀察 → 把問題回饋給 AI → 修正 → 再執行</b>，一圈一圈把程式調到完美。這個「迭代循環」是工程師的日常。</p></div>
+  </div>
+  <div class="body"><div class="info-box">💡 「Loop」還有第二個意思：Arduino 程式的心臟就叫 <code>loop()</code>——它會一直重複執行。CH11 我們會把兩種 Loop 一次修煉到位。</div></div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>秘密武器：3D 模擬器</h2><div class="k">前 15 章不用碰硬體，每個人都能盡情練</div></div>
+  <div class="body">
+    <p>程式寫好先別急著上真機——我們有一個<b>可旋轉的 3D 模擬器</b>：貼上程式、按「▶ 執行」，虛擬 OTTO 立刻做給你看。走路、跳舞、唱歌（真的有聲音！）、超音波避障（拉滑桿移動障礙物）通通可以。</p>
+    <ul class="sl">
+      <li>在<b>生成器</b>用提示詞讓 AI 生成程式</li>
+      <li>貼進<b>模擬器</b>按執行，看虛擬 OTTO 動起來</li>
+      <li>不滿意？回去改提示詞再生成（Loop 工程！）</li>
+      <li>滿意了？CH15 起把同一份程式上傳<b>真的 OTTO</b></li>
+    </ul>
+    <div class="ok-box">✅ 模擬器跑的程式和真機<b>一模一樣</b>（原廠 Otto9 格式）——模擬 OK，真機就 OK。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>課程地圖：五篇十八章</h2><div class="k">由簡入深，每章都有看得見的成果</div></div>
+  <div class="body">
+    <table class="tbl">
+      <tr><th>篇</th><th>章節</th><th>OTTO 學會什麼</th></tr>
+      <tr><td>1 起步</td><td>CH00–02</td><td>認識課程、認識硬體、裝好工具</td></tr>
+      <tr><td>2 會動</td><td>CH03–07</td><td>Vibe Coding 心法、骨架、打招呼、走路、轉彎</td></tr>
+      <tr><td>3 會演</td><td>CH08–11</td><td>唱歌手勢、進階舞步、舞蹈秀、Loop 工程</td></tr>
+      <tr><td>4 會想</td><td>CH12–14</td><td>超音波、避障判斷、互動行為</td></tr>
+      <tr><td>5 真機</td><td>CH15–17</td><td>上傳真機、校正微調、成果發表</td></tr>
+    </table>
+    <p class="note" style="margin-top:10px">CH00–CH14 只需要電腦；CH15 開始接上真正的 OTTO 機器人。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>每一章都長一樣的節奏</h2><div class="k">學會這個節奏，之後每章都不迷路</div></div>
+  <ul class="sl body">
+    <li>🎁 <b>本章小成品</b>：先看這章結束時 OTTO 會多什麼本事</li>
+    <li>🧩 <b>生成器</b>：複製提示詞 → AI 生成程式 → 一段段疊出完整檔案</li>
+    <li>🤖 <b>模擬器執行</b>：貼上程式按執行，看 OTTO 動起來</li>
+    <li>🔍 <b>逐段看懂</b>：不用背，但要看得懂重點</li>
+    <li>🔁 <b>迭代任務</b>：改提示詞讓 OTTO 做出「你的版本」</li>
+    <li>✅ <b>本章驗收</b>：打勾確認，前進下一章</li>
+  </ul>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>上課約定</h2><div class="k">三件事，讓你學得又快又好</div></div>
+  <div class="cg c3 body">
+    <div class="cc"><div class="ico">🙋</div><h3>卡住就問</h3><p>先問 AI（把錯誤訊息貼給它），再問同學，再問老師。會問問題就是會學習。</p></div>
+    <div class="cc"><div class="ico">🐢</div><h3>不怕慢</h3><p>每章都有救援指引，跟不上也能接得回來。重點是動手，不是速度。</p></div>
+    <div class="cc"><div class="ico">🎨</div><h3>敢改敢玩</h3><p>參數改改看、動作換換看。模擬器怎麼玩都不會壞，玩壞了按「歸位」就好。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本章驗收</h2><div class="k">CH00 你只要記得三件事</div></div>
+  <ul class="goals body">
+    <li>我知道學期末的目標：讓真的 OTTO 跑我的程式。</li>
+    <li>我知道兩大心法：Vibe Coding（叫 AI 寫）＋ Loop 工程（迭代修）。</li>
+    <li>我知道每章節奏：生成器 → 模擬器 → 迭代 → 驗收。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：完整的學習地圖</div><p>接下來 CH01，我們去把 OTTO 拆開來認識——每顆馬達、每支腳位都有名字。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">CH00 完成！<span class="g">出發！</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="CH01.html">→ 下一章 CH01</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'CH00 · 課程總覽與成品展示',part:'#4A90D9',next:'CH01.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>
