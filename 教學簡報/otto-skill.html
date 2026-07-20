@@ -57,7 +57,21 @@
     <li><b>第四幕 · 即時遙控</b>——打字它就動，像用手把玩機器人。</li>
     <li><b>第五幕 · 當小導演</b>——綜合大挑戰，編一場完整表演。</li>
   </ul>
-  <div class="info-box">📋 這是進階好玩單元，需要 <b>AI 助手（Claude Code）＋ 課程專案環境</b>。前 15 章的模擬器路線完全不受影響。</div>
+  <div class="info-box">📋 這是進階好玩單元，需要 <b>AI 助手（Claude Code 或 Codex）＋ 課程專案環境</b>。前 15 章的模擬器路線完全不受影響。</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>先講清楚：不用裝 Arduino IDE</h2><div class="k">otto-skill 靠 AI＋arduino-cli，不靠 IDE 軟體</div></div>
+  <div class="body">
+    <p>很多人以為控制機器人一定要裝那個藍色的 <b>Arduino IDE 軟體</b>。用 otto-skill 就<b>不用</b>——它背後走命令列工具 <code>arduino-cli</code>（已內建在課程專案裡），全程由 AI 代勞。</p>
+    <table class="tbl">
+      <tr><th>上真機方式</th><th>要裝 Arduino IDE？</th></tr>
+      <tr><td>🔌 一鍵上傳（瀏覽器）</td><td>❌ 不用，最無痛</td></tr>
+      <tr><td>🦾 otto-skill（本單元 · AI 控制）</td><td>❌ 不用，走 arduino-cli</td></tr>
+      <tr><td>🛠️ Arduino IDE 手動上傳</td><td>⭕ 想手動改的人才裝</td></tr>
+    </table>
+    <div class="info-box">💡 你只要備齊：<b>AI 助手 ＋ 課程專案</b>（內含 arduino-cli）<b>＋ CH340 驅動</b>。那個 Arduino IDE 軟體是選用的，一開始別裝也沒關係。</div>
+  </div>
 </section>
 
 <!-- ============ 第一幕 · 安裝暖身 ============ -->
