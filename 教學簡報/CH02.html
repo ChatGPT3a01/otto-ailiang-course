@@ -18,7 +18,7 @@
 <section class="slide cs">
   <div class="sh"><h2>這一章要做什麼</h2><div class="k">把工具箱裝滿</div></div>
   <div class="body">
-    <p>好消息：這堂課前 15 章<b>只需要兩樣工具</b>，而且都不用花錢——一個 AI 助手（幫你寫程式）＋ 3D 模擬器（跑程式）。Arduino IDE 留到 CH15 上真機時才裝。</p>
+    <p>好消息：這堂課前 15 章<b>只需要兩樣工具</b>，而且都不用花錢——一個 AI 助手（幫你寫程式）＋ 3D 模擬器（跑程式）。至於電腦上的 <b>Arduino IDE 軟體，不是必裝</b>——它只是「選用／進階」，之後真的想手動上傳自訂程式的人再裝就好。</p>
     <div class="milestone"><div class="mh">🎁 本章小成品</div><p>AI 助手開好帳號、模擬器加入書籤、（自我挑戰）第一次成功叫 AI 寫東西。</p></div>
   </div>
 </section>
@@ -134,15 +134,16 @@
 </section>
 
 <section class="slide cs">
-  <div class="sh"><h2>（預告）Arduino IDE：CH15 才需要</h2><div class="k">現在不用裝，知道有它就好</div></div>
+  <div class="sh"><h2>Arduino IDE ＝ 選用（進階才裝）</h2><div class="k">上真機有三條路，IDE 只是其中一條</div></div>
   <div class="body">
-    <p>上傳程式有<b>雙軌</b>：</p>
+    <p>把程式送進真機，其實有<b>三條路</b>，前兩條都<b>不用</b>裝 Arduino IDE 這個電腦軟體：</p>
     <table class="tbl">
-      <tr><th>方式</th><th>用途</th><th>什麼時候</th></tr>
-      <tr><td>🔌 一鍵上傳（瀏覽器）</td><td>各章的<b>標準程式</b>，一顆按鈕搞定</td><td>驅動裝好就能用</td></tr>
-      <tr><td>🛠️ Arduino IDE</td><td><b>你自己改造的</b>客製程式</td><td>CH15 一步一步教</td></tr>
+      <tr><th>方式</th><th>用途</th><th>要裝 Arduino IDE？</th></tr>
+      <tr><td>🔌 一鍵上傳（瀏覽器）</td><td>各章<b>標準程式</b>，一顆按鈕搞定</td><td>❌ 不用，最無痛</td></tr>
+      <tr><td>🦾 otto-skill（AI 控制）</td><td>叫 AI 幫你編譯、燒錄、遙控（含自訂程式）</td><td>❌ 不用，走 arduino-cli</td></tr>
+      <tr><td>🛠️ Arduino IDE</td><td>想「手動」上傳自訂程式的人</td><td>⭕ 這種才裝</td></tr>
     </table>
-    <div class="warn-box">⚠️ Arduino IDE 現在先不要自己亂裝——版本裝錯反而麻煩，CH15 有完整圖解（安裝檔也在課程資料夾裡）。</div>
+    <div class="info-box">💡 所以一開始<b>先別裝 Arduino IDE</b>：走模擬器＋一鍵上傳，全程零 Arduino 軟體。想深入再選 CH15（IDE 手動）或 <a class="filechip" href="otto-skill.html">otto-skill 特別單元</a>（AI 控制）。</div>
   </div>
 </section>
 
@@ -152,7 +153,7 @@
     <li>我有一個能用的 AI 助手帳號，也會貼提示詞、送出、追問。</li>
     <li>我能打開 3D 模擬器，執行過內建範例，也會停止和歸位。</li>
     <li>我裝好 CH340 驅動（裝置管理員能看到 USB-SERIAL CH340）。</li>
-    <li>我知道上傳雙軌：標準程式用「一鍵上傳」、客製程式 CH15 學 Arduino IDE。</li>
+    <li>我知道上真機有三條路，前兩條（一鍵上傳、otto-skill）都免裝 Arduino IDE，IDE 是選用／進階。</li>
   </ul>
   <div class="milestone body"><div class="mh">🎁 你現在有：完整的工具箱</div><p>下一章 CH03，正式學 Vibe Coding 心法——怎麼把話說清楚，讓 AI 一次到位。</p></div>
 </section>
