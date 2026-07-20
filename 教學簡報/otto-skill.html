@@ -3,161 +3,545 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>特別單元 · otto-skill：讓 AI 全能控制 OTTO</title>
+<title>特別大單元 · otto-skill：AI 全能協作 OTTO（小白 vibecoding 教學）</title>
 <link rel="stylesheet" href="assets/slides.css">
 </head>
 <body>
 
+<!-- ============ 序幕 ============ -->
 <section class="slide cover">
-  <div class="tag">特別單元 · 進階 · AI × 真機</div>
-  <h1>🦾 <span class="g">otto-skill</span>：讓 AI 全能控制 OTTO</h1>
-  <h2>一句話，AI 幫你編譯、燒錄、即時遙控真機器人</h2>
+  <div class="tag">特別大單元 · 小白友善 · vibecoding × 真機</div>
+  <h1>🦾 <span class="g">otto-skill</span><br>叫 AI 幫你控制真的 OTTO</h1>
+  <h2>不背程式、說人話，就能讓機器人跳舞、避障、聽你遙控</h2>
   <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><h2>這個單元要做出什麼</h2><div class="k">OTTO 的「全能王」</div></div>
+  <div class="sh"><h2>這堂課的魔法</h2><div class="k">上完你會做到什麼</div></div>
   <div class="body">
-    <p>前面用「一鍵上傳」燒老師的標準程式、用 Arduino IDE 手動上傳自己的程式。這個單元更進一步：裝上 <b>otto-skill</b>，直接<b>對 AI 說白話</b>，由 AI 透過 <code>arduino-cli</code> 幫你完成「偵測 → 編譯 → 燒錄 → 即時遙控」整條龍。</p>
-    <div class="milestone"><div class="mh">🎁 本單元小成品</div><p>你對 AI 說「幫我把開心跳舞燒進 OTTO」，機器人就跳起舞；說「往前走」，它就當場走給你看。</p></div>
-    <div class="info-box">🎯 適合對象：老師、想深入的同學。需要用 <b>AI 助手（Claude Code）＋ 課程專案環境</b>（內含 arduino-cli，免另外裝）。前 15 章零基礎路線不受影響。</div>
+    <p>你只要對 AI 說一句白話，桌上那台 OTTO 就會照做——這不是科幻，是這堂課要教你的真本事。</p>
+    <ul class="sl">
+      <li>🗣️ 對 AI 說「把開心跳舞燒進去」→ OTTO 當場跳舞</li>
+      <li>🛠️ 說「拿避障範例改成看到人就後退」→ AI 幫你改好、燒好</li>
+      <li>🎮 說「往前走、右轉、揮手」→ OTTO 即時聽你遙控</li>
+    </ul>
+    <div class="milestone"><div class="mh">🎁 本單元大成品</div><p>期末你當導演，用 AI 加原廠素材，編出一場專屬於你的 30 秒 OTTO 秀。</p></div>
   </div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><h2>otto-skill 有哪些超能力</h2><div class="k">一支技能包辦</div></div>
+  <div class="sh"><h2>先搞懂三個角色</h2><div class="k">vibecoding 的核心比喻</div></div>
   <div class="tc body">
     <div>
-      <p>🔌 <b>偵測</b>：找出 OTTO 接在哪個 COM 埠</p>
-      <p>⚙️ <b>編譯</b>：把 .ino 編譯驗證（沒接機器也能做）</p>
-      <p>🔥 <b>燒錄</b>：把程式送進真 OTTO</p>
+      <p>🎬 <b>你＝導演</b></p>
+      <p class="note">出點子、下指令、看結果不滿意就喊卡重來。你不用會寫程式。</p>
+      <p>🤖 <b>AI＝工程師</b></p>
+      <p class="note">聽懂你的白話，變成真正的 Arduino 程式，還幫你編譯、燒錄。</p>
     </div>
     <div>
-      <p>📚 <b>原廠範例</b>：25 支現成動作一鍵燒（跳舞/避障/唱歌/校正）</p>
-      <p>🎮 <b>即時遙控</b>：燒一次遙控韌體，之後打字就即時動</p>
-      <p>🩺 <b>除錯</b>：驅動、連接埠、馬達卡住都有解</p>
+      <p>🦾 <b>OTTO＝演員</b></p>
+      <p class="note">收到程式就演出來：走路、跳舞、避障、發出聲音。</p>
+      <p>🔧 <b>otto-skill＝片場</b></p>
+      <p class="note">把三個角色接起來的工具。裝好它，AI 才有辦法真的動到機器人。</p>
     </div>
   </div>
-  <div class="info-box">底層全走官方 <code>arduino-cli</code>；遙控用的是原廠 mBlock 序列協定，和 Scratch/mBlock 相容。</div>
+  <div class="info-box">💡 <b>vibecoding</b> ＝ 用「感覺」和「白話」寫程式：你說想要什麼，AI 負責變出來，不滿意就再說一次。</div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><span class="step-tag">步驟 1 / 6</span><h2>下載並安裝 otto-skill</h2><div class="k">放進 AI 的技能資料夾</div></div>
+  <div class="sh"><h2>五幕地圖</h2><div class="k">我們會這樣一路玩下去</div></div>
+  <ul class="goals body">
+    <li><b>第一幕 · 安裝暖身</b>——裝好 otto-skill，第一次讓 OTTO 對你打招呼。</li>
+    <li><b>第二幕 · 玩遍原廠 25 支</b>——跳舞、唱歌、避障、校正，現成寶庫一次玩過。</li>
+    <li><b>第三幕 · vibecoding 改造</b>——把現成範例，改成你自己的專屬版本。</li>
+    <li><b>第四幕 · 即時遙控</b>——打字它就動，像用手把玩機器人。</li>
+    <li><b>第五幕 · 當小導演</b>——綜合大挑戰，編一場完整表演。</li>
+  </ul>
+  <div class="info-box">📋 這是進階好玩單元，需要 <b>AI 助手（Claude Code）＋ 課程專案環境</b>。前 15 章的模擬器路線完全不受影響。</div>
+</section>
+
+<!-- ============ 第一幕 · 安裝暖身 ============ -->
+<section class="slide cover">
+  <div class="tag">第一幕</div>
+  <h1>🧰 <span class="g">安裝暖身</span></h1>
+  <h2>裝好工具，第一次讓 OTTO 對你打招呼</h2>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 4</span><h2>下載並安裝 otto-skill</h2><div class="k">把「片場」放進 AI 的技能資料夾</div></div>
   <div class="body">
     <ul class="sl">
       <li>回<a class="filechip" href="index.html#dl" target="_blank">課程首頁</a>「<b>📦 資源下載區</b>」→ 點「<b>otto-skill（AI 控制包）</b>」下載 <span class="filechip">otto-skill.zip</span></li>
-      <li>按右鍵 → <b>全部解壓縮</b>，會得到一個 <span class="filechip">otto-skill</span> 資料夾</li>
-      <li>把整個資料夾搬到 <span class="filechip">C:\Users\你的帳號\.claude\skills\</span> 底下</li>
-      <li>（要即時遙控才需要）開終端機執行一次 <code>pip install pyserial</code></li>
+      <li>按右鍵 → <b>全部解壓縮</b>，得到一個 <span class="filechip">otto-skill</span> 資料夾</li>
+      <li>把整個資料夾搬到 <span class="filechip">C:\Users\你的帳號\.claude\skills\</span></li>
       <li>重開 AI 助手（Claude Code），讓它讀到新技能</li>
     </ul>
-    <div class="ok-box">✅ 預期：問 AI「有沒有 otto-skill？」它會回答有，並說明能編譯／燒錄／遙控 OTTO。</div>
-    <p class="note">❓ 找不到 <b>.claude</b> 資料夾？它是隱藏資料夾，在檔案總管「檢視 → 顯示 → 隱藏的項目」打勾就看得到。</p>
+    <div class="ok-box">✅ 預期：問 AI「有沒有 otto-skill？」它會回答有，能幫你編譯／燒錄／遙控 OTTO。</div>
+    <p class="note">❓ 找不到 <b>.claude</b> 資料夾？它是隱藏的，檔案總管「檢視 → 顯示 → 隱藏的項目」打勾就看得到。</p>
   </div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><span class="step-tag">步驟 2 / 6</span><h2>偵測與編譯</h2><div class="k">先確認接得到、程式編得過</div></div>
+  <div class="sh"><span class="step-tag">步驟 2 / 4</span><h2>把三樣東西準備好</h2><div class="k">開演前的道具檢查</div></div>
   <div class="body">
     <ul class="sl">
-      <li>USB 線接「電腦 ⇄ OTTO 頭後方」，開電源</li>
-      <li>對 AI 說：<b>「偵測 OTTO 接在哪個埠」</b>（它會跑 <code>detect</code>）</li>
+      <li>🤖 <b>AI 助手</b>：Claude Code 開著、在課程專案資料夾裡（裡面內建 arduino-cli，免另外裝）</li>
+      <li>🦾 <b>OTTO ＋ 傳輸線</b>：USB 線接「電腦 ⇄ OTTO 頭後方」，打開電源</li>
+      <li>🔌 <b>驅動</b>：CH340 驅動裝好了嗎？（沒裝回 CH02）</li>
+      <li>🎮 <b>要玩遙控才需要</b>：終端機跑一次 <code>pip install pyserial</code></li>
     </ul>
+    <div class="ok-box">✅ 預期：四項都打勾，就可以開始跟 AI 對話了。</div>
+    <p class="note">❓ 線插了電腦沒反應？很多線是「只能充電」的，換一條能傳資料的 USB 線。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 4</span><h2>偵測：OTTO 接在哪？</h2><div class="k">你的第一句 AI 指令</div></div>
+  <div class="body">
+    <p>對 AI 說：</p>
+    <div class="prompt"><pre>幫我偵測 OTTO 接在哪個埠</pre></div>
     <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py detect</span>
 <span class="out">偵測到序列埠：
   • COM3
-（CH340 不回報板型，全部顯示未知是正常的）</span></pre></div>
+（CH340 不回報板型，顯示未知是正常的）</span></pre></div>
     <div class="ok-box">✅ 預期：列出至少一個 COM 埠。拔插 USB 看哪個消失／出現，那個就是 OTTO。</div>
-    <p class="note">❓ 一個埠都沒有？線是純充電線、或 CH340 驅動沒裝（回 CH02）。</p>
+    <p class="note">❓ 一個都沒有？換能傳資料的線、裝 CH340 驅動（CH02）、換一個 USB 孔。</p>
   </div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><span class="step-tag">步驟 3 / 6</span><h2>把程式燒進真機</h2><div class="k">編譯＋上傳一次完成</div></div>
+  <div class="sh"><span class="step-tag">步驟 4 / 4</span><h2>第一次打招呼！</h2><div class="k">燒一支原廠範例試水溫</div></div>
   <div class="body">
-    <ul class="sl">
-      <li>把模擬器驗證過的程式存成一個 <span class="filechip">.ino</span> 檔</li>
-      <li>對 AI 說：<b>「把這支燒進 COM3 的 OTTO」</b></li>
-    </ul>
-    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash my_show.ino -p COM3</span>
-<span class="out">⚙ 編譯（atmega328old）… ✓ 編譯成功
-🔌 燒錄到 COM3 … ✓ 燒錄完成，OTTO 會重開機並執行新程式</span></pre></div>
-    <div class="warn-box">⚠️ 燒錄時 OTTO 手腳可能亂揮，屬正常。拿在手上或放空曠處，別讓它掉桌。</div>
-    <p class="note">❓ 一直 sync 失敗？跟 AI 說「改用新版 bootloader 再試」（加 <code>--new-bootloader</code> 走 115200）。</p>
+    <p>對 AI 說（allmoves ＝ 原廠「動作總覽」，會依序把所有動作跳一遍）：</p>
+    <div class="prompt"><pre>把 allmoves 範例燒進 COM3 的 OTTO</pre></div>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash-example allmoves -p COM3</span>
+<span class="out">⚙ 編譯… ✓   🔌 燒錄到 COM3… ✓ 完成，OTTO 重開機開始表演</span></pre></div>
+    <div class="ok-box">✅ 預期：OTTO 重開機後，開始一個接一個做動作給你看。</div>
+    <div class="warn-box">⚠️ 燒錄時 OTTO 手腳可能亂揮，正常。拿手上或放空曠處，別讓它掉桌。</div>
   </div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><span class="step-tag">步驟 4 / 6</span><h2>一鍵燒原廠現成動作</h2><div class="k">25 支範例任你點</div></div>
+  <div class="sh"><h2>暖身完成 ✅</h2><div class="k">你已經打通任督二脈</div></div>
+  <div class="body">
+    <div class="milestone"><div class="mh">🏆 里程碑</div><p>你已經完成最難的一步：讓 AI 真的動到桌上的機器人。剩下的全是好玩的部分。</p></div>
+    <p>回顧一下你學會的三句魔法：</p>
+    <ul class="sl">
+      <li>「幫我偵測 OTTO 在哪個埠」</li>
+      <li>「把 ○○ 範例燒進去」</li>
+      <li>（等下會學）「往前走 / 改成…… / 遙控它」</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 第二幕 · 玩遍原廠 25 支 ============ -->
+<section class="slide cover">
+  <div class="tag">第二幕</div>
+  <h1>🎁 <span class="g">玩遍原廠 25 支</span></h1>
+  <h2>不用寫半行程式，現成寶庫一次玩過癮</h2>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>原廠寶庫地圖</h2><div class="k">25 支範例，分成六大類</div></div>
+  <div class="tc body">
+    <div>
+      <p>🕺 <b>舞王組</b>：happydance、singleladies、smoothcriminal</p>
+      <p>🎵 <b>音樂組</b>：jingle、birthday、mario、sw</p>
+      <p>👀 <b>感測組</b>：avoid、distance、follow</p>
+    </div>
+    <div>
+      <p>🏃 <b>動作組</b>：allmoves、run、retrieve、alarm</p>
+      <p>🔧 <b>校正組</b>：footalign、calib、calibeasy、calibserial</p>
+      <p>🎮 <b>遙控＋PLUS</b>：remote ＋ 六支加購款</p>
+    </div>
+  </div>
+  <div class="info-box">🔎 隨時想看清單，就對 AI 說「<b>有哪些原廠範例？</b>」，它會全部列出來給你挑。</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🕺 舞王組</h2><div class="k">OTTO 也會尬舞</div></div>
   <div class="body">
     <ul class="sl">
-      <li>對 AI 說：<b>「有哪些原廠範例？」</b>→ 它列出 allmoves／avoid／happydance／mario… 共 25 支</li>
-      <li>再說：<b>「把開心跳舞燒進 OTTO」</b></li>
+      <li><b>happydance</b>——最歡樂的開心舞，暖場首選。</li>
+      <li><b>singleladies</b>——Beyoncé 名曲舞步，超有戲。</li>
+      <li><b>smoothcriminal</b>——麥可傑克森經典，帥氣度滿分。</li>
     </ul>
+    <div class="info-box">這幾支都是「音樂 ＋ 舞步」全包，燒進去就是一段完整表演。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">動手做</span><h2>燒一支舞來看</h2><div class="k">挑你喜歡的那首</div></div>
+  <div class="body">
+    <div class="prompt"><pre>把 happydance 燒進 OTTO</pre></div>
     <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash-example happydance -p COM3</span>
-<span class="out">⚙ 編譯… ✓  🔌 燒錄到 COM3… ✓ 完成，OTTO 開始跳舞</span></pre></div>
-    <div class="info-box">💡 想要新動作？叫 AI「拿 allmoves 當骨架，改成先揮手再轉三圈」——它會改好、編譯、燒錄，一條龍。</div>
+<span class="out">⚙ 編譯… ✓   🔌 燒錄… ✓ 完成，OTTO 開始跳舞 🎉</span></pre></div>
+    <div class="ok-box">✅ 預期：OTTO 一邊發出音效一邊跳舞。想換一首就把 happydance 換成 singleladies 或 smoothcriminal。</div>
+    <p class="note">❓ 只動不出聲？把音量／蜂鳴器接線看一下；動作有跑就代表燒錄成功了。</p>
   </div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><span class="step-tag">步驟 5 / 6</span><h2>即時遙控（打字它就動）</h2><div class="k">燒一次，之後免重燒</div></div>
+  <div class="sh"><h2>🎵 音樂組</h2><div class="k">OTTO 的點歌台</div></div>
   <div class="body">
     <ul class="sl">
-      <li>先燒一次常駐遙控韌體（只要一次）：對 AI 說 <b>「燒遙控韌體到 COM3」</b>（<code>flash-remote</code>）</li>
-      <li>之後直接下白話指令，OTTO 即時反應：</li>
+      <li><b>jingle</b>——叮叮噹輕快旋律。</li>
+      <li><b>birthday</b>——生日快樂歌，慶生神器 🎂。</li>
+      <li><b>mario</b>——超級瑪利歐主題曲配動作。</li>
+      <li><b>sw</b>——星際大戰帝國進行曲，氣勢十足。</li>
     </ul>
-    <div class="term"><div class="lbl">即時遙控</div><pre><span class="cm">python otto_ctl.py remote "forward" -p COM3   </span><span class="out"># 往前走</span>
-<span class="cm">python otto_ctl.py remote "gesture 11" -p COM3</span><span class="out"># 揮手打招呼</span>
-<span class="cm">python otto_ctl.py remote "dist" -p COM3      </span><span class="out"># 讀距離 → ⟵ D 25</span></pre></div>
-    <div class="ok-box">✅ 白話別名：forward／back／left／right／jump／swing／sing 8／gesture 11／dist／stop，AI 自動翻成原廠協定。</div>
+    <div class="info-box">💡 幫同學慶生時，燒一支 <b>birthday</b>，讓 OTTO 唱給他聽，全班都會笑翻。</div>
   </div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><span class="step-tag">步驟 6 / 6</span><h2>其實你只要說人話</h2><div class="k">指令都交給 AI</div></div>
+  <div class="sh"><span class="step-tag">動手做</span><h2>慶生神器 birthday</h2><div class="k">把 OTTO 變成生日驚喜</div></div>
   <div class="body">
-    <p>上面的指令是「幕後」，你<b>不用背</b>。裝好 otto-skill 後，你只要對 AI 說白話，它自己挑對的指令：</p>
-    <div class="prompt"><pre>「幫我偵測 OTTO 在哪個埠」
-「把避障範例燒進去」
-「讓它往前走五步再右轉」
-「它站不直，幫我校正」</pre></div>
-    <div class="milestone"><div class="mh">🏆 里程碑達成</div><p>你把 AI 變成 OTTO 的專屬工程師：你出想法，AI 出指令，機器人出動作。這就是「全能王」的用法。</p></div>
+    <div class="prompt"><pre>把 birthday 生日快樂歌燒進 OTTO</pre></div>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash-example birthday -p COM3</span>
+<span class="out">⚙ 編譯… ✓   🔌 燒錄… ✓ 完成 🎂</span></pre></div>
+    <div class="ok-box">✅ 預期：OTTO 唱起生日快樂歌，還會配合擺動。</div>
+    <p class="note">❓ 想改歌詞速度或動作？先記著——第三幕就會教你叫 AI 改它。</p>
   </div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><h2>常見問題（急救包）</h2><div class="k">卡住看這裡</div></div>
+  <div class="sh"><h2>👀 感測組</h2><div class="k">給 OTTO 一雙眼睛</div></div>
+  <div class="body">
+    <p>OTTO 額頭那兩顆「銀眼睛」是<b>超音波感測器</b>，會發出聲波量出前方距離。這三支就是靠它做決定：</p>
+    <ul class="sl">
+      <li><b>avoid</b>——前方有牆就自動轉向閃避（避障機器人）。</li>
+      <li><b>distance</b>——依距離做不同反應（近就退、遠就前）。</li>
+      <li><b>follow</b>——前方有手或物就跟著走。</li>
+    </ul>
+    <div class="info-box">這就是「機器人會自己想」的起點：量距離 → if 判斷 → 做動作。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">動手做</span><h2>避障機器人 avoid</h2><div class="k">拿手擋在它前面試試</div></div>
+  <div class="body">
+    <div class="prompt"><pre>把 avoid 避障範例燒進 OTTO</pre></div>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash-example avoid -p COM3</span>
+<span class="out">⚙ 編譯… ✓   🔌 燒錄… ✓ 完成</span></pre></div>
+    <div class="ok-box">✅ 預期：OTTO 往前走，一遇到前方障礙（牆或你的手）就自己轉向避開。</div>
+    <p class="note">❓ 一直亂轉？超音波沒接好或前方太近；把它放桌面中央、前方留空再開電源。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🏃 動作組</h2><div class="k">走跳蹦，還會找東西</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>allmoves</b>——全部內建動作總覽（你暖身燒過的那支）。</p>
+      <p><b>run</b>——快步小跑，比走路帶勁。</p>
+    </div>
+    <div>
+      <p><b>retrieve</b>——前後探尋，像在找／撿東西。</p>
+      <p><b>alarm</b>——鬧鐘，到點嗶嗶叫＋動作提醒。</p>
+    </div>
+  </div>
+  <div class="info-box">💡 想認識 OTTO 到底會哪些動作？燒 <b>allmoves</b> 看一遍最快，之後改造就有靈感。</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🔧 校正組（超重要）</h2><div class="k">機器人站不直就靠它</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li><b>footalign</b>——把四顆馬達轉到 90°，<b>裝腳前先燒這支</b>。</li>
+      <li><b>calib / calibeasy</b>——完整／簡易校正。</li>
+      <li><b>calibserial</b>——用序列埠邊看數字邊微調（配 CH16）。</li>
+    </ul>
+    <div class="warn-box">⚠️ 新組裝最常見：通電「答答答」＋馬達發燙 ＝ 馬達卡住。標準解法：<b>先燒 footalign 歸零，再裝腳掌</b>，不要硬轉。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>🎮 遙控韌體 ＋ 🧩 PLUS 六支</h2><div class="k">寶庫的最後一區</div></div>
+  <div class="tc body">
+    <div>
+      <p>🎮 <b>remote</b>（mBlock 序列遙控）</p>
+      <p class="note">燒了它，之後就能「打字即時遙控」——這正是第四幕的主角，先記住名字。</p>
+    </div>
+    <div>
+      <p>🧩 <b>PLUS 加購款</b>：clapdance（拍手跳舞）、clapwalk（拍手走）、guardian（守衛）、stopgo（走停）、touchultra（觸碰＋超音波）、appsound（App 聲音）。</p>
+      <p class="note">這些需要「加購模組」，基本款 OTTO 用不到，燒了可能報缺零件，屬正常。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">小任務</span><h2>挑三支燒燒看</h2><div class="k">玩出你的最愛</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>從六大類裡各挑一支，輪流燒進 OTTO。</li>
+      <li>每燒一支，記下：它做了什麼？你最喜歡哪一支？</li>
+      <li>跟旁邊同學互相展示，比比看誰挑的最好玩。</li>
+    </ul>
+    <div class="milestone"><div class="mh">🎁 你現在有</div><p>一整座「現成動作寶庫」。想要什麼效果，先問自己：原廠有沒有類似的可以拿來改？（這就是下一幕的重點）</p></div>
+  </div>
+</section>
+
+<!-- ============ 第三幕 · vibecoding 改造 ============ -->
+<section class="slide cover">
+  <div class="tag">第三幕</div>
+  <h1>🛠️ <span class="g">vibecoding 改造</span></h1>
+  <h2>把現成範例，變成你自己的專屬版本</h2>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>vibecoding 心法</h2><div class="k">說目標，不要說程式</div></div>
+  <div class="body">
+    <p>改造的祕訣不是「你會不會寫程式」，而是「你會不會<b>把想要的效果說清楚</b>」。你負責描述畫面，AI 負責變成程式。</p>
+    <div class="tc">
+      <div>
+        <p>🙆 <b>好的說法（說效果）</b></p>
+        <p class="note">「先揮手打招呼，再原地轉三圈，最後跳一下慶祝。」</p>
+      </div>
+      <div>
+        <p>🙅 <b>不好的說法（講技術）</b></p>
+        <p class="note">「呼叫 playGesture 然後 for 迴圈 turn 三次……」——這是 AI 的工作，不是你的。</p>
+      </div>
+    </div>
+    <div class="info-box">🎯 你是導演，只要說「我要什麼樣的畫面」；怎麼拍，交給工程師 AI。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>好提示詞的三個材料</h2><div class="k">照這樣講，AI 一次就懂</div></div>
+  <ul class="goals body">
+    <li>🎯 <b>目標</b>：你想看到什麼？（例：一支害羞的小舞）</li>
+    <li>🎬 <b>要點動作</b>：具體幾個畫面。（例：先後退兩步、低頭、再小小揮手）</li>
+    <li>🎵 <b>收尾</b>：怎麼結束？（例：最後發出「害羞」的音效）</li>
+  </ul>
+  <div class="info-box">把這三樣講給 AI，它就能寫出你要的程式。想不到？先燒原廠看一遍找靈感。</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 3</span><h2>拿原廠當骨架</h2><div class="k">站在巨人肩膀上改</div></div>
+  <div class="body">
+    <p>不要從零開始！叫 AI 拿一支現成的來改，又快又穩。對 AI 說：</p>
+    <div class="prompt"><pre>拿 allmoves 當骨架，改成：先揮手打招呼，
+再原地轉三圈，最後跳一下。改好幫我編譯看看能不能過。</pre></div>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py build my_hello.ino</span>
+<span class="out">⚙ 編譯… ✓ 編譯成功（能上真機）</span></pre></div>
+    <div class="ok-box">✅ 預期：AI 改好程式並「編譯成功」——代表這支能燒進真機。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 3</span><h2>燒進去看效果</h2><div class="k">真機驗收</div></div>
+  <div class="body">
+    <div class="prompt"><pre>編譯過了，燒進 COM3 的 OTTO</pre></div>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash my_hello.ino -p COM3</span>
+<span class="out">⚙ 編譯… ✓   🔌 燒錄… ✓ 完成</span></pre></div>
+    <div class="ok-box">✅ 預期：OTTO 揮手 → 轉三圈 → 跳一下。跟你腦中的畫面對照一下。</div>
+    <p class="note">❓ 跟想像不一樣？太棒了，這正是要進入「迭代」的時刻——看下一步。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 3</span><h2>迭代循環：不滿意就再說</h2><div class="k">這就是 Loop 工程</div></div>
+  <div class="body">
+    <p>沒有人一次就做到完美。看到結果 → 說哪裡要改 → AI 重改重燒，這個循環轉幾圈，作品就成形了。</p>
+    <div class="prompt"><pre>轉太快了看不清楚，放慢一半；
+最後不要跳，改成低頭害羞，再放一個害羞音效。</pre></div>
+    <div class="info-box">🔁 <b>Loop 工程</b>：說 → 看 → 再說 → 再看。跟 AI 來回幾次，就是最強的學習方式。</div>
+    <div class="ok-box">✅ 預期：再燒一次，動作變慢、結尾變害羞。越改越接近你要的樣子。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>改造完成 ✅</h2><div class="k">你已經是 vibecoder 了</div></div>
+  <div class="body">
+    <div class="milestone"><div class="mh">🏆 里程碑</div><p>你會「拿現成的改成自己的」了——這是工程師每天在做的事，你用說的就辦到。</p></div>
+    <p>記住這個萬用公式：</p>
+    <ul class="sl">
+      <li><b>找骨架</b>（原廠哪支最接近）→ <b>說目標</b>（要什麼效果）→ <b>編譯</b>（能不能過）→ <b>燒錄</b>（看真機）→ <b>迭代</b>（不滿意再說）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 第四幕 · 即時遙控 ============ -->
+<section class="slide cover">
+  <div class="tag">第四幕</div>
+  <h1>🎮 <span class="g">即時遙控</span></h1>
+  <h2>打字它就動，像用手把玩機器人</h2>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>遙控是什麼原理？</h2><div class="k">燒一次，之後免重燒</div></div>
+  <div class="body">
+    <p>前面每換一個動作都要重燒一次。遙控不一樣：先燒一支「<b>一直在聽你講話</b>」的韌體，之後你打什麼指令，OTTO 立刻做，不用再燒。</p>
+    <div class="tc">
+      <div>
+        <p>😮‍💨 <b>之前（燒錄模式）</b></p>
+        <p class="note">改動作 → 編譯 → 燒錄 → 等重開機。每次都要等。</p>
+      </div>
+      <div>
+        <p>😎 <b>現在（遙控模式）</b></p>
+        <p class="note">打「forward」→ 馬上走；打「jump」→ 馬上跳。零等待。</p>
+      </div>
+    </div>
+    <div class="info-box">用的就是原廠 <b>remote（mBlock）</b> 韌體，和 Scratch／mBlock 相容。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 2</span><h2>燒一次遙控韌體</h2><div class="k">整場只需做這一次</div></div>
+  <div class="body">
+    <div class="prompt"><pre>幫我燒遙控韌體到 COM3</pre></div>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash-remote -p COM3</span>
+<span class="out">⚙ 編譯… ✓   🔌 燒錄… ✓ 完成，OTTO 進入待命聽令狀態</span></pre></div>
+    <div class="ok-box">✅ 預期：燒完 OTTO 站好待命，等你下指令。</div>
+    <p class="note">❓ 忘了裝 pyserial？AI 會提醒你先跑 <code>pip install pyserial</code>，裝完再玩。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 2</span><h2>下指令，它就動</h2><div class="k">說白話就好</div></div>
+  <div class="body">
+    <div class="term"><div class="lbl">即時遙控</div><pre><span class="cm">forward </span><span class="out"># 往前走</span>
+<span class="cm">right   </span><span class="out"># 右轉</span>
+<span class="cm">jump    </span><span class="out"># 跳一下</span>
+<span class="cm">dist    </span><span class="out"># 讀前方距離 → ⟵ 25（公分）</span>
+<span class="cm">stop    </span><span class="out"># 停下回正</span></pre></div>
+    <div class="ok-box">✅ 預期：每打一個字按 Enter，OTTO 立刻做對應動作。</div>
+    <p class="note">❓ 沒反應？確認燒過遙控韌體、鮑率 115200（AI 預設就對）；動作太小就把幅度加大。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>白話遙控指令表</h2><div class="k">貼在旁邊隨時查</div></div>
+  <div class="tc body">
+    <div>
+      <p>🚶 <b>移動</b>：forward、back、left、right</p>
+      <p>🤸 <b>特技</b>：jump、swing、bend、moonwalk</p>
+    </div>
+    <div>
+      <p>🎭 <b>表演</b>：gesture 11（揮手）、sing 8（開心音效）</p>
+      <p>📏 <b>感測</b>：dist（測距）　🛑 <b>停</b>：stop</p>
+    </div>
+  </div>
+  <div class="info-box">💡 gesture 有 1～13 種表情、sing 有 1～19 種聲音，換數字就換花樣。全表在技能的 <span class="filechip">serial-protocol.md</span>。</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">玩法 1</span><h2>機器人遙控賽 🏁</h2><div class="k">兩人一組來比賽</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>地上貼一條終點線，OTTO 放起點。</li>
+      <li>只能用 forward／left／right／stop，看誰先讓 OTTO 走到終點不出界。</li>
+      <li>進階：中間放障礙物，撞到就重來。</li>
+    </ul>
+    <div class="ok-box">✅ 這其實就是你在「用手動的方式，感受走路與轉彎的參數」——玩著玩著就懂了。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">玩法 2</span><h2>猜距離遊戲 📏</h2><div class="k">用超音波眼睛玩</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>在 OTTO 前方擺一個東西，先用眼睛猜幾公分。</li>
+      <li>打 <code>dist</code>，看 OTTO 回報的真實距離。</li>
+      <li>誰猜得最接近誰贏。</li>
+    </ul>
+    <div class="milestone"><div class="mh">🎁 你現在有</div><p>一台「即時聽你話」的機器人。加上前面的燒錄與改造，OTTO 已經完全在你的掌控之中。</p></div>
+  </div>
+</section>
+
+<!-- ============ 第五幕 · 當小導演 ============ -->
+<section class="slide cover">
+  <div class="tag">第五幕</div>
+  <h1>🎬 <span class="g">當小導演</span></h1>
+  <h2>綜合大挑戰：編一場完整的 OTTO 秀</h2>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>期末任務：30 秒 OTTO 秀</h2><div class="k">把這堂課全部用上</div></div>
+  <div class="body">
+    <p>當一次真正的導演，用你學到的所有本事，讓 OTTO 演一段 30 秒、有頭有尾的小表演。</p>
+    <ul class="sl">
+      <li>🎯 <b>要有主題</b>：生日驚喜？機器人早操？勇闖迷宮？</li>
+      <li>🧩 <b>要混搭</b>：原廠素材（跳舞／音樂）＋ 你 vibecoding 改造的段落。</li>
+      <li>🎵 <b>要收尾</b>：一個漂亮的結束動作或音效。</li>
+    </ul>
+    <div class="info-box">可以全程燒錄一支完整程式，也可以用遙控即時演出——你決定。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">導演步驟</span><h2>分鏡表這樣寫</h2><div class="k">先規劃，再叫 AI 做</div></div>
+  <div class="body">
+    <p>把腦中的畫面拆成幾幕，寫成「分鏡」，再一段段交給 AI：</p>
+    <div class="prompt"><pre>幫我做一段「機器人早操」：
+① 開場放一個開心音效、揮手
+② 原地暖身：左右搖擺四下
+③ 主段：跑步兩趟 + 跳兩下
+④ 收操：鞠躬（低頭）+ 開心音效收尾
+拿原廠動作當素材，改好編譯再燒進 COM3</pre></div>
+    <div class="ok-box">✅ 預期：AI 依你的分鏡拼出完整程式、編譯、燒錄，OTTO 完整演一遍。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">導演步驟</span><h2>試演與微調</h2><div class="k">好作品都是改出來的</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>先完整跑一遍，拿手機錄下來。</li>
+      <li>哪一段不順？跟 AI 說「第③段跳太快、再慢一點」重燒。</li>
+      <li>反覆幾次，直到你滿意為止。</li>
+    </ul>
+    <div class="info-box">🔁 又是 Loop 工程：試演 → 挑毛病 → 跟 AI 說 → 再試演。導演都是這樣磨作品的。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>展示與互評 🎉</h2><div class="k">舞台交給你</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>每組上台播放你們的 OTTO 秀（現場演或放錄影）。</li>
+      <li>說一句話：你們用了哪些原廠素材？改造了什麼？</li>
+      <li>互相給一個「最有創意獎」的提名。</li>
+    </ul>
+    <div class="milestone"><div class="mh">🏆 大成品達成</div><p>你從零基礎，到能當導演指揮 AI 做出完整機器人表演。這就是 vibecoding 的威力。</p></div>
+  </div>
+</section>
+
+<!-- ============ 收尾 ============ -->
+<section class="slide cs">
+  <div class="sh"><h2>常見問題 · 急救包</h2><div class="k">卡住看這裡</div></div>
   <div class="tc body">
     <div>
       <p><b>AI 說找不到 arduino-cli？</b></p>
-      <p class="note">要在課程專案資料夾裡跑（內含 <code>_tools\arduino-cli.exe</code>），或跟 AI 說用 <code>--project</code> 指定專案位置。</p>
+      <p class="note">要在課程專案資料夾裡跑（內含 <code>_tools\arduino-cli.exe</code>），或請 AI 用 <code>--project</code> 指定專案位置。</p>
       <p><b>偵測不到連接埠？</b></p>
-      <p class="note">換能傳資料的 USB 線、裝 CH340 驅動（CH02）。</p>
+      <p class="note">換能傳資料的 USB 線、裝 CH340 驅動（CH02）、換 USB 孔。</p>
     </div>
     <div>
-      <p><b>遙控沒反應？</b></p>
-      <p class="note">先燒過 <code>flash-remote</code>；鮑率要 115200；動作太小就把幅度加大。</p>
+      <p><b>燒錄一直失敗（sync）？</b></p>
+      <p class="note">關掉其他在用序列埠的程式；選對 COM；請 AI「改用新版 bootloader」試 115200。</p>
       <p><b>馬達答答答又發燙？</b></p>
-      <p class="note">馬達卡住＝「先歸零再裝腳」；先燒 <code>footalign</code> 對齊（詳見 CH16）。</p>
+      <p class="note">馬達卡住＝先燒 <code>footalign</code> 歸零再裝腳（詳見 CH16）。</p>
     </div>
   </div>
 </section>
 
 <section class="slide cs">
-  <div class="sh"><h2>本單元驗收</h2><div class="k">打勾前進</div></div>
+  <div class="sh"><h2>全單元大驗收</h2><div class="k">全部打勾就畢業</div></div>
   <ul class="goals body">
-    <li>otto-skill 已放進 <span class="filechip">.claude\skills\</span>，AI 認得它。</li>
-    <li>我會叫 AI 偵測連接埠、編譯、燒錄我的程式。</li>
-    <li>我用 flash-example 燒過至少一支原廠範例。</li>
-    <li>我燒過遙控韌體，用白話指令讓 OTTO 即時動作。</li>
+    <li>otto-skill 裝好，AI 認得它，我會叫它偵測連接埠。</li>
+    <li>我用 flash-example 燒過原廠範例（至少玩過三支）。</li>
+    <li>我會叫 AI 拿原廠當骨架，改成我要的效果，還會迭代微調。</li>
+    <li>我燒過遙控韌體，用白話指令即時遙控 OTTO。</li>
+    <li>我完成了一段自己導演的 OTTO 秀。</li>
   </ul>
-  <div class="milestone body"><div class="mh">🎁 你現在有：AI 全能控制權</div><p>從「一鍵上傳」到「AI 一句話控管真機」，OTTO 的完整能力都在你手上了。</p></div>
+  <div class="milestone body"><div class="mh">🎁 你現在有：AI 全能控制權</div><p>從「說人話」到「機器人動起來」，OTTO 的完整能力，都在你手上了。</p></div>
 </section>
 
 <section class="slide cover">
   <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
-  <h1 style="font-size:38px">otto-skill 上手！<span class="g">AI 全能控制</span></h1>
+  <h1 style="font-size:38px">你，就是<span class="g">機器人導演</span></h1>
   <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
   <div class="endbtns">
     <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
@@ -165,7 +549,7 @@
   </div>
 </section>
 
-<script>window.SLIDE_CFG={title:'特別單元 · otto-skill',part:'#b8860b',next:'index.html'}</script>
+<script>window.SLIDE_CFG={title:'特別大單元 · otto-skill（vibecoding 教學）',part:'#b8860b',next:'index.html'}</script>
 <script src="assets/slides.js"></script>
 </body>
 </html>
