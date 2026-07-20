@@ -37,6 +37,32 @@ header .right{margin-left:auto;font-size:12.5px;color:var(--muted)}
 .btn.reset{background:rgba(255,255,255,.12);color:var(--text);border:1px solid var(--line)}
 select{background:#241f45;color:var(--text);border:1px solid var(--line);border-radius:8px;
   padding:8px 10px;font-size:13.5px;font-family:inherit}
+.btn.vibe{background:linear-gradient(135deg,#8E44AD,#a55eea);color:#fff}
+/* ---------- 🅰️ Vibe Coding 提示詞面板 ---------- */
+.vmask{position:fixed;inset:0;background:rgba(8,6,20,.72);backdrop-filter:blur(3px);z-index:60;
+  display:flex;align-items:center;justify-content:center;padding:24px}
+.vbox{width:min(720px,94vw);max-height:88vh;display:flex;flex-direction:column;
+  background:linear-gradient(160deg,#241f45,#1a1636);border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,.55);overflow:hidden}
+.vhead{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;
+  border-bottom:1px solid var(--line);font-size:16px}
+.vhead b{color:var(--gold)}
+.vx{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+.vx:hover{color:#fff}
+.vbar{display:flex;align-items:center;gap:10px;padding:12px 18px 4px}
+.vbar label{font-size:14px;color:var(--muted);white-space:nowrap}
+.vbar select{flex:1}
+.vintro{padding:4px 18px 8px;color:var(--muted);font-size:13.5px;line-height:1.6}
+.vgoals{flex:1;overflow:auto;padding:6px 18px}
+.vgoal{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.vgoal .gt{font-weight:900;color:var(--gold2);margin-bottom:6px;font-size:14px}
+.vgoal .gp{white-space:pre-wrap;font-size:13px;line-height:1.65;color:#e8e3ff}
+.vfoot{border-top:1px solid var(--line);padding:12px 18px;display:flex;flex-direction:column;gap:10px}
+.vtip{font-size:12.5px;color:var(--muted);line-height:1.5}
+.vbtns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.btn.gen{background:rgba(255,255,255,.12);color:var(--text);border:1px solid var(--line)}
+.btn.genrun{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#2a1a4a}
 .codewrap{flex:1;position:relative;display:flex;flex-direction:column;min-height:0}
 .codehead{display:flex;align-items:center;padding:7px 14px;font-size:12.5px;color:var(--muted);
   border-bottom:1px solid var(--line)}
@@ -114,6 +140,7 @@ select{background:#241f45;color:var(--text);border:1px solid var(--line);border-
       <button class="btn run" id="btnRun">▶ 執行</button>
       <button class="btn stop" id="btnStop">⏹ 停止</button>
       <button class="btn reset" id="btnReset">⟲ 歸位</button>
+      <button class="btn vibe" id="btnVibe" title="用『說目標』的方式生成各章程式">🅰️ Vibe 提示詞</button>
       <select id="examples" title="載入範例程式">
         <option value="">📚 載入範例程式…</option>
         <option value="hello">01 · 第一次見面（開機打招呼）</option>
@@ -165,8 +192,27 @@ select{background:#241f45;color:var(--text);border:1px solid var(--line);border-
   </div>
 </div>
 
+<!-- 🅰️ Vibe Coding 提示詞面板 -->
+<div id="vibeModal" class="vmask" style="display:none">
+  <div class="vbox">
+    <div class="vhead"><div>🅰️ <b>Vibe Coding</b> · 用「說目標」的方式生成程式</div>
+      <button class="vx" id="vibeClose" title="關閉">✕</button></div>
+    <div class="vbar"><label>選章節：</label><select id="vibeCh"></select></div>
+    <div class="vintro" id="vibeIntro"></div>
+    <div class="vgoals" id="vibeGoals"></div>
+    <div class="vfoot">
+      <div class="vtip">💡 下面每一段「目標提示詞」就是你會對 AI 說的話——只講<b>想要的效果</b>、不講程式。按「生成」就把老師的標準程式放進左邊編輯器，再按 ▶ 執行看 OTTO 動。</div>
+      <div class="vbtns">
+        <button class="btn gen" id="vibeGen">✨ 生成程式（放進編輯器）</button>
+        <button class="btn genrun" id="vibeGenRun">✨ 生成並執行</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="assets/three.min.js"></script>
 <script src="assets/otto-examples.js"></script>
+<script src="../教學簡報/assets/vibe-gen-data.js"></script>
 <script>
 /* =====================================================================
  *  OTTO 3D 模擬器（原型）
@@ -1432,6 +1478,7 @@ void loop(){
   });
 })();
 log('👋 歡迎！按「▶ 執行」讓 OTTO 動起來，或先從上面載入範例程式。', 'sys');
+log('🅰️ 想體驗 Vibe Coding？按「🅰️ Vibe 提示詞」選一章，看「說目標」怎麼變出程式，再一鍵生成並執行！', 'note');
 log('💡 試試 05 避障範例：執行後拉動右上角的距離滑桿，看 OTTO 怎麼反應！', 'note');
 
 /* ---------- 主迴圈 ---------- */
@@ -1448,6 +1495,57 @@ function resize(){
   readDistance();
   updateEyeGlow();
   renderer.render(scene, camera);
+})();
+</script>
+
+<!-- 🅰️ Vibe Coding 面板邏輯（讀 vibe-gen-data.js，選章→看目標提示詞→生成標準碼→執行） -->
+<script>
+(function(){
+  const G = window.VIBE_GENERATORS;
+  const btnVibe = document.getElementById('btnVibe');
+  if(!G || !Object.keys(G).length){ if(btnVibe) btnVibe.style.display='none'; return; }
+  const modal = document.getElementById('vibeModal');
+  const sel = document.getElementById('vibeCh');
+  const introEl = document.getElementById('vibeIntro');
+  const goalsEl = document.getElementById('vibeGoals');
+  for(const id of Object.keys(G)){
+    const o = document.createElement('option');
+    o.value = id; o.textContent = id.replace('ino_ch','CH') + ' · ' + G[id].title;
+    sel.appendChild(o);
+  }
+  function render(){
+    const g = G[sel.value]; if(!g) return;
+    introEl.textContent = '🎁 ' + (g.intro || '');
+    goalsEl.innerHTML = '';
+    g.goals.forEach((goal,i)=>{
+      const d = document.createElement('div'); d.className = 'vgoal';
+      const t = document.createElement('div'); t.className = 'gt';
+      t.textContent = '🗣️ 目標 ' + (i+1) + '：' + goal.title;
+      const p = document.createElement('div'); p.className = 'gp';
+      p.textContent = goal.prompt;
+      d.appendChild(t); d.appendChild(p); goalsEl.appendChild(d);
+    });
+    goalsEl.scrollTop = 0;
+  }
+  function generate(run){
+    const g = G[sel.value]; if(!g) return;
+    document.getElementById('code').value = g.goals.map(x=>x.code).join('\n\n\n') + '\n';
+    const label = sel.options[sel.selectedIndex].text;
+    close();
+    if(typeof log === 'function'){
+      log('🅰️ 已依「' + label + '」的目標，生成老師的標準程式！', 'sys');
+      if(!run) log('👉 按「▶ 執行」看 OTTO 動起來（不滿意？改一改再執行＝Loop 工程）', 'note');
+    }
+    if(run) document.getElementById('btnRun').click();
+  }
+  function open(){ if(!sel.value) sel.selectedIndex = 0; render(); modal.style.display = 'flex'; }
+  function close(){ modal.style.display = 'none'; }
+  btnVibe.addEventListener('click', open);
+  document.getElementById('vibeClose').addEventListener('click', close);
+  modal.addEventListener('click', e=>{ if(e.target === modal) close(); });
+  sel.addEventListener('change', render);
+  document.getElementById('vibeGen').addEventListener('click', ()=>generate(false));
+  document.getElementById('vibeGenRun').addEventListener('click', ()=>generate(true));
 })();
 </script>
 </body>
