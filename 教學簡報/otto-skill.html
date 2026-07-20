@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特別單元 · otto-skill：讓 AI 全能控制 OTTO</title>
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="tag">特別單元 · 進階 · AI × 真機</div>
+  <h1>🦾 <span class="g">otto-skill</span>：讓 AI 全能控制 OTTO</h1>
+  <h2>一句話，AI 幫你編譯、燒錄、即時遙控真機器人</h2>
+  <div class="by">曾慶良 主任（阿亮老師）<br>2026</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>這個單元要做出什麼</h2><div class="k">OTTO 的「全能王」</div></div>
+  <div class="body">
+    <p>前面用「一鍵上傳」燒老師的標準程式、用 Arduino IDE 手動上傳自己的程式。這個單元更進一步：裝上 <b>otto-skill</b>，直接<b>對 AI 說白話</b>，由 AI 透過 <code>arduino-cli</code> 幫你完成「偵測 → 編譯 → 燒錄 → 即時遙控」整條龍。</p>
+    <div class="milestone"><div class="mh">🎁 本單元小成品</div><p>你對 AI 說「幫我把開心跳舞燒進 OTTO」，機器人就跳起舞；說「往前走」，它就當場走給你看。</p></div>
+    <div class="info-box">🎯 適合對象：老師、想深入的同學。需要用 <b>AI 助手（Claude Code）＋ 課程專案環境</b>（內含 arduino-cli，免另外裝）。前 15 章零基礎路線不受影響。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>otto-skill 有哪些超能力</h2><div class="k">一支技能包辦</div></div>
+  <div class="tc body">
+    <div>
+      <p>🔌 <b>偵測</b>：找出 OTTO 接在哪個 COM 埠</p>
+      <p>⚙️ <b>編譯</b>：把 .ino 編譯驗證（沒接機器也能做）</p>
+      <p>🔥 <b>燒錄</b>：把程式送進真 OTTO</p>
+    </div>
+    <div>
+      <p>📚 <b>原廠範例</b>：25 支現成動作一鍵燒（跳舞/避障/唱歌/校正）</p>
+      <p>🎮 <b>即時遙控</b>：燒一次遙控韌體，之後打字就即時動</p>
+      <p>🩺 <b>除錯</b>：驅動、連接埠、馬達卡住都有解</p>
+    </div>
+  </div>
+  <div class="info-box">底層全走官方 <code>arduino-cli</code>；遙控用的是原廠 mBlock 序列協定，和 Scratch/mBlock 相容。</div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 1 / 6</span><h2>下載並安裝 otto-skill</h2><div class="k">放進 AI 的技能資料夾</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>回<a class="filechip" href="index.html#dl" target="_blank">課程首頁</a>「<b>📦 資源下載區</b>」→ 點「<b>otto-skill（AI 控制包）</b>」下載 <span class="filechip">otto-skill.zip</span></li>
+      <li>按右鍵 → <b>全部解壓縮</b>，會得到一個 <span class="filechip">otto-skill</span> 資料夾</li>
+      <li>把整個資料夾搬到 <span class="filechip">C:\Users\你的帳號\.claude\skills\</span> 底下</li>
+      <li>（要即時遙控才需要）開終端機執行一次 <code>pip install pyserial</code></li>
+      <li>重開 AI 助手（Claude Code），讓它讀到新技能</li>
+    </ul>
+    <div class="ok-box">✅ 預期：問 AI「有沒有 otto-skill？」它會回答有，並說明能編譯／燒錄／遙控 OTTO。</div>
+    <p class="note">❓ 找不到 <b>.claude</b> 資料夾？它是隱藏資料夾，在檔案總管「檢視 → 顯示 → 隱藏的項目」打勾就看得到。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 2 / 6</span><h2>偵測與編譯</h2><div class="k">先確認接得到、程式編得過</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>USB 線接「電腦 ⇄ OTTO 頭後方」，開電源</li>
+      <li>對 AI 說：<b>「偵測 OTTO 接在哪個埠」</b>（它會跑 <code>detect</code>）</li>
+    </ul>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py detect</span>
+<span class="out">偵測到序列埠：
+  • COM3
+（CH340 不回報板型，全部顯示未知是正常的）</span></pre></div>
+    <div class="ok-box">✅ 預期：列出至少一個 COM 埠。拔插 USB 看哪個消失／出現，那個就是 OTTO。</div>
+    <p class="note">❓ 一個埠都沒有？線是純充電線、或 CH340 驅動沒裝（回 CH02）。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 3 / 6</span><h2>把程式燒進真機</h2><div class="k">編譯＋上傳一次完成</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>把模擬器驗證過的程式存成一個 <span class="filechip">.ino</span> 檔</li>
+      <li>對 AI 說：<b>「把這支燒進 COM3 的 OTTO」</b></li>
+    </ul>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash my_show.ino -p COM3</span>
+<span class="out">⚙ 編譯（atmega328old）… ✓ 編譯成功
+🔌 燒錄到 COM3 … ✓ 燒錄完成，OTTO 會重開機並執行新程式</span></pre></div>
+    <div class="warn-box">⚠️ 燒錄時 OTTO 手腳可能亂揮，屬正常。拿在手上或放空曠處，別讓它掉桌。</div>
+    <p class="note">❓ 一直 sync 失敗？跟 AI 說「改用新版 bootloader 再試」（加 <code>--new-bootloader</code> 走 115200）。</p>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 4 / 6</span><h2>一鍵燒原廠現成動作</h2><div class="k">25 支範例任你點</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>對 AI 說：<b>「有哪些原廠範例？」</b>→ 它列出 allmoves／avoid／happydance／mario… 共 25 支</li>
+      <li>再說：<b>「把開心跳舞燒進 OTTO」</b></li>
+    </ul>
+    <div class="term"><div class="lbl">AI 幫你執行</div><pre><span class="cm">python otto_ctl.py flash-example happydance -p COM3</span>
+<span class="out">⚙ 編譯… ✓  🔌 燒錄到 COM3… ✓ 完成，OTTO 開始跳舞</span></pre></div>
+    <div class="info-box">💡 想要新動作？叫 AI「拿 allmoves 當骨架，改成先揮手再轉三圈」——它會改好、編譯、燒錄，一條龍。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 5 / 6</span><h2>即時遙控（打字它就動）</h2><div class="k">燒一次，之後免重燒</div></div>
+  <div class="body">
+    <ul class="sl">
+      <li>先燒一次常駐遙控韌體（只要一次）：對 AI 說 <b>「燒遙控韌體到 COM3」</b>（<code>flash-remote</code>）</li>
+      <li>之後直接下白話指令，OTTO 即時反應：</li>
+    </ul>
+    <div class="term"><div class="lbl">即時遙控</div><pre><span class="cm">python otto_ctl.py remote "forward" -p COM3   </span><span class="out"># 往前走</span>
+<span class="cm">python otto_ctl.py remote "gesture 11" -p COM3</span><span class="out"># 揮手打招呼</span>
+<span class="cm">python otto_ctl.py remote "dist" -p COM3      </span><span class="out"># 讀距離 → ⟵ D 25</span></pre></div>
+    <div class="ok-box">✅ 白話別名：forward／back／left／right／jump／swing／sing 8／gesture 11／dist／stop，AI 自動翻成原廠協定。</div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><span class="step-tag">步驟 6 / 6</span><h2>其實你只要說人話</h2><div class="k">指令都交給 AI</div></div>
+  <div class="body">
+    <p>上面的指令是「幕後」，你<b>不用背</b>。裝好 otto-skill 後，你只要對 AI 說白話，它自己挑對的指令：</p>
+    <div class="prompt"><pre>「幫我偵測 OTTO 在哪個埠」
+「把避障範例燒進去」
+「讓它往前走五步再右轉」
+「它站不直，幫我校正」</pre></div>
+    <div class="milestone"><div class="mh">🏆 里程碑達成</div><p>你把 AI 變成 OTTO 的專屬工程師：你出想法，AI 出指令，機器人出動作。這就是「全能王」的用法。</p></div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>常見問題（急救包）</h2><div class="k">卡住看這裡</div></div>
+  <div class="tc body">
+    <div>
+      <p><b>AI 說找不到 arduino-cli？</b></p>
+      <p class="note">要在課程專案資料夾裡跑（內含 <code>_tools\arduino-cli.exe</code>），或跟 AI 說用 <code>--project</code> 指定專案位置。</p>
+      <p><b>偵測不到連接埠？</b></p>
+      <p class="note">換能傳資料的 USB 線、裝 CH340 驅動（CH02）。</p>
+    </div>
+    <div>
+      <p><b>遙控沒反應？</b></p>
+      <p class="note">先燒過 <code>flash-remote</code>；鮑率要 115200；動作太小就把幅度加大。</p>
+      <p><b>馬達答答答又發燙？</b></p>
+      <p class="note">馬達卡住＝「先歸零再裝腳」；先燒 <code>footalign</code> 對齊（詳見 CH16）。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide cs">
+  <div class="sh"><h2>本單元驗收</h2><div class="k">打勾前進</div></div>
+  <ul class="goals body">
+    <li>otto-skill 已放進 <span class="filechip">.claude\skills\</span>，AI 認得它。</li>
+    <li>我會叫 AI 偵測連接埠、編譯、燒錄我的程式。</li>
+    <li>我用 flash-example 燒過至少一支原廠範例。</li>
+    <li>我燒過遙控韌體，用白話指令讓 OTTO 即時動作。</li>
+  </ul>
+  <div class="milestone body"><div class="mh">🎁 你現在有：AI 全能控制權</div><p>從「一鍵上傳」到「AI 一句話控管真機」，OTTO 的完整能力都在你手上了。</p></div>
+</section>
+
+<section class="slide cover">
+  <div class="tag">📜 © 2026 阿亮老師 版權所有</div>
+  <h1 style="font-size:38px">otto-skill 上手！<span class="g">AI 全能控制</span></h1>
+  <p style="font-size:20px;color:#cfc9e8;max-width:720px">本課程與專案僅供阿亮老師課程學員學習使用，禁止修改、轉傳、散布或商業使用。</p>
+  <div class="endbtns">
+    <button class="b home" onclick="go(0)">↺ 回到第一頁</button>
+    <a class="b next" href="index.html">→ 回課程首頁</a>
+  </div>
+</section>
+
+<script>window.SLIDE_CFG={title:'特別單元 · otto-skill',part:'#b8860b',next:'index.html'}</script>
+<script src="assets/slides.js"></script>
+</body>
+</html>
